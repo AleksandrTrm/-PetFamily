@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace PetFamily.Domain.Entities
+﻿namespace PetFamily.Domain.Entities
 {
     public class Pet
     {        
@@ -34,8 +32,8 @@ namespace PetFamily.Domain.Entities
         
         public Status Status { get; }
 
-        public IReadOnlyList<Requisite> Requisite { get; } = [];
-        
+        public List<Requisite> Requisite { get; } = [];
+
         public DateTime CreatedAt { get; }
     }
 }
