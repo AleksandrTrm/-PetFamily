@@ -34,7 +34,7 @@ namespace PetFamily.Domain.Entities
         
         public Status Status { get; }
 
-        public List<Requisite> Requisite { get; } = [];
+        public IReadOnlyList<Requisite> Requisite { get; } = [];
         
         public DateTime CreatedAt { get; }
     }
