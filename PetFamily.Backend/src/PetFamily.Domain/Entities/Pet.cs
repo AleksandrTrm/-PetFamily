@@ -1,8 +1,8 @@
 ﻿namespace PetFamily.Domain.Entities
 {
     public class Pet
-    {        
-        public Guid Id { get; }
+    {
+         public Guid Id { get; }
                 
         public string Nickname { get; } = string.Empty;
                 
