@@ -1,13 +1,14 @@
-﻿namespace PetFamily.Domain.Entities
+﻿using PetFamily.Domain.Shared;
+using PetFamily.Domain.ValueObjects;
+
+namespace PetFamily.Domain.Entities
 {
     public class Volunteer
     {
         
         //ef core
-        public Volunteer() { }
+        private Volunteer(Guid id) { }
         
-        public Guid Id { get; private set; }
-
         public string FullName { get; private set; } = string.Empty;
 
         public string Description { get; private set; } = string.Empty;
