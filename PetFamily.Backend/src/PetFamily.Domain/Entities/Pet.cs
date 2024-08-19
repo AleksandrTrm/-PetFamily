@@ -2,7 +2,10 @@
 {
     public class Pet
     {
-         public Guid Id { get; }
+        //ef core
+        public Pet() { }
+        
+        public Guid Id { get; }
                 
         public string Nickname { get; } = string.Empty;
                 
@@ -30,10 +33,14 @@
         
         public bool IsVaccinated { get; }
         
-        public Status Status { get; }
+        public PetStatus Status { get; }
 
-        public List<Requisite> Requisite { get; } = [];
+        public Requisites Requisites { get; }
 
         public DateTime CreatedAt { get; }
+        
+        public Volunteer Volunteer { get; }
+        
+        public PetPhotos PetPhotos { get; }
     }
 }
