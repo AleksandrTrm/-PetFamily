@@ -7,7 +7,7 @@ namespace PetFamily.Domain.Entities
     {
         
         //ef core
-        private Volunteer(Guid id) { }
+        private Volunteer() { }
         
         public string FullName { get; private set; } = string.Empty;
 

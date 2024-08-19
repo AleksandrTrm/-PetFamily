@@ -8,7 +8,7 @@ namespace PetFamily.Domain.Entities
     public class Pet
     {
         //ef core
-        private Pet(Guid id) { }
+        private Pet() { }
         
         public Nickname Nickname { get; private set; }
                 
