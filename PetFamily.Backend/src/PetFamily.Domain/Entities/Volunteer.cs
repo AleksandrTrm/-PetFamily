@@ -1,7 +1,14 @@
-﻿namespace PetFamily.Domain.Entities
+﻿using PetFamily.Domain.Shared;
+using PetFamily.Domain.ValueObjects;
+
+namespace PetFamily.Domain.Entities
 {
     public class Volunteer
     {
+        
+        //ef core
+        private Volunteer() { }
+
         public Guid Id { get; private set; }
 
         public string FullName { get; private set; } = string.Empty;
@@ -18,9 +25,9 @@
 
         public string PhoneNumber { get; private set; } = string.Empty;
 
-        public List<SocialMedia> SocialMedias { get; private set; } = [];
+        public SocialMedias SocialMedias { get; private set; }
 
-        public List<Requisite> Requisites { get; private set; } = [];
+        public Requisites Requisites { get; private set; }
 
         public List<Pet> Pets { get; private set; } = [];
     }
