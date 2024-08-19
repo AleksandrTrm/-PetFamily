@@ -10,6 +10,8 @@ namespace PetFamily.Domain.Entities
         //ef core
         private Pet() { }
         
+        public Guid Id { get; private set; }
+        
         public Nickname Nickname { get; private set; }
                 
         public Type Type { get; private set; }
