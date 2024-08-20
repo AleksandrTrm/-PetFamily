@@ -10,7 +10,7 @@ public record PetType
         Value = animalType;
     }
 
-    public string Value { get; private set; }
+    public string Value { get; }
 
     public static Result<PetType, string> Create(string animalType)
     {

@@ -14,15 +14,15 @@ public record Address
         House = house;
     }
     
-    public string Oblast { get; private set; }
+    public string Oblast { get; }
 
-    public string District { get; private set; }
+    public string District { get; }
 
-    public string Settlement { get; private set; }
+    public string Settlement { get; }
 
-    public string Street { get; private set; }
+    public string Street { get; }
     
-    public string House { get; private set; }
+    public string House { get; }
 
     public static Result<Address, string> Create(string oblast, string district, string settlement, string street, string house)
     {

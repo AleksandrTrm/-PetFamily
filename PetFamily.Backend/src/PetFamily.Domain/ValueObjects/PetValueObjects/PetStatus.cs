@@ -7,5 +7,5 @@ public record PetStatus
         Value = status;
     }
     
-    public Status Value { get; private set; }
+    public Status Value { get; }
 }

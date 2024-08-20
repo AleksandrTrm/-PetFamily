@@ -11,7 +11,7 @@ public record PhoneNumber
         Value = phoneNumber;
     }
     
-    public string Value { get; private set; }
+    public string Value { get; }
 
     public static Result<PhoneNumber, string> Create(string phoneNumber)
     {

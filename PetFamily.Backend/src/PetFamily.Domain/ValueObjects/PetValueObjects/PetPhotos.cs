@@ -9,7 +9,7 @@ public record PetPhotos
         Value = petPhotos;
     }
     
-    public List<PetPhoto> Value { get; private set; }
+    public List<PetPhoto> Value { get; }
 
     public static Result<PetPhotos, string> Create(List<PetPhoto> petPhotos)
     {

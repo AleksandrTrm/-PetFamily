@@ -10,7 +10,7 @@ public record Nickname
         Value = nickname;
     }
 
-    public string Value { get; private set; }
+    public string Value { get; }
     
     public static Result<Nickname, string> Create(string nickname)
     {

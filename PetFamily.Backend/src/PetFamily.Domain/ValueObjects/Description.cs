@@ -10,7 +10,7 @@ public class Description
         Value = description;
     }
     
-    public string Value { get; private set; }
+    public string Value { get; }
 
     public static Result<Description, string> Create(string description)
     {
