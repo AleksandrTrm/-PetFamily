@@ -1,15 +1,12 @@
 ﻿using PetFamily.Domain.Shared;
-using PetFamily.Domain.ValueObjects;
 
 namespace PetFamily.Domain.Entities
 {
-    public class Volunteer
+    public class Volunteer : Entity
     {
         
         //ef core
-        private Volunteer() { }
-
-        public Guid Id { get; private set; }
+        private Volunteer(Guid id) : base(id) { }
 
         public string FullName { get; private set; } = string.Empty;
 

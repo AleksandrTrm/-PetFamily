@@ -1,18 +1,13 @@
 ﻿using PetFamily.Domain.Shared;
-using PetFamily.Domain.ValueObjects;
-using PetFamily.Domain.ValueObjects.PetValueObjects;
-using Type = PetFamily.Domain.ValueObjects.PetValueObjects.Type;
 
 namespace PetFamily.Domain.Entities
 {
-    public class Pet
+    public class Pet : Entity
     {
         //ef core
-        private Pet() { }
+        private Pet(Guid id) : base(id) { }
         
-        public Guid Id { get; private set; }
-        
-        public Nickname Nickname { get; private set; }
+        public string Nickname { get; private set; }
                 
         public Type Type { get; private set; }
         
