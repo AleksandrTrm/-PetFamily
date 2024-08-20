@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.Domain.Entities;
+using PetFamily.Domain.Entities.Volunteers;
 
 namespace PetFamily.Infrastructure.Configurations;
 
@@ -16,7 +17,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.Property(v => v.Description)
             .IsRequired();
 
-        builder.Property(v => v.Expirience)
+        builder.Property(v => v.Experience)
             .IsRequired();
 
         builder.Property(v => v.CountOfPetsThatFoundHome)

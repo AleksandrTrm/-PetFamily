@@ -1,4 +1,4 @@
-﻿namespace PetFamily.Domain.Entities;
+﻿namespace PetFamily.Domain.ValueObjects.VolunteerValueObjects;
 
 public record SocialMedias
 {
