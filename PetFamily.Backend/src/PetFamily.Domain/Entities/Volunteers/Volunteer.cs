@@ -15,11 +15,11 @@ namespace PetFamily.Domain.Entities.Volunteers
         {
         }
 
-        public Volunteer(Guid id, Name fullName, Description description, int experience,
+        public Volunteer(Guid id, FullName fullFullName, Description description, int experience,
             int countOfPetsThatFoundHome, int countOfPetsThatLookingForHome, int countOfPetsThatGetTreatment,
             PhoneNumber phoneNumber, SocialMedias socialMedias, Requisites requisites) : base(id)
         {
-            FullName = fullName;
+            FullFullName = fullFullName;
             Description = description;
             Experience = experience;
             CountOfPetsThatFoundHome = countOfPetsThatFoundHome;
@@ -30,7 +30,7 @@ namespace PetFamily.Domain.Entities.Volunteers
             Requisites = requisites;
         }
 
-        public Name FullName { get; private set; }
+        public FullName FullFullName { get; private set; }
 
         public Description Description { get; private set; }
 
@@ -50,7 +50,7 @@ namespace PetFamily.Domain.Entities.Volunteers
 
         public List<Pet> Pets { get; private set; } = [];
 
-        public static Result<Volunteer, string> Create(Guid id, Name fullName, Description description, int experience,
+        public static Result<Volunteer, string> Create(Guid id, FullName fullFullName, Description description, int experience,
             int countOfPetsThatFoundHome, int countOfPetsThatLookingForHome, int countOfPetsThatGetTreatment,
             PhoneNumber phoneNumber, SocialMedias socialMedias, Requisites requisites)
         {
@@ -66,7 +66,7 @@ namespace PetFamily.Domain.Entities.Volunteers
             if (countOfPetsThatGetTreatment is < 0 or > MAX_EXPERIENCE_YEARS)
                 return $"Count of pets that are get treatment can not be less than zero";
 
-            return new Volunteer(id, fullName, description, experience, countOfPetsThatFoundHome,
+            return new Volunteer(id, fullFullName, description, experience, countOfPetsThatFoundHome,
                 countOfPetsThatLookingForHome, countOfPetsThatGetTreatment, phoneNumber, socialMedias, requisites);
         }
     }

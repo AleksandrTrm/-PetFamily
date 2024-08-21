@@ -114,12 +114,6 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         });
 
         builder.Property(p => p.CreatedAt);
-
-        builder.HasOne(p => p.Volunteer)
-            .WithMany(v => v.Pets)
-            .HasForeignKey("volunteer_id")
-            .IsRequired()
-            .OnDelete(DeleteBehavior.NoAction);
         
         builder.OwnsOne(p => p.PetPhotos, ppb =>
         {

@@ -16,7 +16,7 @@ namespace PetFamily.Domain.Entities.Volunteers
         private Pet(Guid id, Nickname nickname, PetType type, Description description, string breed, string color,
             string healthInfo, Address address, double weight, double height, PhoneNumber ownerPhone, bool isCastrated,
             DateOnly dateOfBirth, bool isVaccinated, Status status, Requisites requisites, DateTime createdAt,
-            Volunteer volunteer, PetPhotos petPhotos) : base(id)
+            PetPhotos petPhotos) : base(id)
         {
             Nickname = nickname;
             Type = type;
@@ -34,7 +34,6 @@ namespace PetFamily.Domain.Entities.Volunteers
             Status = status;
             Requisites = requisites;
             CreatedAt = createdAt;
-            Volunteer = volunteer;
             PetPhotos = petPhotos;
         }
 
@@ -70,14 +69,12 @@ namespace PetFamily.Domain.Entities.Volunteers
 
         public DateTime CreatedAt { get; private set; }
 
-        public Volunteer Volunteer { get; private set; }
-
         public PetPhotos PetPhotos { get; private set; }
 
         public static Result<Pet, string> Create(Guid id, Nickname nickname, PetType type, Description description,
             string breed, string color, string healthInfo, Address address, double weight, double height,
             PhoneNumber ownerPhone, bool isCastrated, DateOnly dateOfBirth, bool isVaccinated, Status status,
-            Requisites requisites, DateTime createdAt, Guid volunteerId, Volunteer volunteer, PetPhotos petPhotos)
+            Requisites requisites, DateTime createdAt, Guid volunteerId, PetPhotos petPhotos)
         {
             if (string.IsNullOrWhiteSpace(breed))
                 return "Breed can not be empty";
@@ -101,8 +98,7 @@ namespace PetFamily.Domain.Entities.Volunteers
                        $" be more than {Constants.MAX_MIDDLE_HIGH_LENGTH}";
 
             return new Pet(id, nickname, type, description, breed, color, healthInfo, address, weight, height,
-                ownerPhone, isCastrated, dateOfBirth, isVaccinated, status, requisites, createdAt, volunteer, 
-                petPhotos);
+                ownerPhone, isCastrated, dateOfBirth, isVaccinated, status, requisites, createdAt, petPhotos);
         }
     }
 }

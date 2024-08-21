@@ -3,13 +3,13 @@ using CSharpFunctionalExtensions;
 
 namespace PetFamily.Domain.ValueObjects.VolunteerValueObjects;
 
-public class Name
+public class FullName
 {
-    private Name()
+    private FullName()
     {
     }
     
-    private Name(string firstName, string lastName, string? patronymic = null)
+    private FullName(string firstName, string lastName, string? patronymic = null)
     {
         FirstName = firstName;
         LastName = lastName;
@@ -24,7 +24,7 @@ public class Name
 
     public string Patronymic { get; } = string.Empty;
 
-    public static Result<Name, string> Create(string firstName, string lastName, string? patronymic = default)
+    public static Result<FullName, string> Create(string firstName, string lastName, string? patronymic = default)
     {
         if (string.IsNullOrWhiteSpace(firstName))
             return "First name can not be empty";
@@ -47,6 +47,6 @@ public class Name
                 return $"The count of characters for patronymic can not be more than {Constants.MAX_MIDDLE_TEXT_LENGTH}";
         }
 
-        return new Name(firstName, lastName, patronymic);
+        return new FullName(firstName, lastName, patronymic);
     }
 }

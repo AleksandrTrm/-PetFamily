@@ -11,10 +11,8 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
     {
         builder.HasKey(v => v.Id);
 
-        builder.OwnsOne(v => v.FullName, nb =>
+        builder.ComplexProperty(v => v.FullFullName, nb =>
         {
-            nb.ToJson();
-
             nb.Property(n => n.FirstName)
                 .IsRequired()
                 .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
@@ -29,10 +27,8 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         });
             
 
-        builder.OwnsOne(p => p.Description, db =>
+        builder.ComplexProperty(p => p.Description, db =>
         {
-            db.ToJson();
-
             db.Property(t => t.Value)
                 .IsRequired()
                 .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
@@ -50,10 +46,8 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.Property(v => v.CountOfPetsThatGetTreatment)
             .IsRequired();
         
-        builder.OwnsOne(p => p.PhoneNumber, pb =>
+        builder.ComplexProperty(p => p.PhoneNumber, pb =>
         {
-            pb.ToJson();
-
             pb.Property(t => t.Value)
                 .IsRequired()
                 .HasMaxLength(Constants.MAX_PHONE_NUMBER_LENGTH);
@@ -92,7 +86,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         });
 
         builder.HasMany(v => v.Pets)
-            .WithOne(p => p.Volunteer)
+            .WithOne()
             .OnDelete(DeleteBehavior.NoAction)
             .IsRequired();
     }
