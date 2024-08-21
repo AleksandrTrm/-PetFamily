@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using PetFamily.Domain.Shared;
+using Microsoft.EntityFrameworkCore;
+using PetFamily.Domain.Entities.Volunteers;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.Domain.Entities;
 
 namespace PetFamily.Infrastructure.Configurations;
 
@@ -10,13 +11,30 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
     {
         builder.HasKey(v => v.Id);
 
-        builder.Property(v => v.FullName)
-            .IsRequired();
+        builder.ComplexProperty(v => v.FullFullName, nb =>
+        {
+            nb.Property(n => n.FirstName)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+            
+            nb.Property(n => n.LastName)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH);
+            
+            nb.Property(n => n.Patronymic)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH);
+        });
+            
 
-        builder.Property(v => v.Description)
-            .IsRequired();
+        builder.ComplexProperty(p => p.Description, db =>
+        {
+            db.Property(t => t.Value)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
+        });
 
-        builder.Property(v => v.Expirience)
+        builder.Property(v => v.Experience)
             .IsRequired();
 
         builder.Property(v => v.CountOfPetsThatFoundHome)
@@ -28,8 +46,12 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.Property(v => v.CountOfPetsThatGetTreatment)
             .IsRequired();
         
-        builder.Property(v => v.PhoneNumber)
-            .IsRequired();
+        builder.ComplexProperty(p => p.PhoneNumber, pb =>
+        {
+            pb.Property(t => t.Value)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_PHONE_NUMBER_LENGTH);
+        });
 
         builder.OwnsOne(v => v.SocialMedias, sb =>
         {
@@ -48,19 +70,24 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.OwnsOne(v => v.Requisites, rb =>
         {
             rb.ToJson();
-            
+
             rb.OwnsMany(r => r.Value, vb =>
             {
                 vb.Property(r => r.Title)
                     .IsRequired();
 
-                vb.Property(r => r.Description)
-                    .IsRequired();
+                vb.OwnsOne(r => r.Description, db =>
+                {
+                    db.Property(d => d.Value)
+                        .IsRequired()
+                        .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
+                });
             });
         });
 
         builder.HasMany(v => v.Pets)
             .WithOne()
+            .OnDelete(DeleteBehavior.NoAction)
             .IsRequired();
     }
 }
