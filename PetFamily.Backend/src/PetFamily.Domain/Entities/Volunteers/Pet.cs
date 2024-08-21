@@ -9,12 +9,14 @@ namespace PetFamily.Domain.Entities.Volunteers
     public class Pet : Entity
     {
         //ef core
-        public Pet(Guid id, Nickname nickname, PetType type, Description description, string breed, string color,
-            string healthInfo,
-            Address address, double weight, double height, PhoneNumber ownerPhone, bool isCastrated,
-            DateOnly dateOfBirth, bool isVaccinated,
-            PetStatus status, Requisites requisites, DateTime createdAt, Volunteer volunteer,
-            PetPhotos petPhotos) : base(id)
+        private Pet(Guid id) : base(id)
+        {
+        }
+
+        private Pet(Guid id, Nickname nickname, PetType type, Description description, string breed, string color,
+            string healthInfo, Address address, double weight, double height, PhoneNumber ownerPhone, bool isCastrated,
+            DateOnly dateOfBirth, bool isVaccinated, Status status, Requisites requisites, DateTime createdAt,
+            Volunteer volunteer, PetPhotos petPhotos) : base(id)
         {
             Nickname = nickname;
             Type = type;
@@ -34,10 +36,6 @@ namespace PetFamily.Domain.Entities.Volunteers
             CreatedAt = createdAt;
             Volunteer = volunteer;
             PetPhotos = petPhotos;
-        }
-
-        private Pet(Guid id) : base(id)
-        {
         }
 
         public Nickname Nickname { get; private set; }
@@ -66,7 +64,7 @@ namespace PetFamily.Domain.Entities.Volunteers
 
         public bool IsVaccinated { get; private set; }
 
-        public PetStatus Status { get; private set; }
+        public Status Status { get; private set; }
 
         public Requisites Requisites { get; private set; }
 
@@ -77,11 +75,9 @@ namespace PetFamily.Domain.Entities.Volunteers
         public PetPhotos PetPhotos { get; private set; }
 
         public static Result<Pet, string> Create(Guid id, Nickname nickname, PetType type, Description description,
-            string breed, string color,
-            string healthInfo, Address address, double weight, double height, PhoneNumber ownerPhone, bool isCastrated,
-            DateOnly dateOfBirth,
-            bool isVaccinated, PetStatus status, Requisites requisites, DateTime createdAt, Volunteer volunteer,
-            PetPhotos petPhotos)
+            string breed, string color, string healthInfo, Address address, double weight, double height,
+            PhoneNumber ownerPhone, bool isCastrated, DateOnly dateOfBirth, bool isVaccinated, Status status,
+            Requisites requisites, DateTime createdAt, Guid volunteerId, Volunteer volunteer, PetPhotos petPhotos)
         {
             if (string.IsNullOrWhiteSpace(breed))
                 return "Breed can not be empty";
@@ -105,7 +101,7 @@ namespace PetFamily.Domain.Entities.Volunteers
                        $" be more than {Constants.MAX_MIDDLE_HIGH_LENGTH}";
 
             return new Pet(id, nickname, type, description, breed, color, healthInfo, address, weight, height,
-                ownerPhone, isCastrated, dateOfBirth, isVaccinated, status, requisites, createdAt, volunteer,
+                ownerPhone, isCastrated, dateOfBirth, isVaccinated, status, requisites, createdAt, volunteer, 
                 petPhotos);
         }
     }

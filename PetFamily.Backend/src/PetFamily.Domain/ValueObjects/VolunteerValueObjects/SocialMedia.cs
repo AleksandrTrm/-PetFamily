@@ -5,6 +5,10 @@ namespace PetFamily.Domain.ValueObjects.VolunteerValueObjects
 {
     public class SocialMedia
     {
+        private SocialMedia()
+        {
+        }
+        
         private SocialMedia(string title, string link)
         {
             Title = title;

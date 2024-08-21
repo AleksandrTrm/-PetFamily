@@ -4,6 +4,10 @@ namespace PetFamily.Domain.ValueObjects.VolunteerValueObjects;
 
 public record SocialMedias
 {
+    private SocialMedias()
+    {
+    }
+    
     private SocialMedias(List<SocialMedia> socialMedias)
     {
         Value = socialMedias;

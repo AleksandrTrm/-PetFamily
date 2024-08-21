@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.Domain.Entities;
+﻿using PetFamily.Domain.Shared;
+using Microsoft.EntityFrameworkCore;
 using PetFamily.Domain.Entities.Volunteers;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PetFamily.Domain.ValueObjects.PetValueObjects;
 
 namespace PetFamily.Infrastructure.Configurations;
 
@@ -11,26 +12,61 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
     {
         builder.HasKey(p => p.Id);
 
-        builder.Property(p => p.Nickname)
-            .IsRequired();
+        builder.ComplexProperty(p => p.Nickname, nb =>
+        {
+            nb.Property(n => n.Value)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH);
+        });
 
-        builder.Property(p => p.Type)
-            .IsRequired();
+        builder.ComplexProperty(p => p.Type, tb =>
+        {
+            tb.Property(t => t.Value)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_MIDDLE_HIGH_LENGTH);
+        });
 
-        builder.Property(p => p.Description)
-            .IsRequired();
+        builder.ComplexProperty(p => p.Description, db =>
+        {
+            db.Property(t => t.Value)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
+        });
 
         builder.Property(p => p.Breed)
-            .IsRequired();
+            .IsRequired()
+            .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH);
 
         builder.Property(p => p.Color)
-            .IsRequired();
+            .IsRequired()
+            .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
 
         builder.Property(p => p.HealthInfo)
-            .IsRequired();
+            .IsRequired()
+            .HasMaxLength(Constants.MAX_MIDDLE_HIGH_LENGTH);
 
-        builder.Property(p => p.Address)
-            .IsRequired();
+        builder.ComplexProperty(p => p.Address, ab =>
+        {
+            ab.Property(t => t.Oblast)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH);
+
+            ab.Property(t => t.District)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH);
+            
+            ab.Property(t => t.Settlement)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH);
+            
+            ab.Property(t => t.Street)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH);
+            
+            ab.Property(t => t.House)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH);
+        });
 
         builder.Property(p => p.Weight)
             .IsRequired();
@@ -38,8 +74,12 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.Property(p => p.Height)
             .IsRequired();
         
-        builder.Property(p => p.OwnerPhone)
-            .IsRequired();
+        builder.ComplexProperty(p => p.OwnerPhone, pb =>
+        {
+            pb.Property(t => t.Value)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_PHONE_NUMBER_LENGTH);
+        });
         
         builder.Property(p => p.IsCastrated)
             .IsRequired();
@@ -50,14 +90,10 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.Property(p => p.IsVaccinated)
             .IsRequired();
 
-        builder.ComplexProperty(p => p.Status, sb =>
-        {
-            sb.IsRequired();
-
-            sb.Property(s => s.Value)
-                .HasConversion<string>()
-                .IsRequired();
-        });
+        builder.Property(p => p.Status)
+            .HasConversion<string>(
+                s => s.ToString(),
+                s => (Status)Enum.Parse(typeof(Status), s));
 
         builder.OwnsOne(p => p.Requisites, rb =>
         {
@@ -68,12 +104,22 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 vb.Property(r => r.Title)
                     .IsRequired();
 
-                vb.Property(r => r.Description)
-                    .IsRequired();
+                vb.OwnsOne(r => r.Description, db =>
+                {
+                    db.Property(d => d.Value)
+                        .IsRequired()
+                        .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
+                });
             });
         });
 
         builder.Property(p => p.CreatedAt);
+
+        builder.HasOne(p => p.Volunteer)
+            .WithMany(v => v.Pets)
+            .HasForeignKey("volunteer_id")
+            .IsRequired()
+            .OnDelete(DeleteBehavior.NoAction);
         
         builder.OwnsOne(p => p.PetPhotos, ppb =>
         {

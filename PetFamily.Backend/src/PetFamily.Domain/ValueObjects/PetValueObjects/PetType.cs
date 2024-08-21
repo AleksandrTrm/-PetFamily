@@ -5,22 +5,26 @@ namespace PetFamily.Domain.ValueObjects.PetValueObjects;
 
 public record PetType
 {
-    private PetType(string animalType)
+    private PetType()
     {
-        Value = animalType;
+    }
+    
+    private PetType(string petType)
+    {
+        Value = petType;
     }
 
     public string Value { get; }
 
-    public static Result<PetType, string> Create(string animalType)
+    public static Result<PetType, string> Create(string petType)
     {
-        if (string.IsNullOrWhiteSpace(animalType))
+        if (string.IsNullOrWhiteSpace(petType))
             return "Animal type can not be empty";
 
-        if (animalType.Length > Constants.MAX_MIDDLE_HIGH_LENGTH)
+        if (petType.Length > Constants.MAX_MIDDLE_HIGH_LENGTH)
             return "The count of characters for " +
                    $"title animal type can not be more than {Constants.MAX_MIDDLE_HIGH_LENGTH}";
 
-        return new PetType(animalType);
+        return new PetType(petType);
     }
 }

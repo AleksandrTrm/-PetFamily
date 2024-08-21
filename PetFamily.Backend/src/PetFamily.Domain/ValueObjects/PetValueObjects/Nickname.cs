@@ -5,13 +5,17 @@ namespace PetFamily.Domain.ValueObjects.PetValueObjects;
 
 public record Nickname
 {
+    private Nickname()
+    {
+    }
+
     private Nickname(string nickname)
     {
         Value = nickname;
     }
 
     public string Value { get; }
-    
+
     public static Result<Nickname, string> Create(string nickname)
     {
         if (string.IsNullOrWhiteSpace(nickname))

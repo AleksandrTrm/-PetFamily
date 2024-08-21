@@ -4,6 +4,10 @@ namespace PetFamily.Domain.ValueObjects;
 
 public record Requisites
 {
+    private Requisites()
+    {
+    }
+    
     private Requisites(List<Requisite> requisites)
     {
         Value = requisites;

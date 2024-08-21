@@ -5,6 +5,10 @@ namespace PetFamily.Domain.ValueObjects
 {
     public record Requisite
     {
+        private Requisite()
+        {
+        }
+        
         private Requisite(string title, Description description)
         {
             Title = title;

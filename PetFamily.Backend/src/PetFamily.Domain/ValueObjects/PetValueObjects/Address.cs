@@ -5,6 +5,10 @@ namespace PetFamily.Domain.ValueObjects.PetValueObjects;
 
 public record Address
 {
+    private Address()
+    {
+    }
+    
     private Address(string oblast, string district, string settlement, string street, string house)
     {
         Oblast = oblast;

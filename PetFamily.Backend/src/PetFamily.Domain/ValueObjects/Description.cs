@@ -3,8 +3,11 @@ using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.ValueObjects;
 
-public class Description
+public record Description
 {
+    //ef core
+    private Description() { }
+    
     private Description(string description)
     {
         Value = description;

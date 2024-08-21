@@ -4,6 +4,10 @@ namespace PetFamily.Domain.ValueObjects.PetValueObjects;
 
 public record PetPhotos
 {
+    private PetPhotos()
+    {
+    }
+    
     private PetPhotos(List<PetPhoto> petPhotos)
     {
         Value = petPhotos;

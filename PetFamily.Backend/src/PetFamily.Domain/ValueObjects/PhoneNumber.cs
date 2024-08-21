@@ -6,6 +6,10 @@ namespace PetFamily.Domain.ValueObjects;
 
 public record PhoneNumber
 {
+    private PhoneNumber()
+    {
+    }
+    
     private PhoneNumber(string phoneNumber)
     {
         Value = phoneNumber;

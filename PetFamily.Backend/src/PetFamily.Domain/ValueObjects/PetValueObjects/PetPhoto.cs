@@ -4,6 +4,10 @@ namespace PetFamily.Domain.ValueObjects.PetValueObjects;
 
 public record PetPhoto
 {
+    private PetPhoto()
+    {
+    }
+    
     private PetPhoto(string path, bool isMain)
     {
         Path = path;
