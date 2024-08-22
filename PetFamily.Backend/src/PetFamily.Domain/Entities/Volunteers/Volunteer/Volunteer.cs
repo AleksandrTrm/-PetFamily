@@ -1,21 +1,21 @@
-﻿using PetFamily.Domain.Shared;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Entities.Volunteers.Pets;
 using PetFamily.Domain.ValueObjects;
 using PetFamily.Domain.ValueObjects.VolunteerValueObjects;
-using Entity = PetFamily.Domain.Shared.Entity;
+using Entity = PetFamily.Domain.Shared.Entity<PetFamily.Domain.Entities.Volunteers.Volunteer.VolunteerId>;
 
-namespace PetFamily.Domain.Entities.Volunteers
+namespace PetFamily.Domain.Entities.Volunteers.Volunteer
 {
     public class Volunteer : Entity
     {
         public const int MAX_EXPERIENCE_YEARS = 80;
 
         //ef core
-        private Volunteer(Guid id) : base(id)
+        private Volunteer(VolunteerId id) : base(id)
         {
         }
 
-        public Volunteer(Guid id, FullName fullFullName, Description description, int experience,
+        public Volunteer(VolunteerId id, FullName fullFullName, Description description, int experience,
             int countOfPetsThatFoundHome, int countOfPetsThatLookingForHome, int countOfPetsThatGetTreatment,
             PhoneNumber phoneNumber, SocialMedias socialMedias, Requisites requisites) : base(id)
         {
@@ -50,7 +50,7 @@ namespace PetFamily.Domain.Entities.Volunteers
 
         public List<Pet> Pets { get; private set; } = [];
 
-        public static Result<Volunteer, string> Create(Guid id, FullName fullFullName, Description description, int experience,
+        public static Result<Volunteer, string> Create(VolunteerId id, FullName fullFullName, Description description, int experience,
             int countOfPetsThatFoundHome, int countOfPetsThatLookingForHome, int countOfPetsThatGetTreatment,
             PhoneNumber phoneNumber, SocialMedias socialMedias, Requisites requisites)
         {

@@ -1,0 +1,28 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PetFamily.Domain.Entities.SpeciesAggregate.Species;
+using PetFamily.Domain.Shared;
+
+namespace PetFamily.Infrastructure.Configurations;
+
+public class SpeciesConfiguration : IEntityTypeConfiguration<Species>
+{
+    public void Configure(EntityTypeBuilder<Species> builder)
+    {
+        builder.HasKey(s => s.Id);
+        
+        builder.Property(s => s.Id)
+            .HasColumnName("id")
+            .HasConversion(
+                s => s.Value,
+                v => SpeciesId.Create(v));
+        
+        builder.Property(s => s.Value)
+            .HasMaxLength(Constants.MAX_MIDDLE_HIGH_LENGTH)
+            .IsRequired();
+        
+        builder.HasMany(s => s.Breeds)
+            .WithOne()
+            .IsRequired();
+    }
+}

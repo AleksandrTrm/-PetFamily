@@ -1,8 +1,10 @@
 ﻿using PetFamily.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
-using PetFamily.Domain.Entities.Volunteers;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.Domain.ValueObjects.PetValueObjects;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PetFamily.Domain.Entities.SpeciesAggregate.Breeds;
+using PetFamily.Domain.Entities.SpeciesAggregate.Species;
+using PetFamily.Domain.Entities.Volunteers.Pets;
 
 namespace PetFamily.Infrastructure.Configurations;
 
@@ -12,6 +14,12 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
     {
         builder.HasKey(p => p.Id);
 
+        builder.Property(p => p.Id)
+            .HasConversion(
+                p => p.Value,
+                v => PetId.Create(v))
+            .IsRequired();
+        
         builder.ComplexProperty(p => p.Nickname, nb =>
         {
             nb.Property(n => n.Value)
@@ -19,11 +27,19 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH);
         });
 
-        builder.ComplexProperty(p => p.Type, tb =>
+        builder.ComplexProperty(p => p.SpeciesBreed, sbb =>
         {
-            tb.Property(t => t.Value)
-                .IsRequired()
-                .HasMaxLength(Constants.MAX_MIDDLE_HIGH_LENGTH);
+            sbb.Property(s => s.SpeciesId)
+                .HasConversion(
+                    s => s.Value,
+                    v => SpeciesId.Create(v))
+                .IsRequired();
+            
+            sbb.Property(b => b.BreedId)
+                .HasConversion(
+                    b => b.Value,
+                    v => BreedId.Create(v))
+                .IsRequired();
         });
 
         builder.ComplexProperty(p => p.Description, db =>
@@ -32,10 +48,6 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .IsRequired()
                 .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
         });
-
-        builder.Property(p => p.Breed)
-            .IsRequired()
-            .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH);
 
         builder.Property(p => p.Color)
             .IsRequired()
