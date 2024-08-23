@@ -5,6 +5,7 @@ namespace PetFamily.Domain.ValueObjects.PetValueObjects;
 
 public record Nickname
 {
+    //ef core
     private Nickname()
     {
     }

@@ -5,6 +5,7 @@ namespace PetFamily.Domain.ValueObjects
 {
     public record Requisite
     {
+        //ef core
         private Requisite()
         {
         }

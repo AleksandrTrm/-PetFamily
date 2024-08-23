@@ -6,6 +6,7 @@ namespace PetFamily.Domain.ValueObjects;
 
 public record PhoneNumber
 {
+    //ef core
     private PhoneNumber()
     {
     }

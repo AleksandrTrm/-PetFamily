@@ -5,8 +5,10 @@ namespace PetFamily.Domain.ValueObjects;
 
 public record Description
 {
-    //ef core
-    private Description() { }
+    //ef core (без него не работает)
+    private Description()
+    {
+    }
     
     private Description(string description)
     {

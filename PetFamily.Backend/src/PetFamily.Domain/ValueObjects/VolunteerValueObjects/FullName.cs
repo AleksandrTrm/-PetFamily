@@ -5,6 +5,7 @@ namespace PetFamily.Domain.ValueObjects.VolunteerValueObjects;
 
 public class FullName
 {
+    //ef core
     private FullName()
     {
     }

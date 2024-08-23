@@ -4,10 +4,11 @@ namespace PetFamily.Domain.ValueObjects;
 
 public record Requisites
 {
+    //ef core
     private Requisites()
     {
     }
-
+    
     public Requisites(List<Requisite> requisites)
     {
         Value = requisites;

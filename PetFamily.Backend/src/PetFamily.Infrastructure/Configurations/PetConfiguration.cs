@@ -12,6 +12,8 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
 {
     public void Configure(EntityTypeBuilder<Pet> builder)
     {
+        builder.ToTable("pets");
+        
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.Id)
@@ -36,9 +38,6 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .IsRequired();
             
             sbb.Property(b => b.BreedId)
-                .HasConversion(
-                    b => b.Value,
-                    v => BreedId.Create(v))
                 .IsRequired();
         });
 

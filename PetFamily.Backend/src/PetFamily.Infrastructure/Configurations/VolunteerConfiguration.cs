@@ -10,6 +10,8 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 {
     public void Configure(EntityTypeBuilder<Volunteer> builder)
     {
+        builder.ToTable("volunteers");
+        
         builder.HasKey(v => v.Id);
 
         builder.Property(v => v.Id)

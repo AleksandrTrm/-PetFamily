@@ -1,15 +1,11 @@
-﻿using PetFamily.Domain.Entities.SpeciesAggregate.Breeds;
+﻿using CSharpFunctionalExtensions;
 using PetFamily.Domain.Entities.SpeciesAggregate.Species;
 
 namespace PetFamily.Domain.ValueObjects.PetValueObjects;
 
 public record SpeciesBreed
 {
-    private SpeciesBreed()
-    {
-    }
-
-    public SpeciesBreed(SpeciesId speciesId, BreedId breedId)
+    private SpeciesBreed(SpeciesId speciesId, Guid breedId)
     {
         SpeciesId = speciesId;
         BreedId = breedId;
@@ -17,5 +13,10 @@ public record SpeciesBreed
 
     public SpeciesId SpeciesId { get; private set; }
 
-    public BreedId BreedId { get; private set; }
+    public Guid BreedId { get; private set; }
+
+    public static Result<SpeciesBreed> Create(SpeciesId speciesId, Guid breedId)
+    {
+        return new SpeciesBreed(speciesId, breedId);
+    }
 }

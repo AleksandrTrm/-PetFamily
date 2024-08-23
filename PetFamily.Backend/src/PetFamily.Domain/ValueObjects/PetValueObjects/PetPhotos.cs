@@ -4,6 +4,7 @@ namespace PetFamily.Domain.ValueObjects.PetValueObjects;
 
 public record PetPhotos
 {
+    //ef core
     private PetPhotos()
     {
     }

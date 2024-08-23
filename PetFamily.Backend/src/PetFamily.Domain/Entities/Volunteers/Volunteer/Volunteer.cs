@@ -15,9 +15,17 @@ namespace PetFamily.Domain.Entities.Volunteers.Volunteer
         {
         }
 
-        public Volunteer(VolunteerId id, FullName fullFullName, Description description, int experience,
-            int countOfPetsThatFoundHome, int countOfPetsThatLookingForHome, int countOfPetsThatGetTreatment,
-            PhoneNumber phoneNumber, SocialMedias socialMedias, Requisites requisites) : base(id)
+        public Volunteer(
+            VolunteerId id, 
+            FullName fullFullName, 
+            Description description, 
+            int experience,
+            int countOfPetsThatFoundHome,
+            int countOfPetsThatLookingForHome, 
+            int countOfPetsThatGetTreatment,
+            PhoneNumber phoneNumber, 
+            SocialMedias socialMedias, 
+            Requisites requisites) : base(id)
         {
             FullFullName = fullFullName;
             Description = description;
@@ -50,9 +58,17 @@ namespace PetFamily.Domain.Entities.Volunteers.Volunteer
 
         public List<Pet> Pets { get; private set; } = [];
 
-        public static Result<Volunteer, string> Create(VolunteerId id, FullName fullFullName, Description description, int experience,
-            int countOfPetsThatFoundHome, int countOfPetsThatLookingForHome, int countOfPetsThatGetTreatment,
-            PhoneNumber phoneNumber, SocialMedias socialMedias, Requisites requisites)
+        public static Result<Volunteer, string> Create(
+            VolunteerId id, 
+            FullName fullFullName, 
+            Description description, 
+            int experience,
+            int countOfPetsThatFoundHome, 
+            int countOfPetsThatLookingForHome,
+            int countOfPetsThatGetTreatment,
+            PhoneNumber phoneNumber, 
+            SocialMedias socialMedias, 
+            Requisites requisites)
         {
             if (experience is < 0 or > MAX_EXPERIENCE_YEARS)
                 return $"Experience can not be less than zero and more than {MAX_EXPERIENCE_YEARS}";
