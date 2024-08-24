@@ -9,9 +9,9 @@ public record SocialMedias
     {
     }
     
-    public SocialMedias(List<SocialMedia> socialMedias)
+    public SocialMedias(List<SocialMedia> value)
     {
-        Value = socialMedias;
+        Value = value;
     }
     
     public List<SocialMedia> Value { get; }

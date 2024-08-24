@@ -1,10 +1,11 @@
 ﻿using PetFamily.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+using PetFamily.Domain.Entities.Volunteers.Pets;
 using PetFamily.Domain.ValueObjects.PetValueObjects;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.Domain.Entities.SpeciesAggregate.Breeds;
 using PetFamily.Domain.Entities.SpeciesAggregate.Species;
-using PetFamily.Domain.Entities.Volunteers.Pets;
+using PetFamily.Domain.ValueObjects;
 
 namespace PetFamily.Infrastructure.Configurations;
 
@@ -113,7 +114,8 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             rb.OwnsMany(r => r.Value, vb =>
             {
                 vb.Property(r => r.Title)
-                    .IsRequired();
+                    .IsRequired()
+                    .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
 
                 vb.OwnsOne(r => r.Description, db =>
                 {

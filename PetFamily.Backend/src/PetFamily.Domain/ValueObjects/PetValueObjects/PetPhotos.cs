@@ -9,9 +9,9 @@ public record PetPhotos
     {
     }
     
-    private PetPhotos(List<PetPhoto> petPhotos)
+    private PetPhotos(List<PetPhoto> value)
     {
-        Value = petPhotos;
+        Value = value;
     }
     
     public List<PetPhoto> Value { get; }

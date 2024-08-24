@@ -12,10 +12,24 @@ namespace PetFamily.Domain.Entities.Volunteers.Pets
         {
         }
 
-        private Pet(PetId id, Nickname nickname, SpeciesBreed speciesBreed, Description description, string breed,
-            string color, string healthInfo, Address address, double weight, double height, PhoneNumber ownerPhone, 
-            bool isCastrated, DateOnly dateOfBirth, bool isVaccinated, Status status, Requisites requisites, 
-            DateTime createdAt, PetPhotos petPhotos) : base(id)
+        private Pet(PetId id, 
+            Nickname nickname, 
+            SpeciesBreed speciesBreed, 
+            Description description, 
+            string breed,
+            string color, 
+            string healthInfo, 
+            Address address, 
+            double weight, 
+            double height, 
+            PhoneNumber ownerPhone, 
+            bool isCastrated, 
+            DateOnly dateOfBirth, 
+            bool isVaccinated, 
+            Status status, 
+            Requisites requisites, 
+            DateTime createdAt, 
+            PetPhotos petPhotos) : base(id)
         {
             Nickname = nickname;
             Description = description;
@@ -67,11 +81,25 @@ namespace PetFamily.Domain.Entities.Volunteers.Pets
 
         public PetPhotos PetPhotos { get; private set; }
 
-        public static Result<Pet, string> Create(PetId id, Nickname nickname, SpeciesBreed speciesBreed,
+        public static Result<Pet, string> Create(PetId id, 
+            Nickname nickname, 
+            SpeciesBreed speciesBreed,
             Description description,
-            string breed, string color, string healthInfo, Address address, double weight, double height,
-            PhoneNumber ownerPhone, bool isCastrated, DateOnly dateOfBirth, bool isVaccinated, Status status,
-            Requisites requisites, DateTime createdAt, Guid volunteerId, PetPhotos petPhotos)
+            string breed, 
+            string color, 
+            string healthInfo, 
+            Address address, 
+            double weight, 
+            double height,
+            PhoneNumber ownerPhone, 
+            bool isCastrated, 
+            DateOnly dateOfBirth, 
+            bool isVaccinated, 
+            Status status,
+            Requisites requisites, 
+            DateTime createdAt, 
+            Guid volunteerId, 
+            PetPhotos petPhotos)
         {
             if (string.IsNullOrWhiteSpace(breed))
                 return "Breed can not be empty";

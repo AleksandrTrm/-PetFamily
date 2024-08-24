@@ -5,14 +5,9 @@ namespace PetFamily.Domain.ValueObjects.PetValueObjects;
 
 public record Nickname
 {
-    //ef core
-    private Nickname()
+    private Nickname(string value)
     {
-    }
-
-    private Nickname(string nickname)
-    {
-        Value = nickname;
+        Value = value;
     }
 
     public string Value { get; }

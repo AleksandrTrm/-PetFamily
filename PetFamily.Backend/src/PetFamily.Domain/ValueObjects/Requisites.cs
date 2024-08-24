@@ -9,10 +9,18 @@ public record Requisites
     {
     }
     
-    public Requisites(List<Requisite> requisites)
+    private Requisites(List<Requisite> value)
     {
-        Value = requisites;
+        Value = value;
     }
     
     public List<Requisite> Value { get; }
+
+    public static Result<Requisites, string> Create(List<Requisite> value)
+    {
+        if (value.Count < 1)
+            return "User must have minimum one requisite";
+
+        return new Requisites(value);
+    }
 }
