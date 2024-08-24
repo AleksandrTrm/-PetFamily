@@ -1,8 +1,11 @@
 ﻿using PetFamily.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
-using PetFamily.Domain.Entities.Volunteers;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Text.Json.Serialization;
+using PetFamily.Domain.Entities.Volunteers.Pets;
 using PetFamily.Domain.ValueObjects.PetValueObjects;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PetFamily.Domain.Entities.SpeciesAggregate.Species;
+using PetFamily.Domain.ValueObjects;
 
 namespace PetFamily.Infrastructure.Configurations;
 
@@ -10,8 +13,16 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
 {
     public void Configure(EntityTypeBuilder<Pet> builder)
     {
+        builder.ToTable("pets");
+        
         builder.HasKey(p => p.Id);
 
+        builder.Property(p => p.Id)
+            .HasConversion(
+                p => p.Value,
+                v => PetId.Create(v))
+            .IsRequired();
+        
         builder.ComplexProperty(p => p.Nickname, nb =>
         {
             nb.Property(n => n.Value)
@@ -19,11 +30,16 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH);
         });
 
-        builder.ComplexProperty(p => p.Type, tb =>
+        builder.ComplexProperty(p => p.SpeciesBreed, sbb =>
         {
-            tb.Property(t => t.Value)
-                .IsRequired()
-                .HasMaxLength(Constants.MAX_MIDDLE_HIGH_LENGTH);
+            sbb.Property(s => s.SpeciesId)
+                .HasConversion(
+                    s => s.Value,
+                    v => SpeciesId.Create(v))
+                .IsRequired();
+            
+            sbb.Property(b => b.BreedId)
+                .IsRequired();
         });
 
         builder.ComplexProperty(p => p.Description, db =>
@@ -32,10 +48,6 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .IsRequired()
                 .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
         });
-
-        builder.Property(p => p.Breed)
-            .IsRequired()
-            .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH);
 
         builder.Property(p => p.Color)
             .IsRequired()
@@ -102,7 +114,8 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             rb.OwnsMany(r => r.Value, vb =>
             {
                 vb.Property(r => r.Title)
-                    .IsRequired();
+                    .IsRequired()
+                    .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
 
                 vb.OwnsOne(r => r.Description, db =>
                 {

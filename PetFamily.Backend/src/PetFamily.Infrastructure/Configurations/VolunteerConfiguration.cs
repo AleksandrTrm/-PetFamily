@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PetFamily.Domain.Entities.Volunteers;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PetFamily.Domain.Entities.Volunteers.Volunteer;
 
 namespace PetFamily.Infrastructure.Configurations;
 
@@ -9,8 +10,16 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 {
     public void Configure(EntityTypeBuilder<Volunteer> builder)
     {
+        builder.ToTable("volunteers");
+        
         builder.HasKey(v => v.Id);
 
+        builder.Property(v => v.Id)
+            .HasConversion(
+                v => v.Value,
+                v => VolunteerId.Create(v))
+            .IsRequired();
+        
         builder.ComplexProperty(v => v.FullFullName, nb =>
         {
             nb.Property(n => n.FirstName)

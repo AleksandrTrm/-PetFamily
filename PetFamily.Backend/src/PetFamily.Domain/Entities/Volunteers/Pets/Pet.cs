@@ -2,26 +2,38 @@
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.ValueObjects;
 using PetFamily.Domain.ValueObjects.PetValueObjects;
-using Entity = PetFamily.Domain.Shared.Entity;
 
-namespace PetFamily.Domain.Entities.Volunteers
+namespace PetFamily.Domain.Entities.Volunteers.Pets
 {
-    public class Pet : Entity
+    public class Pet : Shared.Entity<PetId>
     {
         //ef core
-        private Pet(Guid id) : base(id)
+        private Pet(PetId id) : base(id)
         {
         }
 
-        private Pet(Guid id, Nickname nickname, PetType type, Description description, string breed, string color,
-            string healthInfo, Address address, double weight, double height, PhoneNumber ownerPhone, bool isCastrated,
-            DateOnly dateOfBirth, bool isVaccinated, Status status, Requisites requisites, DateTime createdAt,
+        private Pet(PetId id, 
+            Nickname nickname, 
+            SpeciesBreed speciesBreed, 
+            Description description, 
+            string breed,
+            string color, 
+            string healthInfo, 
+            Address address, 
+            double weight, 
+            double height, 
+            PhoneNumber ownerPhone, 
+            bool isCastrated, 
+            DateOnly dateOfBirth, 
+            bool isVaccinated, 
+            Status status, 
+            Requisites requisites, 
+            DateTime createdAt, 
             PetPhotos petPhotos) : base(id)
         {
             Nickname = nickname;
-            Type = type;
             Description = description;
-            Breed = breed;
+            SpeciesBreed = speciesBreed;
             Color = color;
             HealthInfo = healthInfo;
             Address = address;
@@ -39,11 +51,9 @@ namespace PetFamily.Domain.Entities.Volunteers
 
         public Nickname Nickname { get; private set; }
 
-        public PetType Type { get; private set; }
+        public SpeciesBreed SpeciesBreed { get; private set; }
 
         public Description Description { get; private set; }
-
-        public string Breed { get; private set; }
 
         public string Color { get; private set; }
 
@@ -71,10 +81,25 @@ namespace PetFamily.Domain.Entities.Volunteers
 
         public PetPhotos PetPhotos { get; private set; }
 
-        public static Result<Pet, string> Create(Guid id, Nickname nickname, PetType type, Description description,
-            string breed, string color, string healthInfo, Address address, double weight, double height,
-            PhoneNumber ownerPhone, bool isCastrated, DateOnly dateOfBirth, bool isVaccinated, Status status,
-            Requisites requisites, DateTime createdAt, Guid volunteerId, PetPhotos petPhotos)
+        public static Result<Pet, string> Create(PetId id, 
+            Nickname nickname, 
+            SpeciesBreed speciesBreed,
+            Description description,
+            string breed, 
+            string color, 
+            string healthInfo, 
+            Address address, 
+            double weight, 
+            double height,
+            PhoneNumber ownerPhone, 
+            bool isCastrated, 
+            DateOnly dateOfBirth, 
+            bool isVaccinated, 
+            Status status,
+            Requisites requisites, 
+            DateTime createdAt, 
+            Guid volunteerId, 
+            PetPhotos petPhotos)
         {
             if (string.IsNullOrWhiteSpace(breed))
                 return "Breed can not be empty";
@@ -97,7 +122,7 @@ namespace PetFamily.Domain.Entities.Volunteers
                 return "The count of characters for health info can not" +
                        $" be more than {Constants.MAX_MIDDLE_HIGH_LENGTH}";
 
-            return new Pet(id, nickname, type, description, breed, color, healthInfo, address, weight, height,
+            return new Pet(id, nickname, speciesBreed, description, breed, color, healthInfo, address, weight, height,
                 ownerPhone, isCastrated, dateOfBirth, isVaccinated, status, requisites, createdAt, petPhotos);
         }
     }

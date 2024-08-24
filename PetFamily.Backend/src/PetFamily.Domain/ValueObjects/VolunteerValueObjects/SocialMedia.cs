@@ -5,6 +5,7 @@ namespace PetFamily.Domain.ValueObjects.VolunteerValueObjects
 {
     public class SocialMedia
     {
+        //ef core
         private SocialMedia()
         {
         }

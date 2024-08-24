@@ -5,10 +5,6 @@ namespace PetFamily.Domain.ValueObjects.VolunteerValueObjects;
 
 public class FullName
 {
-    private FullName()
-    {
-    }
-    
     private FullName(string firstName, string lastName, string? patronymic = null)
     {
         FirstName = firstName;

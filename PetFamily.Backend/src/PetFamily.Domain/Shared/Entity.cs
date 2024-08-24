@@ -1,8 +1,8 @@
 ﻿namespace PetFamily.Domain.Shared;
 
-public abstract class Entity
+public abstract class Entity<TId> where TId : notnull
 {
-    public Guid Id { get; private set; }
+    public TId Id { get; private set; }
     
-    protected Entity(Guid id) { }
+    protected Entity(TId id) { }    
 }
