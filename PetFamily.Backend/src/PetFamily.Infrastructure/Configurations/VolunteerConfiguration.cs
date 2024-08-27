@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PetFamily.Domain.Entities.Volunteers;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.Domain.Entities.Volunteers.Volunteer;
+using PetFamily.Domain.ValueObjects;
 
 namespace PetFamily.Infrastructure.Configurations;
 
@@ -59,7 +60,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         {
             pb.Property(t => t.Value)
                 .IsRequired()
-                .HasMaxLength(Constants.MAX_PHONE_NUMBER_LENGTH);
+                .HasMaxLength(PhoneNumber.MAX_PHONE_NUMBER_LENGTH);
         });
 
         builder.OwnsOne(v => v.SocialMedias, sb =>
