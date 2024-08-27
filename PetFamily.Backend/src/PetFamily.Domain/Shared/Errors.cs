@@ -23,30 +23,18 @@ public static class Errors
             var label = name == null ? "" : $" {name}";
             return Error.Validation("invalid.value.length", $"Value{name} has max length - {maxLength}");
         }
-        
+
         public static Error InvalidCount(int min, string? name = null, int? max = null)
         {
             var label = name == null ? "" : " 'name'";
             var forMaxLabel = max == null ? "" : $" and more than {max}";
             return Error.Validation("out.of.range", $"Value{name} can not be less than {min}{forMaxLabel}");
         }
-    }
 
-    public static class Volunteer
-    {
-        public static Error InvalidValue(string? name = null)
+        public static Error LessThenZero(string? name = null)
         {
             var label = name == null ? "" : $" '{name}'";
             return Error.Validation("value.less.than.zero", $"Value{name} can not be less than zero");
-        }
-    }
-
-    public static class Address
-    {
-        public static Error InvalidValue(string? name = null)
-        {
-            var label = name == null ? "" : $" '{name}'";
-            return Error.Validation("value.contains.non.digits", $"Value{name} can not be less than zero");
         }
     }
 }

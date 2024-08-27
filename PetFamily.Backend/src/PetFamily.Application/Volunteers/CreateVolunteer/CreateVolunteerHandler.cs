@@ -22,26 +22,18 @@ public class CreateVolunteerHandler
 
         var fullNameDto = request.FullName;
         var fullNameResult = FullName.Create(fullNameDto.Name, fullNameDto.Surname, fullNameDto.Patronymic);
-        if (fullNameResult.IsFailure)
-            return fullNameResult.Error;
 
         var descriptionDto = request.Description;
         var descriptionResult = Description.Create(descriptionDto.Description);
-        if (descriptionResult.IsFailure)
-            return descriptionResult.Error;
 
         var phoneNumberDto = request.PhoneNumber;
         var phoneNumberResult = PhoneNumber.Create(phoneNumberDto.PhoneNumber);
-        if (phoneNumberResult.IsFailure)
-            return phoneNumberResult.Error;
 
         var socialMediasDto = request.SocialMedias;
         List<SocialMedia> socialMediasList = [];
         foreach (var socialMediaDto in socialMediasDto.SocialMedias)
         {
             var socialMediaResult = SocialMedia.Create(socialMediaDto.Title, socialMediaDto.Link);
-            if (socialMediaResult.IsFailure)
-                return socialMediaResult.Error;
 
             socialMediasList.Add(socialMediaResult.Value);
         }
@@ -53,12 +45,8 @@ public class CreateVolunteerHandler
         foreach (var requisiteDto in requisitesDto.Requisites)
         {
             var requisiteDescriptionResult = Description.Create(requisiteDto.Description.Description);
-            if (requisiteDescriptionResult.IsFailure)
-                return requisiteDescriptionResult.Error;
 
             var requisiteResult = Requisite.Create(requisiteDto.Title, requisiteDescriptionResult.Value);
-            if (requisiteResult.IsFailure)
-                return requisiteResult.Error;
 
             requisitesList.Add(requisiteResult.Value);
         }
@@ -68,8 +56,6 @@ public class CreateVolunteerHandler
         var volunteerToCreate = Volunteer.Create(id, fullNameResult.Value, descriptionResult.Value, 
             request.Experience, request.CountOfPetsThatFoundHome, request.CountOfPetsThatLookingForHome, 
             request.CountOfPetsThatGetTreatment, phoneNumberResult.Value, socialMedias, requisites.Value);
-        if (volunteerToCreate.IsFailure)
-            return volunteerToCreate.Error;
 
         await _repository.Create(volunteerToCreate.Value, cancellationToken);
 

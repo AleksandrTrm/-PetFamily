@@ -9,7 +9,7 @@ namespace PetFamily.Domain.Entities.Volunteers.Volunteer
 {
     public class Volunteer : Entity
     {
-        private List<Pet> _pets; 
+        private readonly List<Pet> _pets; 
             
         public const int MAX_EXPERIENCE_YEARS = 80;
         
@@ -77,13 +77,13 @@ namespace PetFamily.Domain.Entities.Volunteers.Volunteer
                 return Errors.General.InvalidLength(MAX_EXPERIENCE_YEARS, nameof(experience));
 
             if (countOfPetsThatFoundHome < 0)
-                return Errors.Volunteer.InvalidValue(nameof(CountOfPetsThatFoundHome));
+                return Errors.General.LessThenZero(nameof(CountOfPetsThatFoundHome));
 
             if (countOfPetsThatLookingForHome < 0)
-                return Errors.Volunteer.InvalidValue(nameof(CountOfPetsThatLookingForHome));
+                return Errors.General.LessThenZero(nameof(CountOfPetsThatLookingForHome));
 
             if (countOfPetsThatGetTreatment < 0)
-                return Errors.Volunteer.InvalidValue(nameof(CountOfPetsThatGetTreatment));
+                return Errors.General.LessThenZero(nameof(CountOfPetsThatGetTreatment));
 
             return new Volunteer(id, fullFullName, description, experience, countOfPetsThatFoundHome,
                 countOfPetsThatLookingForHome, countOfPetsThatGetTreatment, phoneNumber, socialMedias, requisites);

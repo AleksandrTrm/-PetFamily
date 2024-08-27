@@ -60,10 +60,6 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
 
         builder.ComplexProperty(p => p.Address, ab =>
         {
-            ab.Property(t => t.Oblast)
-                .IsRequired()
-                .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH);
-
             ab.Property(t => t.District)
                 .IsRequired()
                 .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH);

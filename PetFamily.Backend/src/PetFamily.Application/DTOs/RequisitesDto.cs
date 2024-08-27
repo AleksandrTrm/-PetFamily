@@ -1,3 +1,3 @@
 ﻿namespace PetFamily.Application.DTOs;
 
-public record RequisitesDto(List<RequisiteDto> Requisites);
+public record RequisitesDto(IEnumerable<RequisiteDto> Requisites);
