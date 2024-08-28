@@ -1,9 +1,8 @@
 ﻿using PetFamily.Domain.Shared;
-using Microsoft.EntityFrameworkCore;
-using PetFamily.Domain.Entities.Volunteers;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.Domain.Entities.Volunteers.Volunteer;
 using PetFamily.Domain.ValueObjects;
+using Microsoft.EntityFrameworkCore;
+using PetFamily.Domain.Entities.Volunteers.Volunteer;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace PetFamily.Infrastructure.Configurations;
 
@@ -45,15 +44,6 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         });
 
         builder.Property(v => v.Experience)
-            .IsRequired();
-
-        builder.Property(v => v.CountOfPetsThatFoundHome)
-            .IsRequired();
-        
-        builder.Property(v => v.CountOfPetsThatLookingForHome)
-            .IsRequired();
-        
-        builder.Property(v => v.CountOfPetsThatGetTreatment)
             .IsRequired();
         
         builder.ComplexProperty(p => p.PhoneNumber, pb =>
