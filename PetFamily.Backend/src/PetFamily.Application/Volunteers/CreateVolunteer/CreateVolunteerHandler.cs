@@ -1,7 +1,7 @@
-﻿using CSharpFunctionalExtensions;
-using PetFamily.Domain.Entities.Volunteers.Volunteer;
-using PetFamily.Domain.Shared;
+﻿using PetFamily.Domain.Shared;
+using CSharpFunctionalExtensions;
 using PetFamily.Domain.ValueObjects;
+using PetFamily.Domain.Entities.Volunteers.Volunteer;
 using PetFamily.Domain.ValueObjects.VolunteerValueObjects;
 
 namespace PetFamily.Application.Volunteers.CreateVolunteer;
@@ -54,8 +54,7 @@ public class CreateVolunteerHandler
         var requisites = Requisites.Create(requisitesList);
 
         var volunteerToCreate = Volunteer.Create(id, fullNameResult.Value, descriptionResult.Value, 
-            request.Experience, request.CountOfPetsThatFoundHome, request.CountOfPetsThatLookingForHome, 
-            request.CountOfPetsThatGetTreatment, phoneNumberResult.Value, socialMedias, requisites.Value);
+            request.Experience, phoneNumberResult.Value, socialMedias, requisites.Value);
 
         await _repository.Create(volunteerToCreate.Value, cancellationToken);
 
