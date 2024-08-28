@@ -21,14 +21,13 @@ public class Species : Entity
     
     public string Value { get; }
 
-    public static Result<Species, string> Create(SpeciesId id, string species)
+    public static Result<Species, Error> Create(SpeciesId id, string species)
     {
         if (string.IsNullOrWhiteSpace(species))
-            return "Animal species can not be empty";
+            return Errors.General.InvalidValue(nameof(species));
 
         if (species.Length > Constants.MAX_MIDDLE_HIGH_LENGTH)
-            return "The count of characters for " +
-                   $"title species type can not be more than {Constants.MAX_MIDDLE_HIGH_LENGTH}";
+            return Errors.General.InvalidLength(Constants.MAX_MIDDLE_HIGH_LENGTH, nameof(species));
 
         return new Species(id, species);
     }

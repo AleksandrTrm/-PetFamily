@@ -20,21 +20,19 @@ namespace PetFamily.Domain.ValueObjects.VolunteerValueObjects
 
         public string Link { get; }
 
-        public static Result<SocialMedia, string> Create(string title, string link)
+        public static Result<SocialMedia, Error> Create(string title, string link)
         {
             if (string.IsNullOrWhiteSpace(title))
-                return "Title can not be empty";
+                return Errors.General.InvalidValue(nameof(title));
 
             if (title.Length > Constants.MAX_MIDDLE_TEXT_LENGTH)
-                return "The count of characters for title can not" +
-                       $" be more than {Constants.MAX_MIDDLE_TEXT_LENGTH}";
+                return Errors.General.InvalidLength(Constants.MAX_MIDDLE_TEXT_LENGTH, nameof(title));
             
             if (string.IsNullOrWhiteSpace(link))
-                return "Link can not be empty";
+                return Errors.General.InvalidValue(nameof(link));
 
             if (link.Length > Constants.MAX_MIDDLE_HIGH_LENGTH)
-                return "The count of characters for link can not" +
-                       $" be more than {Constants.MAX_MIDDLE_HIGH_LENGTH}";
+                return Errors.General.InvalidLength(Constants.MAX_MIDDLE_TEXT_LENGTH, nameof(link));
 
             return new SocialMedia(title, link);
         }

@@ -1,4 +1,5 @@
-﻿using PetFamily.Domain.Shared;
+﻿using System.Text.RegularExpressions;
+using PetFamily.Domain.Shared;
 using CSharpFunctionalExtensions;
 
 namespace PetFamily.Domain.ValueObjects.PetValueObjects;
@@ -12,14 +13,13 @@ public record Nickname
 
     public string Value { get; }
 
-    public static Result<Nickname, string> Create(string nickname)
+    public static Result<Nickname, Error> Create(string nickname)
     {
         if (string.IsNullOrWhiteSpace(nickname))
-            return "Pet nickname can not be empty";
+            return Errors.General.InvalidValue(nameof(nickname));
 
         if (nickname.Length > Constants.MAX_MIDDLE_TEXT_LENGTH)
-            return "The count of characters for pet nickname can not" +
-                   $" be more than {Constants.MAX_MIDDLE_TEXT_LENGTH}";
+            return Errors.General.InvalidLength(Constants.MAX_MIDDLE_TEXT_LENGTH, nameof(nickname));
 
         return new Nickname(nickname);
     }

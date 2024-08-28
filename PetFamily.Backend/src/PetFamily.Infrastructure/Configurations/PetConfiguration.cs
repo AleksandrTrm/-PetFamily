@@ -5,6 +5,7 @@ using PetFamily.Domain.Entities.Volunteers.Pets;
 using PetFamily.Domain.ValueObjects.PetValueObjects;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.Domain.Entities.SpeciesAggregate.Species;
+using PetFamily.Domain.Enums;
 using PetFamily.Domain.ValueObjects;
 
 namespace PetFamily.Infrastructure.Configurations;
@@ -59,10 +60,6 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
 
         builder.ComplexProperty(p => p.Address, ab =>
         {
-            ab.Property(t => t.Oblast)
-                .IsRequired()
-                .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH);
-
             ab.Property(t => t.District)
                 .IsRequired()
                 .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH);
@@ -90,7 +87,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         {
             pb.Property(t => t.Value)
                 .IsRequired()
-                .HasMaxLength(Constants.MAX_PHONE_NUMBER_LENGTH);
+                .HasMaxLength(PhoneNumber.MAX_PHONE_NUMBER_LENGTH);
         });
         
         builder.Property(p => p.IsCastrated)

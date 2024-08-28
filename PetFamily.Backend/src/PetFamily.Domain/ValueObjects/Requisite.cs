@@ -19,13 +19,13 @@ namespace PetFamily.Domain.ValueObjects
 
         public Description Description { get; }
 
-        public static Result<Requisite, string> Create(string title, Description description)
+        public static Result<Requisite, Error> Create(string title, Description description)
         {
             if (string.IsNullOrWhiteSpace(title))
-                return "Title can not be empty";
+                return Errors.General.InvalidValue(nameof(title));
 
             if (title.Length > Constants.MAX_LOW_TEXT_LENGTH)
-                return $"The count of characters for title can not be more than {Constants.MAX_LOW_TEXT_LENGTH}";
+                return Errors.General.InvalidLength(Constants.MAX_LOW_TEXT_LENGTH, nameof(title));
 
             return new Requisite(title, description);
         }

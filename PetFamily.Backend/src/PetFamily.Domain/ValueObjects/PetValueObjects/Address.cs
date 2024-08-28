@@ -1,20 +1,21 @@
 ﻿using PetFamily.Domain.Shared;
 using CSharpFunctionalExtensions;
+using System.Text.RegularExpressions;
 
 namespace PetFamily.Domain.ValueObjects.PetValueObjects;
 
 public record Address
 {
-    private Address(string oblast, string district, string settlement, string street, string house)
+    private const int MAX_HOUSE_TITLE_LENGTH = 4;
+    private const string HOUSE_NUMBER_REGEX = @"^\d{1,3}\d{0,1}[А-Г]?$";
+    
+    private Address(string district, string settlement, string street, string house)
     {
-        Oblast = oblast;
         District = district;
         Settlement = settlement;
         Street = street;
         House = house;
     }
-    
-    public string Oblast { get; }
 
     public string District { get; }
 
@@ -24,50 +25,36 @@ public record Address
     
     public string House { get; }
 
-    public static Result<Address, string> Create(string oblast, string district, string settlement, string street, string house)
+    public static Result<Address, Error> Create(string district, string settlement, string street, string house)
     {
-        if (string.IsNullOrWhiteSpace(oblast))
-            return "Oblast can not be empty";
-
-        if (oblast.Length > Constants.MAX_MIDDLE_TEXT_LENGTH)
-            return "The count of characters for oblast title can not" +
-                   $" be more than {Constants.MAX_MIDDLE_TEXT_LENGTH}";
-        
-        
         if (string.IsNullOrWhiteSpace(district))
-            return "District can not be empty";
+            return Errors.General.InvalidValue(nameof(district));
 
         if (district.Length > Constants.MAX_MIDDLE_TEXT_LENGTH)
-            return "The count of characters for district title can not" +
-                   $" be more than {Constants.MAX_MIDDLE_TEXT_LENGTH}";
-        
+            return Errors.General.InvalidLength(Constants.MAX_MIDDLE_TEXT_LENGTH, nameof(district));
         
         if (string.IsNullOrWhiteSpace(settlement))
-            return "Settlement can not be empty";
+            return Errors.General.InvalidValue(nameof(settlement));
 
         if (settlement.Length > Constants.MAX_MIDDLE_TEXT_LENGTH)
-            return "The count of characters for settlement title can not" +
-                   $" be more than {Constants.MAX_MIDDLE_TEXT_LENGTH}";
+            return Errors.General.InvalidLength(Constants.MAX_MIDDLE_TEXT_LENGTH, nameof(settlement));
         
         
         if (string.IsNullOrWhiteSpace(street))
-            return "Settlement can not be empty";
+            return Errors.General.InvalidValue(nameof(street));
 
         if (street.Length > Constants.MAX_MIDDLE_TEXT_LENGTH)
-            return "The count of characters for street title can not" +
-                   $" be more than {Constants.MAX_MIDDLE_TEXT_LENGTH}";
-        
+            return Errors.General.InvalidLength(Constants.MAX_MIDDLE_TEXT_LENGTH, nameof(street));
         
         if (string.IsNullOrWhiteSpace(house))
-            return "Settlement can not be empty";
+            return Errors.General.InvalidValue(nameof(house));
 
-        if (house.Length > Constants.MAX_HOUSE_TITLE_LENGTH)
-            return "The count of characters for settlement title can not" +
-                   $" be more than {Constants.MAX_MIDDLE_TEXT_LENGTH}";
+        if (house.Length > MAX_HOUSE_TITLE_LENGTH)
+            return Errors.General.InvalidLength(MAX_HOUSE_TITLE_LENGTH, nameof(house));
 
-        if (house.Any(c => char.IsDigit(c) == false))
-            return "House title must contains digits";
+        if (Regex.IsMatch(house, HOUSE_NUMBER_REGEX))
+            return Errors.General.InvalidValue(nameof(house));
 
-        return new Address(oblast, district, settlement, street, house);
+        return new Address(district, settlement, street, house);
     }
 }

@@ -17,13 +17,13 @@ public class Breed : Shared.Entity<BreedId>
     
     public string Value { get; private set; }
 
-    public static Result<Breed, string> Create(BreedId id, string breed, SpeciesId speciesId)
+    public static Result<Breed, Error> Create(BreedId id, string breed, SpeciesId speciesId)
     {
         if (string.IsNullOrWhiteSpace(breed))
-            return "Breed can not be empty";
+            return Errors.General.InvalidValue(nameof(breed));
 
         if (breed.Length > Constants.MAX_MIDDLE_HIGH_LENGTH)
-            return $"The count of characters of breed can not be more than {Constants.MAX_MIDDLE_HIGH_LENGTH}";
+            return Errors.General.InvalidLength(Constants.MAX_MIDDLE_HIGH_LENGTH, nameof(breed));
 
         return new Breed(id, breed, speciesId);
     }

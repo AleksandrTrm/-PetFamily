@@ -1,5 +1,5 @@
-﻿using CSharpFunctionalExtensions;
-using PetFamily.Domain.Shared;
+﻿using PetFamily.Domain.Shared;
+using CSharpFunctionalExtensions;
 
 namespace PetFamily.Domain.ValueObjects;
 
@@ -16,13 +16,13 @@ public record Description
     
     public string Value { get; }
 
-    public static Result<Description, string> Create(string value)
+    public static Result<Description, Error> Create(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
-            return "Description can not be empty";
+            return Errors.General.InvalidValue(nameof(Description).ToLower());
 
         if (value.Length > Constants.MAX_HIGH_TEXT_LENGTH)
-            return $"The count of characters for description can not be more than {Constants.MAX_HIGH_TEXT_LENGTH}";
+            return Errors.General.InvalidLength(Constants.MAX_HIGH_TEXT_LENGTH, nameof(Description).ToLower());
 
         return new Description(value);
     }

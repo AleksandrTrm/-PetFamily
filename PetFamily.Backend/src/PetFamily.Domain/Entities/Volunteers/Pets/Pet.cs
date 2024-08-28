@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Enums;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.ValueObjects;
 using PetFamily.Domain.ValueObjects.PetValueObjects;
@@ -15,8 +16,7 @@ namespace PetFamily.Domain.Entities.Volunteers.Pets
         private Pet(PetId id, 
             Nickname nickname, 
             SpeciesBreed speciesBreed, 
-            Description description, 
-            string breed,
+            Description description,
             string color, 
             string healthInfo, 
             Address address, 
@@ -81,11 +81,10 @@ namespace PetFamily.Domain.Entities.Volunteers.Pets
 
         public PetPhotos PetPhotos { get; private set; }
 
-        public static Result<Pet, string> Create(PetId id, 
+        public static Result<Pet, Error> Create(PetId id, 
             Nickname nickname, 
             SpeciesBreed speciesBreed,
             Description description,
-            string breed, 
             string color, 
             string healthInfo, 
             Address address, 
@@ -101,28 +100,19 @@ namespace PetFamily.Domain.Entities.Volunteers.Pets
             Guid volunteerId, 
             PetPhotos petPhotos)
         {
-            if (string.IsNullOrWhiteSpace(breed))
-                return "Breed can not be empty";
-
-            if (breed.Length > Constants.MAX_MIDDLE_TEXT_LENGTH)
-                return "The count of characters for breed can not" +
-                       $" be more than {Constants.MAX_MIDDLE_TEXT_LENGTH}";
-
             if (string.IsNullOrWhiteSpace(color))
-                return "Color can not be empty";
+                return Errors.General.InvalidValue(nameof(color));
 
             if (color.Length > Constants.MAX_LOW_TEXT_LENGTH)
-                return "The count of characters for color can not" +
-                       $" be more than {Constants.MAX_LOW_TEXT_LENGTH}";
+                return Errors.General.InvalidLength(Constants.MAX_LOW_TEXT_LENGTH, nameof(color));
 
             if (string.IsNullOrWhiteSpace(healthInfo))
-                return "Health info can not be empty";
+                return Errors.General.InvalidValue(nameof(color));
 
             if (healthInfo.Length > Constants.MAX_MIDDLE_HIGH_LENGTH)
-                return "The count of characters for health info can not" +
-                       $" be more than {Constants.MAX_MIDDLE_HIGH_LENGTH}";
+                return Errors.General.InvalidLength(Constants.MAX_MIDDLE_HIGH_LENGTH, nameof(healthInfo));
 
-            return new Pet(id, nickname, speciesBreed, description, breed, color, healthInfo, address, weight, height,
+            return new Pet(id, nickname, speciesBreed, description, color, healthInfo, address, weight, height,
                 ownerPhone, isCastrated, dateOfBirth, isVaccinated, status, requisites, createdAt, petPhotos);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.Domain.Entities.Volunteers.Pets;
+using PetFamily.Domain.Shared;
 using PetFamily.Domain.ValueObjects;
 using PetFamily.Domain.ValueObjects.VolunteerValueObjects;
 using Entity = PetFamily.Domain.Shared.Entity<PetFamily.Domain.Entities.Volunteers.Volunteer.VolunteerId>;
@@ -8,8 +9,10 @@ namespace PetFamily.Domain.Entities.Volunteers.Volunteer
 {
     public class Volunteer : Entity
     {
+        private readonly List<Pet> _pets; 
+            
         public const int MAX_EXPERIENCE_YEARS = 80;
-
+        
         //ef core
         private Volunteer(VolunteerId id) : base(id)
         {
@@ -56,9 +59,9 @@ namespace PetFamily.Domain.Entities.Volunteers.Volunteer
 
         public Requisites Requisites { get; private set; }
 
-        public List<Pet> Pets { get; private set; } = [];
-
-        public static Result<Volunteer, string> Create(
+        public IReadOnlyList<Pet> Pets => _pets;
+        
+        public static Result<Volunteer, Error> Create(
             VolunteerId id, 
             FullName fullFullName, 
             Description description, 
@@ -71,16 +74,16 @@ namespace PetFamily.Domain.Entities.Volunteers.Volunteer
             Requisites requisites)
         {
             if (experience is < 0 or > MAX_EXPERIENCE_YEARS)
-                return $"Experience can not be less than zero and more than {MAX_EXPERIENCE_YEARS}";
+                return Errors.General.InvalidLength(MAX_EXPERIENCE_YEARS, nameof(experience));
 
-            if (countOfPetsThatFoundHome is < 0 or > MAX_EXPERIENCE_YEARS)
-                return $"Count of pets that are found home can not be less than zero";
+            if (countOfPetsThatFoundHome < 0)
+                return Errors.General.LessThenZero(nameof(CountOfPetsThatFoundHome));
 
-            if (countOfPetsThatLookingForHome is < 0 or > MAX_EXPERIENCE_YEARS)
-                return $"Count of pets that are looking for home can not be less than zero";
+            if (countOfPetsThatLookingForHome < 0)
+                return Errors.General.LessThenZero(nameof(CountOfPetsThatLookingForHome));
 
-            if (countOfPetsThatGetTreatment is < 0 or > MAX_EXPERIENCE_YEARS)
-                return $"Count of pets that are get treatment can not be less than zero";
+            if (countOfPetsThatGetTreatment < 0)
+                return Errors.General.LessThenZero(nameof(CountOfPetsThatGetTreatment));
 
             return new Volunteer(id, fullFullName, description, experience, countOfPetsThatFoundHome,
                 countOfPetsThatLookingForHome, countOfPetsThatGetTreatment, phoneNumber, socialMedias, requisites);
