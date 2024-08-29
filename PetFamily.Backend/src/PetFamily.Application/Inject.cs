@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Application.Volunteers.CreateVolunteer;
 
 namespace PetFamily.Application;
@@ -9,6 +10,8 @@ public static class Inject
     {
         services.AddScoped<CreateVolunteerHandler>();
 
+        services.AddValidatorsFromAssembly(typeof(CreateVolunteerHandler).Assembly);
+        
         return services;
     }
 }

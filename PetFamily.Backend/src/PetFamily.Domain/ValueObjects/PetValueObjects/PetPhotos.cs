@@ -13,18 +13,20 @@ public record PetPhotos
     {
     }
     
-    private PetPhotos(List<PetPhoto> value)
+    private PetPhotos(IEnumerable<PetPhoto> value)
     {
-        Value = value;
+        Value = value.ToList();
     }
     
-    public List<PetPhoto> Value { get; }
+    public IReadOnlyList<PetPhoto> Value { get; }
 
     public int PetPhotosCount => Value.Count;
     
-    public static Result<PetPhotos, Error> Create(List<PetPhoto> petPhotos)
+    public static Result<PetPhotos, Error> Create(IEnumerable<PetPhoto> petPhotos)
     {
-        if (petPhotos.Count is < MIN_PHOTOS_COUNT or > MAX_PHOTOS_COUNT)
+        petPhotos = petPhotos.ToList();
+        
+        if (petPhotos.Count() is < MIN_PHOTOS_COUNT or > MAX_PHOTOS_COUNT)
             return Errors.General.InvalidCount(MIN_PHOTOS_COUNT, nameof(PetPhotosCount), MAX_PHOTOS_COUNT);
 
         return new PetPhotos(petPhotos);

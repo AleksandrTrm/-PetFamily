@@ -9,10 +9,10 @@ public record SocialMedias
     {
     }
     
-    public SocialMedias(List<SocialMedia> value)
+    public SocialMedias(IEnumerable<SocialMedia> value)
     {
-        Value = value;
+        Value = value.ToList();
     }
     
-    public List<SocialMedia> Value { get; }
+    public IReadOnlyList<SocialMedia> Value { get; }
 }
