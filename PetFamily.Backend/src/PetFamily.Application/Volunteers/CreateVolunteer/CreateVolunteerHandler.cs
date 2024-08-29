@@ -25,13 +25,9 @@ public class CreateVolunteerHandler
 
         var descriptionDto = request.Description;
         var descriptionResult = Description.Create(descriptionDto.Description);
-        if (descriptionResult.IsFailure)
-            return descriptionResult.Error;
         
         var phoneNumberDto = request.PhoneNumber;
         var phoneNumberResult = PhoneNumber.Create(phoneNumberDto.PhoneNumber);
-        if (phoneNumberResult.IsFailure)
-            return phoneNumberResult.Error;
         
         var socialMediasDto = request.SocialMedias;
         List<SocialMedia> socialMediasList = [];
