@@ -11,9 +11,9 @@ public record SpeciesBreed
         BreedId = breedId;
     }
 
-    public SpeciesId SpeciesId { get; private set; }
+    public SpeciesId SpeciesId { get; }
 
-    public Guid BreedId { get; private set; }
+    public Guid BreedId { get; }
 
     public static Result<SpeciesBreed> Create(SpeciesId speciesId, Guid breedId)
     {

@@ -21,39 +21,35 @@ public class CreateVolunteerHandler
         var id = VolunteerId.NewVolunteerId();
 
         var fullNameDto = request.FullName;
-        var fullNameResult = FullName.Create(fullNameDto.Name, fullNameDto.Surname, fullNameDto.Patronymic);
+        var fullName = FullName.Create(fullNameDto.Name, fullNameDto.Surname, fullNameDto.Patronymic).Value;
 
         var descriptionDto = request.Description;
         var descriptionResult = Description.Create(descriptionDto.Description);
-
+        if (descriptionResult.IsFailure)
+            return descriptionResult.Error;
+        
         var phoneNumberDto = request.PhoneNumber;
         var phoneNumberResult = PhoneNumber.Create(phoneNumberDto.PhoneNumber);
-
+        if (phoneNumberResult.IsFailure)
+            return phoneNumberResult.Error;
+        
         var socialMediasDto = request.SocialMedias;
         List<SocialMedia> socialMediasList = [];
-        foreach (var socialMediaDto in socialMediasDto.SocialMedias)
-        {
-            var socialMediaResult = SocialMedia.Create(socialMediaDto.Title, socialMediaDto.Link);
-
-            socialMediasList.Add(socialMediaResult.Value);
-        }
+        foreach (var socialMediaDto in socialMediasDto)
+            socialMediasList.Add(SocialMedia.Create(socialMediaDto.Title, socialMediaDto.Link).Value);
 
         var socialMedias = new SocialMedias(socialMediasList);
 
         var requisitesDto = request.Requisites;
         List<Requisite> requisitesList = [];
-        foreach (var requisiteDto in requisitesDto.Requisites)
-        {
-            var requisiteDescriptionResult = Description.Create(requisiteDto.Description.Description);
-
-            var requisiteResult = Requisite.Create(requisiteDto.Title, requisiteDescriptionResult.Value);
-
-            requisitesList.Add(requisiteResult.Value);
-        }
+        foreach (var requisiteDto in requisitesDto)
+            requisitesList.Add(Requisite.Create(
+                requisiteDto.Title, 
+                Description.Create(requisiteDto.Description.Description).Value).Value);
 
         var requisites = Requisites.Create(requisitesList);
 
-        var volunteerToCreate = Volunteer.Create(id, fullNameResult.Value, descriptionResult.Value, 
+        var volunteerToCreate = Volunteer.Create(id, fullName, descriptionResult.Value, 
             request.Experience, phoneNumberResult.Value, socialMedias, requisites.Value);
 
         await _repository.Create(volunteerToCreate.Value, cancellationToken);

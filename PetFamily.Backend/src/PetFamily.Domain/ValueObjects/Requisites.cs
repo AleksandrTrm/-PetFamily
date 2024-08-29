@@ -12,16 +12,18 @@ public record Requisites
     {
     }
     
-    private Requisites(List<Requisite> value)
+    private Requisites(IEnumerable<Requisite> value)
     {
-        Value = value;
+        Value = value.ToList();
     }
     
     public List<Requisite> Value { get; }
 
-    public static Result<Requisites, Error> Create(List<Requisite> value)
+    public static Result<Requisites, Error> Create(IEnumerable<Requisite> value)
     {
-        if (value.Count < MIN_REQUISITES_COUNT)
+        value = value.ToList();
+        
+        if (value.Count() < MIN_REQUISITES_COUNT)
             return Errors.General.InvalidCount(MIN_REQUISITES_COUNT, nameof(Requisites).ToLower());
 
         return new Requisites(value);
