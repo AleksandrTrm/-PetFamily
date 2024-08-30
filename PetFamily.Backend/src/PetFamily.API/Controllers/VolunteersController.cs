@@ -1,8 +1,5 @@
-﻿using FluentValidation;
-using PetFamily.API.Response;
-using PetFamily.Domain.Shared;
+﻿using PetFamily.API.Response;
 using Microsoft.AspNetCore.Mvc;
-using PetFamily.API.Extensions;
 using PetFamily.Application.Volunteers.CreateVolunteer;
 
 namespace PetFamily.API.Controllers;
