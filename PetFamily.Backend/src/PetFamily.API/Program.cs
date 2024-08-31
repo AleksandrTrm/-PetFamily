@@ -1,8 +1,7 @@
 using PetFamily.Application;
 using PetFamily.Infrastructure;
-using FluentValidation.AspNetCore;
-using PetFamily.API.Middlewares;
 using PetFamily.API.Validation;
+using PetFamily.API.Middlewares;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);

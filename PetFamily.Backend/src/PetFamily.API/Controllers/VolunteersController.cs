@@ -16,7 +16,7 @@ public class VolunteersController : ControllerBase
         [FromServices] CreateVolunteerHandler handler,
         [FromBody] CreateVolunteerRequest request,
         CancellationToken cancellationToken = default)
-    {
+    {   
         var result = await handler.Handle(request, cancellationToken);
 
         return Ok(Envelope.Ok(result.Value));
