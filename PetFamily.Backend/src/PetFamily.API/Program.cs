@@ -2,6 +2,8 @@ using PetFamily.Application;
 using PetFamily.Infrastructure;
 using FluentValidation.AspNetCore;
 using PetFamily.API.Validation;
+using Serilog;
+using Serilog.Events;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +12,20 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<ApplicationDbContext>();
+builder.Services.AddSerilog();
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.Debug()
+    .Enrich.WithThreadId()
+    .Enrich.WithMachineName()
+    .Enrich.WithEnvironmentUserName()
+    .WriteTo.Seq(builder.Configuration.GetConnectionString("Seq")
+                 ?? throw new ArgumentNullException( "Seq"))
+    .MinimumLevel.Override("Microsoft.AspnetCore.Hosting", LogEventLevel.Warning)
+    .MinimumLevel.Override("Microsoft.AspnetCore.Mvc", LogEventLevel.Warning)
+    .MinimumLevel.Override("Microsoft.AspnetCore.Routing", LogEventLevel.Warning)
+    .CreateLogger();
 
 builder.Services
     .AddInfrastructure()
@@ -22,6 +37,8 @@ builder.Services.AddFluentValidationAutoValidation(configuration =>
 });
 
 var app = builder.Build();
+
+app.UseSerilogRequestLogging();
 
 if (app.Environment.IsDevelopment())
 {
