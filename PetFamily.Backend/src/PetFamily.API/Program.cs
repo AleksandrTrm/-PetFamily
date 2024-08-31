@@ -1,6 +1,7 @@
 using PetFamily.Application;
 using PetFamily.Infrastructure;
 using FluentValidation.AspNetCore;
+using PetFamily.API.Middlewares;
 using PetFamily.API.Validation;
 using Serilog;
 using Serilog.Events;
@@ -37,6 +38,8 @@ builder.Services.AddFluentValidationAutoValidation(configuration =>
 });
 
 var app = builder.Build();
+
+app.UseExceptionMiddleware();
 
 app.UseSerilogRequestLogging();
 
