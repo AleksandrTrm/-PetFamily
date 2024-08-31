@@ -1,8 +1,10 @@
 ﻿using PetFamily.Domain.Shared;
 using CSharpFunctionalExtensions;
-using PetFamily.Domain.ValueObjects;
-using PetFamily.Domain.Entities.Volunteers.Volunteer;
-using PetFamily.Domain.ValueObjects.VolunteerValueObjects;
+using PetFamily.Domain.Shared.Error;
+using PetFamily.Domain.Shared.IDs;
+using PetFamily.Domain.Shared.ValueObjects;
+using PetFamily.Domain.VolunteersManagement.Volunteer;
+using PetFamily.Domain.VolunteersManagement.Volunteer.VolunteerValueObjects;
 
 namespace PetFamily.Application.Volunteers.CreateVolunteer;
 

@@ -1,12 +1,10 @@
 ﻿using PetFamily.Domain.Shared;
+using PetFamily.Domain.Shared.IDs;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
-using PetFamily.Domain.Entities.Volunteers.Pets;
-using PetFamily.Domain.ValueObjects.PetValueObjects;
+using PetFamily.Domain.Shared.ValueObjects;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.Domain.Entities.SpeciesAggregate.Species;
-using PetFamily.Domain.Enums;
-using PetFamily.Domain.ValueObjects;
+using PetFamily.Domain.VolunteersManagement.Pets;
+using PetFamily.Domain.VolunteersManagement.Pets.Enums;
 
 namespace PetFamily.Infrastructure.Configurations;
 

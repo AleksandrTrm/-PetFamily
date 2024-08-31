@@ -1,5 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFamily.Domain.Entities.Volunteers.Volunteer;
+using PetFamily.Domain.VolunteersManagement.Volunteer;
 
 namespace PetFamily.Application.Volunteers;
 

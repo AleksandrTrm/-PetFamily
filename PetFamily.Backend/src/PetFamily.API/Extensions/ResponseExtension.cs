@@ -1,9 +1,9 @@
 ﻿using PetFamily.API.Response;
-using PetFamily.Domain.Enums;
 using PetFamily.Domain.Shared;
 using Microsoft.AspNetCore.Mvc;
 using CSharpFunctionalExtensions;
 using FluentValidation.Results;
+using PetFamily.Domain.Shared.Error;
 
 namespace PetFamily.API.Extensions;
 

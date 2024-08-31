@@ -1,7 +1,8 @@
 ﻿using PetFamily.Domain.Shared;
+using PetFamily.Domain.Shared.IDs;
 using Microsoft.EntityFrameworkCore;
+using PetFamily.Domain.SpeciesManagement.Breeds;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.Domain.Entities.SpeciesAggregate.Breeds;
 
 namespace PetFamily.Infrastructure.Configurations;
 
