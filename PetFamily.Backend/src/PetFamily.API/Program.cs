@@ -1,6 +1,7 @@
 using PetFamily.Application;
 using PetFamily.Infrastructure;
 using FluentValidation.AspNetCore;
+using PetFamily.API.Middlewares;
 using PetFamily.API.Validation;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
@@ -22,6 +23,8 @@ builder.Services.AddFluentValidationAutoValidation(configuration =>
 });
 
 var app = builder.Build();
+
+app.UseExceptionMiddleware();
 
 if (app.Environment.IsDevelopment())
 {
