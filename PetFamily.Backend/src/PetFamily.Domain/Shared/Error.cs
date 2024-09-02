@@ -1,4 +1,4 @@
-﻿using PetFamily.Domain.Enums;
+﻿using PetFamily.Domain.Shared.Enums;
 
 namespace PetFamily.Domain.Shared;
 
