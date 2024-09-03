@@ -1,8 +1,9 @@
 ﻿using PetFamily.Domain.Shared;
 using PetFamily.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
-using PetFamily.Domain.Entities.Volunteers.Volunteer;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PetFamily.Domain.Shared.IDs;
+using PetFamily.Domain.VolunteersManagement.Volunteer;
 
 namespace PetFamily.Infrastructure.Configurations;
 
@@ -20,7 +21,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 v => VolunteerId.Create(v))
             .IsRequired();
         
-        builder.ComplexProperty(v => v.FullFullName, nb =>
+        builder.ComplexProperty(v => v.FullName, nb =>
         {
             nb.Property(n => n.FirstName)
                 .IsRequired()

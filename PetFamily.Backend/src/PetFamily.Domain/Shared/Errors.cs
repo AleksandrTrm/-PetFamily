@@ -26,9 +26,9 @@ public static class Errors
 
         public static Error InvalidCount(int min, string? name = null, int? max = null)
         {
-            var label = name == null ? "" : " 'name'";
+            var label = name == null ? "" : $" '{name}'";
             var forMaxLabel = max == null ? "" : $" and more than {max}";
-            return Error.Validation("out.of.range", $"Value{name} can not be less than {min}{forMaxLabel}");
+            return Error.Validation("out.of.range", $"Value{label} can not be less than {min}{forMaxLabel}");
         }
 
         public static Error LessThenZero(string? name = null)
