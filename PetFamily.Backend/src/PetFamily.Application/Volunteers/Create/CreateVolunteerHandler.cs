@@ -10,8 +10,8 @@ namespace PetFamily.Application.Volunteers.Create;
 
 public class CreateVolunteerHandler
 {
-    private IVolunteersRepository _repository;
-    private ILogger<CreateVolunteerHandler> _logger;
+    private readonly IVolunteersRepository _repository;
+    private readonly ILogger<CreateVolunteerHandler> _logger;
 
     public CreateVolunteerHandler(
         IVolunteersRepository repository,

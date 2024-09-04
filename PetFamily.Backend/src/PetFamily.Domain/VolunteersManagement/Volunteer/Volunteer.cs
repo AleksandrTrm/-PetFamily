@@ -10,6 +10,7 @@ namespace PetFamily.Domain.VolunteersManagement.Volunteer
 {
     public class Volunteer : Shared.Entity<VolunteerId>
     {
+        private bool _isDeleted = false;
         private readonly List<Pet> _pets; 
             
         public const int MAX_EXPERIENCE_YEARS = 80;
@@ -59,6 +60,22 @@ namespace PetFamily.Domain.VolunteersManagement.Volunteer
         public int GetCountOfPetsThatGetTreatment() =>
             _pets.Count(p => p.Status == Status.NeedsHelp);
 
+        public void Delete()
+        {
+            _isDeleted = true;
+
+            foreach (var pet in _pets)
+                pet.Delete();
+        }
+
+        public void Recover()
+        {
+            _isDeleted = false;
+            
+            foreach (var pet in _pets)
+                pet.Recover();
+        }
+        
         public void UpdateMainInfo(
             FullName fullName,
             int experience, 

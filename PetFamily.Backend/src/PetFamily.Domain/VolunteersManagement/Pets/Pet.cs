@@ -9,6 +9,8 @@ namespace PetFamily.Domain.VolunteersManagement.Pets
 {
     public class Pet : Shared.Entity<PetId>
     {
+        private bool _isDeleted = false;
+        
         //ef core
         private Pet(PetId id) : base(id)
         {
@@ -82,6 +84,16 @@ namespace PetFamily.Domain.VolunteersManagement.Pets
 
         public PetPhotos PetPhotos { get; private set; }
 
+        public void Delete()
+        {
+            _isDeleted = true;
+        }
+
+        public void Recover()
+        {
+            _isDeleted = false;
+        }
+        
         public static Result<Pet, Error> Create(PetId id, 
             Nickname nickname, 
             SpeciesBreed speciesBreed,
