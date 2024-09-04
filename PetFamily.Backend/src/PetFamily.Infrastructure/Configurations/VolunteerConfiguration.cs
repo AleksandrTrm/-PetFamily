@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.Domain.Shared.IDs;
 using PetFamily.Domain.VolunteersManagement.Volunteer;
+using PetFamily.Domain.VolunteersManagement.Volunteer.VolunteerValueObjects;
 
 namespace PetFamily.Infrastructure.Configurations;
 
@@ -53,7 +54,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 .IsRequired()
                 .HasMaxLength(PhoneNumber.MAX_PHONE_NUMBER_LENGTH);
         });
-
+        
         builder.OwnsOne(v => v.SocialMedias, sb =>
         {
             sb.ToJson();
@@ -88,7 +89,11 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.HasMany(v => v.Pets)
             .WithOne()
-            .OnDelete(DeleteBehavior.NoAction)
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
+
+        builder.Property<bool>("_isDeleted")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .HasColumnName("is_deleted");
     }
 }

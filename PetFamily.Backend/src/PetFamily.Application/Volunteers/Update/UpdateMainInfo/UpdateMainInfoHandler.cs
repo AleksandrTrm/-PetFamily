@@ -8,8 +8,8 @@ namespace PetFamily.Application.Volunteers.Update.UpdateMainInfo;
 
 public class UpdateMainInfoHandler
 {
-    private IVolunteersRepository _repository;
-    private ILogger<UpdateMainInfoHandler> _logger;
+    private readonly IVolunteersRepository _repository;
+    private readonly ILogger<UpdateMainInfoHandler> _logger;
 
     public UpdateMainInfoHandler(
         IVolunteersRepository repository,
@@ -41,7 +41,7 @@ public class UpdateMainInfoHandler
         
         volunteerResult.Value.UpdateMainInfo(fullName, experience, description, phoneNumber);
 
-        await _repository.Update(volunteerResult.Value, cancellationToken);
+        await _repository.Save(volunteerResult.Value, cancellationToken);
         
         _logger.LogInformation("Main info of volunteer with {id} has been updated", request.Id);
         

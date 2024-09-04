@@ -4,13 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Extensions;
 using PetFamily.Application.DTOs;
 using PetFamily.Application.Volunteers.Create;
+using PetFamily.Application.Volunteers.Delete;
 using PetFamily.Application.Volunteers.Update.UpdateMainInfo;
 using PetFamily.Application.Volunteers.Update.UpdateRequisites;
 using PetFamily.Application.Volunteers.Update.UpdateSocialMedias;
 
 namespace PetFamily.API.Controllers;
 
-public class VolunteersController : Base
+public class VolunteersController : ApplicationController
 {
     [HttpPost]
     public async Task<ActionResult<Guid>> Create(
@@ -70,6 +71,24 @@ public class VolunteersController : Base
         CancellationToken cancellationToken)
     {
         var request = new UpdateSocialMediasRequest(id, dto);
+
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        if (validationResult.IsValid == false)
+            return validationResult.ToValidationErrorResponse();
+
+        var updateResult = await handler.Handle(request, cancellationToken);
+
+        return Ok(updateResult.Value);
+    }
+    
+    [HttpDelete("{id:guid}")]
+    public async Task<ActionResult<Guid>> Delete(
+        [FromRoute] Guid id,
+        [FromServices] IValidator<DeleteVolunteerRequest> validator,
+        [FromServices] DeleteVolunteerHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var request = new DeleteVolunteerRequest(id);
 
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (validationResult.IsValid == false)

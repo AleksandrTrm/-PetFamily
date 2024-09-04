@@ -9,7 +9,7 @@ public interface IVolunteersRepository
 {
     Task<Result<Guid>> Create(Volunteer volunteer, CancellationToken cancellationToken = default);
 
-    Task<Result<Guid>> Update(Volunteer volunteer, CancellationToken cancellationToken = default);
+    Task<Result<Guid>> Save(Volunteer volunteer, CancellationToken cancellationToken = default);
 
     Task<Result<Volunteer, Error>> GetById(VolunteerId volunteerId, CancellationToken cancellationToken = default);
 }

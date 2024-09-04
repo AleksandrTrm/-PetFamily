@@ -8,8 +8,8 @@ namespace PetFamily.Application.Volunteers.Update.UpdateSocialMedias;
 
 public class UpdateSocialMediasHandler
 {
-    private IVolunteersRepository _repository;
-    private ILogger<UpdateRequisitesHandler> _logger;
+    private readonly IVolunteersRepository _repository;
+    private readonly ILogger<UpdateRequisitesHandler> _logger;
 
     public UpdateSocialMediasHandler(IVolunteersRepository repository, ILogger<UpdateRequisitesHandler> logger)
     {
@@ -35,7 +35,7 @@ public class UpdateSocialMediasHandler
         
         volunteerResult.Value.UpdateSocialMedias(socialMediasToUpdate);
 
-        var updateResult = await _repository.Update(volunteerResult.Value, cancellationToken);
+        var updateResult = await _repository.Save(volunteerResult.Value, cancellationToken);
         
         _logger.LogInformation("Social medias of volunteer with {id} has been updated", request.VolunteerId);
 

@@ -39,7 +39,7 @@ public class VolunteersRepository : IVolunteersRepository
         return volunteer;
     }
 
-    public async Task<Result<Guid>> Update(
+    public async Task<Result<Guid>> Save(
         Volunteer volunteer,
         CancellationToken cancellationToken = default)
     {

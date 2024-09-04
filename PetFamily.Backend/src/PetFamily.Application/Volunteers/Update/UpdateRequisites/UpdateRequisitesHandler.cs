@@ -8,8 +8,8 @@ namespace PetFamily.Application.Volunteers.Update.UpdateRequisites;
 
 public class UpdateRequisitesHandler
 {
-    private IVolunteersRepository _repository;
-    private ILogger<UpdateRequisitesHandler> _logger;
+    private readonly IVolunteersRepository _repository;
+    private readonly ILogger<UpdateRequisitesHandler> _logger;
 
     public UpdateRequisitesHandler(IVolunteersRepository repository, ILogger<UpdateRequisitesHandler> logger)
     {
@@ -39,7 +39,7 @@ public class UpdateRequisitesHandler
         
         volunteerResult.Value.UpdateRequisites(requisitesToUpdate.Value);
 
-        var updateResult = await _repository.Update(volunteerResult.Value, cancellationToken);
+        var updateResult = await _repository.Save(volunteerResult.Value, cancellationToken);
         
         _logger.LogInformation("Requisites of volunteer with {id} has been updated", request.VolunteerId);
 

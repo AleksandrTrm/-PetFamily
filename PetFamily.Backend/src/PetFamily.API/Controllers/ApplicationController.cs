@@ -4,4 +4,4 @@ namespace PetFamily.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public abstract class Base : ControllerBase { }
+public abstract class ApplicationController : ControllerBase { }
