@@ -29,7 +29,7 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 builder.Services
-    .AddInfrastructure()
+    .AddInfrastructure(builder.Configuration)
     .AddApplication();
 
 builder.Services.AddFluentValidationAutoValidation(configuration =>
