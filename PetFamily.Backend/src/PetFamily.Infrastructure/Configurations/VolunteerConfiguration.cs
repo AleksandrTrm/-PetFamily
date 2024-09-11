@@ -13,7 +13,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
     public void Configure(EntityTypeBuilder<Volunteer> builder)
     {
         builder.ToTable("volunteers");
-        
+
         builder.HasKey(v => v.Id);
 
         builder.Property(v => v.Id)
@@ -21,22 +21,22 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 v => v.Value,
                 v => VolunteerId.Create(v))
             .IsRequired();
-        
+
         builder.ComplexProperty(v => v.FullName, nb =>
         {
             nb.Property(n => n.FirstName)
                 .IsRequired()
                 .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
-            
+
             nb.Property(n => n.LastName)
                 .IsRequired()
                 .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH);
-            
+
             nb.Property(n => n.Patronymic)
                 .IsRequired()
                 .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH);
         });
-            
+
 
         builder.ComplexProperty(p => p.Description, db =>
         {
@@ -47,14 +47,14 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.Property(v => v.Experience)
             .IsRequired();
-        
+
         builder.ComplexProperty(p => p.PhoneNumber, pb =>
         {
             pb.Property(t => t.Value)
                 .IsRequired()
                 .HasMaxLength(PhoneNumber.MAX_PHONE_NUMBER_LENGTH);
         });
-        
+
         builder.OwnsOne(v => v.SocialMedias, sb =>
         {
             sb.ToJson();

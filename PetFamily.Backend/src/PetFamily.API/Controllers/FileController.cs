@@ -1,5 +1,6 @@
 ﻿using Minio;
 using Microsoft.AspNetCore.Mvc;
+using PetFamily.API.Extensions;
 using PetFamily.Application.Volunteers.Files.Delete;
 using PetFamily.Application.Volunteers.Files.UploadFile;
 using PetFamily.Application.Volunteers.Files.Get.GetFile;
@@ -17,15 +18,19 @@ public class FileController : ApplicationController
         _minioClient = minioClient;
     }
 
-    [HttpPut]
+    [HttpPost]
     public async Task<IActionResult> UploadFile(
         IFormFile file,
         [FromServices] UploadFileHandler handler,
         CancellationToken cancellationToken)
     {
-        var request = new UploadFileRequest(file.OpenReadStream(), BUCKET_NAME);
+        await using var stream = file.OpenReadStream();
+        
+        var request = new UploadFileRequest(stream, BUCKET_NAME);
 
         var result = await handler.Handle(request, cancellationToken);
+        if (result.IsFailure)
+            return result.Error.ToResponse();
         
         return Ok(result.Value);
     }
@@ -45,7 +50,7 @@ public class FileController : ApplicationController
 
     [HttpGet("{path:guid}")]
     public async Task<IActionResult> GetFile(
-        [FromBody] Guid path,
+        [FromRoute] Guid path,
         [FromServices] GetFileHandler handler,
         CancellationToken cancellationToken)
     {
@@ -56,7 +61,7 @@ public class FileController : ApplicationController
         return Ok(result.Value);
     }
     
-    [HttpPost]
+    [HttpPost("photos")]
     public async Task<IActionResult> GetFiles(
         [FromBody] IEnumerable<GetFileRequest> filesToGet,
         [FromServices] GetFilesHandler handler,
