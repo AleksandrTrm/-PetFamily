@@ -1,8 +1,8 @@
-﻿using CSharpFunctionalExtensions;
+﻿using PetFamily.Domain.Shared;
+using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
-using PetFamily.Application.FileProvider;
 using PetFamily.Application.Providers;
-using PetFamily.Domain.Shared;
+using PetFamily.Application.FileProvider;
 
 namespace PetFamily.Application.Volunteers.Files.UploadFile;
 
@@ -26,6 +26,8 @@ public class UploadFileHandler
         var fileData = new FileData(request.Stream, request.BucketName, path);
         
         var result = await _fileProvider.Upload(fileData, cancellationToken);
+        if (result.IsFailure)
+            return result.Error;
         
         _logger.LogInformation("Uploaded file with path {path} in bucket {bucket}", path, fileData.BucketName);
 

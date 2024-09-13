@@ -11,11 +11,9 @@ namespace PetFamily.API.Controllers;
 public class FileController : ApplicationController
 {
     private const string BUCKET_NAME = "photos";
-    private IMinioClient _minioClient;
 
-    public FileController(IMinioClient minioClient)
+    public FileController()
     {
-        _minioClient = minioClient;
     }
 
     [HttpPost]
@@ -61,7 +59,7 @@ public class FileController : ApplicationController
         return Ok(result.Value);
     }
     
-    [HttpPost("photos")]
+    [HttpGet("photos")]
     public async Task<IActionResult> GetFiles(
         [FromBody] IEnumerable<GetFileRequest> filesToGet,
         [FromServices] GetFilesHandler handler,
