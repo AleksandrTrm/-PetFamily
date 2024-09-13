@@ -1,6 +1,5 @@
 using PetFamily.Application;
 using PetFamily.Infrastructure;
-using FluentValidation.AspNetCore;
 using PetFamily.API.Middlewares;
 using PetFamily.API.Validation;
 using Serilog;
@@ -29,7 +28,7 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 builder.Services
-    .AddInfrastructure()
+    .AddInfrastructure(builder.Configuration)
     .AddApplication();
 
 builder.Services.AddFluentValidationAutoValidation(configuration =>
