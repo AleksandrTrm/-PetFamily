@@ -16,11 +16,12 @@ namespace PetFamily.API.Controllers.Volunteers;
 
 public class VolunteersController : ApplicationController
 {
-    [HttpPost("{id:guid}")]
+    [HttpPost("{id:guid}/pet")]
     public async Task<ActionResult> AddPet(
         [FromRoute] Guid id,
-        [FromForm] AddPetRequest request,
-        [FromServices] AddPetHandler handler)
+        [FromBody] AddPetRequest request,
+        [FromServices] AddPetHandler handler,
+        CancellationToken cancellationToken = default)
     {
         var command = new AddPetCommand(
             id,
@@ -38,7 +39,7 @@ public class VolunteersController : ApplicationController
             request.Status,
             request.Requisites);
 
-        var addPetResult = await handler.Handle(command);
+        var addPetResult = await handler.Handle(command, cancellationToken);
         if (addPetResult.IsFailure)
             return addPetResult.Error.ToResponse();
 

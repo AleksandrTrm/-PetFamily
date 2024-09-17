@@ -14,12 +14,12 @@ public class AddPetHandler
 {
     private IVolunteersRepository _repository;
     private ILogger<AddPetHandler> _logger;
-    private AbstractValidator<AddPetCommand> _validator;
+    private IValidator<AddPetCommand> _validator;
 
     public AddPetHandler(
         IVolunteersRepository repository,
         ILogger<AddPetHandler> logger,
-        AbstractValidator<AddPetCommand> validator)
+        IValidator<AddPetCommand> validator)
     {
         _validator = validator;
         _logger = logger;
@@ -44,7 +44,7 @@ public class AddPetHandler
 
         await _repository.Save(volunteerResult.Value, cancellationToken);
         
-        _logger.LogInformation("Add pet with id '{petId}' for volunteer with id '{volunteerId}'", 
+        _logger.LogInformation("Added pet with id '{petId}' for volunteer with id '{volunteerId}'", 
             pet.Id.Value, 
             command.VolunteerId);
 

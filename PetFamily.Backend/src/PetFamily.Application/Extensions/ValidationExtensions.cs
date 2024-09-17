@@ -12,7 +12,7 @@ public static class ValidationExtensions
         var errors = from validationError in validationErrors
             let errorMessage = validationError.ErrorMessage
             let errorCode = validationError.ErrorCode
-            select Error.Validation(errorCode, errorMessage);
+            select Error.Validation(errorCode, errorMessage, validationError.PropertyName);
 
         return errors.ToList();
     }
