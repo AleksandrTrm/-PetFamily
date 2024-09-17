@@ -1,22 +1,22 @@
 ﻿using PetFamily.Domain.Shared;
 using CSharpFunctionalExtensions;
 using FluentValidation;
-using PetFamily.Domain.Shared.IDs;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.Extensions;
-using PetFamily.Domain.ValueObjects;
+using PetFamily.Application.Volunteers.Update.UpdateRequisites;
+using PetFamily.Domain.VolunteersManagement.Volunteer.VolunteerValueObjects;
 
-namespace PetFamily.Application.Volunteers.Update.UpdateRequisites;
+namespace PetFamily.Application.Volunteers.Update.UpdateSocialMedias;
 
-public class UpdateRequisitesHandler
+public class UpdateSocialMediasHandler
 {
     private readonly IVolunteersRepository _repository;
     private readonly ILogger<UpdateRequisitesHandler> _logger;
-    private IValidator<UpdateRequisitesCommand> _validator;
+    private IValidator<UpdateSocialMediasCommand> _validator;
 
-    public UpdateRequisitesHandler(
-        IVolunteersRepository repository,
-        IValidator<UpdateRequisitesCommand> validator,
+    public UpdateSocialMediasHandler(
+        IVolunteersRepository repository, 
+        IValidator<UpdateSocialMediasCommand> validator,
         ILogger<UpdateRequisitesHandler> logger)
     {
         _validator = validator;
@@ -25,7 +25,7 @@ public class UpdateRequisitesHandler
     }
 
     public async Task<Result<Guid, ErrorList>> Handle(
-        UpdateRequisitesCommand command, 
+        UpdateSocialMediasCommand command, 
         CancellationToken cancellationToken = default)
     {
         var validationResult = await _validator.ValidateAsync(command, cancellationToken);
@@ -36,23 +36,17 @@ public class UpdateRequisitesHandler
         if (volunteerResult.IsFailure)
             return volunteerResult.Error.ToErrorList();
 
-        List<Requisite> requisites = [];
-        foreach (var requisite in command.Requisites)
-        {
-            var description = Description.Create(requisite.Description).Value;
-            
-            requisites.Add(Requisite.Create(requisite.Title, description).Value);
-        }
+        List<SocialMedia> socialMedias = [];
+        foreach (var socialMedia in command.SocialMedias)
+            socialMedias.Add(SocialMedia.Create(socialMedia.Title, socialMedia.Link).Value);
 
-        var requisitesToUpdate = Requisites.Create(requisites);
-        if (requisitesToUpdate.IsFailure)
-            return requisitesToUpdate.Error.ToErrorList();
+        var socialMediasToUpdate = new SocialMedias(socialMedias);
         
-        volunteerResult.Value.UpdateRequisites(requisitesToUpdate.Value);
+        volunteerResult.Value.UpdateSocialMedias(socialMediasToUpdate);
 
         await _repository.Save(volunteerResult.Value, cancellationToken);
         
-        _logger.LogInformation("Requisites of volunteer with {id} has been updated", command.VolunteerId);
+        _logger.LogInformation("Social medias of volunteer with {id} has been updated", command.VolunteerId);
 
         return command.VolunteerId;
     }

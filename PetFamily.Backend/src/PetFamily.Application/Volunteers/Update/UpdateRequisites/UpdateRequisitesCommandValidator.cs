@@ -5,15 +5,15 @@ using PetFamily.Application.Validation;
 
 namespace PetFamily.Application.Volunteers.Update.UpdateRequisites;
 
-public class UpdateRequisitesRequestValidator : AbstractValidator<UpdateRequisitesRequest>
+public class UpdateRequisitesCommandValidator : AbstractValidator<UpdateRequisitesCommand>
 {
-    public UpdateRequisitesRequestValidator()
+    public UpdateRequisitesCommandValidator()
     {
         RuleFor(r => r.VolunteerId)
             .NotEmpty()
             .WithError(Errors.General.InvalidValue());
 
-        RuleForEach(r => r.Requisites.Requisites)
+        RuleForEach(r => r.Requisites)
             .MustBeValueObject(r =>
             {
                 var descriptionResult = Description.Create(r.Description);

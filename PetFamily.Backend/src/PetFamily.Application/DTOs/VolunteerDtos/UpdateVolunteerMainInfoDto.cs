@@ -1,6 +1,4 @@
-﻿using PetFamily.Application.DTOs;
-
-namespace PetFamily.Application.Volunteers.Update.UpdateMainInfo;
+﻿namespace PetFamily.Application.DTOs.VolunteerDtos;
 
 public record UpdateVolunteerMainInfoDto(
     FullNameDto FullName, 

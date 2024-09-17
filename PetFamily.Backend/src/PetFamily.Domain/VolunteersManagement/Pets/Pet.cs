@@ -16,12 +16,12 @@ namespace PetFamily.Domain.VolunteersManagement.Pets
         {
         }
 
-        private Pet(PetId id, 
+        public Pet(PetId id, 
             Nickname nickname, 
             SpeciesBreed speciesBreed, 
             Description description,
-            string color, 
-            string healthInfo, 
+            Color color, 
+            HealthInfo healthInfo, 
             Address address, 
             double weight, 
             double height, 
@@ -58,9 +58,9 @@ namespace PetFamily.Domain.VolunteersManagement.Pets
 
         public Description Description { get; private set; }
 
-        public string Color { get; private set; }
+        public Color Color { get; private set; }
 
-        public string HealthInfo { get; private set; }
+        public HealthInfo HealthInfo { get; private set; }
 
         public Address Address { get; private set; }
 
@@ -92,41 +92,6 @@ namespace PetFamily.Domain.VolunteersManagement.Pets
         public void Recover()
         {
             _isDeleted = false;
-        }
-        
-        public static Result<Pet, Error> Create(PetId id, 
-            Nickname nickname, 
-            SpeciesBreed speciesBreed,
-            Description description,
-            string color, 
-            string healthInfo, 
-            Address address, 
-            double weight, 
-            double height,
-            PhoneNumber ownerPhone, 
-            bool isCastrated, 
-            DateOnly dateOfBirth, 
-            bool isVaccinated, 
-            Status status,
-            Requisites requisites, 
-            DateTime createdAt, 
-            Guid volunteerId, 
-            PetPhotos petPhotos)
-        {
-            if (string.IsNullOrWhiteSpace(color))
-                return Errors.General.InvalidValue(nameof(color));
-
-            if (color.Length > Constants.MAX_LOW_TEXT_LENGTH)
-                return Errors.General.InvalidLength(Constants.MAX_LOW_TEXT_LENGTH, nameof(color));
-
-            if (string.IsNullOrWhiteSpace(healthInfo))
-                return Errors.General.InvalidValue(nameof(color));
-
-            if (healthInfo.Length > Constants.MAX_MIDDLE_HIGH_LENGTH)
-                return Errors.General.InvalidLength(Constants.MAX_MIDDLE_HIGH_LENGTH, nameof(healthInfo));
-
-            return new Pet(id, nickname, speciesBreed, description, color, healthInfo, address, weight, height,
-                ownerPhone, isCastrated, dateOfBirth, isVaccinated, status, requisites, createdAt, petPhotos);
         }
     }
 }

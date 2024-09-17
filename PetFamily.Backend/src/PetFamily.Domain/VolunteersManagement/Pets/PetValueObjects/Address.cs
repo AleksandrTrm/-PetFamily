@@ -9,7 +9,11 @@ public record Address
     private const int MAX_HOUSE_TITLE_LENGTH = 4;
     private const string HOUSE_NUMBER_REGEX = @"^\d{1,3}\d{0,1}[А-Г]?$";
     
-    private Address(string district, string settlement, string street, string house)
+    private Address(
+        string district, 
+        string settlement, 
+        string street, 
+        string house)
     {
         District = district;
         Settlement = settlement;
@@ -25,8 +29,13 @@ public record Address
     
     public string House { get; }
 
-    public static Result<Address, Error> Create(string district, string settlement, string street, string house)
+    public static Result<Address, Error> Create(
+        string district, 
+        string settlement, 
+        string street, 
+        string house)
     {
+        
         if (string.IsNullOrWhiteSpace(district))
             return Errors.General.InvalidValue(nameof(district));
 

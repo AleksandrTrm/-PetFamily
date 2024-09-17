@@ -1,18 +1,24 @@
-﻿using System.Security.AccessControl;
-
-namespace PetFamily.Domain.Shared;
+﻿namespace PetFamily.Domain.Shared;
 
 public static class Errors
 {
     public static class General
     {
+        public static Error AlreadyExists(string? value = null)
+        {
+            var label = value is null ? "" : $" {value}";
+            return Error.Conflict(
+                "record.exists", 
+                $"Record with same parameter '{label}' already exists");
+        }
+        
         public static Error NotFound(Guid? id = null)
         {
             var forId = id == null ? "" : $" for id - {id}";
             return Error.NotFound("record.not.found", $"Record not found{id}");
         }
 
-        public static Error InvalidValue(string? name = null)
+        public static Error InvalidValue(string? name = null, string? invalidField = null)
         {
             var label = name == null ? "" : $" {name}";
             return Error.Validation("value.is.invalid", $"Value{label} is invalid");

@@ -49,13 +49,19 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
         });
 
-        builder.Property(p => p.Color)
-            .IsRequired()
-            .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+        builder.ComplexProperty(p => p.Color, db =>
+        {
+            db.Property(t => t.Value)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+        });
 
-        builder.Property(p => p.HealthInfo)
-            .IsRequired()
-            .HasMaxLength(Constants.MAX_MIDDLE_HIGH_LENGTH);
+        builder.ComplexProperty(p => p.HealthInfo, db =>
+        {
+            db.Property(t => t.Value)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_MIDDLE_HIGH_LENGTH);
+        });
 
         builder.ComplexProperty(p => p.Address, ab =>
         {

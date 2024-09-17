@@ -1,10 +1,10 @@
-﻿using PetFamily.Domain.Shared;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
-using PetFamily.Application.Providers;
 using PetFamily.Application.FileProvider;
+using PetFamily.Application.Providers;
+using PetFamily.Domain.Shared;
 
-namespace PetFamily.Application.Volunteers.Files.UploadFile;
+namespace PetFamily.Application.Volunteers.Files.Upload;
 
 public class UploadFileHandler
 {
@@ -18,12 +18,12 @@ public class UploadFileHandler
     }
 
     public async Task<Result<string, Error>> Handle(
-        UploadFileRequest request, 
+        UploadFileCommand command, 
         CancellationToken cancellationToken = default)
     {
         var path = Guid.NewGuid().ToString();
         
-        var fileData = new FileData(request.Stream, request.BucketName, path);
+        var fileData = new FileData(command.Stream, command.BucketName, path);
         
         var result = await _fileProvider.Upload(fileData, cancellationToken);
         if (result.IsFailure)

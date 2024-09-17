@@ -1,10 +1,8 @@
 using PetFamily.Application;
 using PetFamily.Infrastructure;
 using PetFamily.API.Middlewares;
-using PetFamily.API.Validation;
 using Serilog;
 using Serilog.Events;
-using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,11 +28,6 @@ Log.Logger = new LoggerConfiguration()
 builder.Services
     .AddInfrastructure(builder.Configuration)
     .AddApplication();
-
-builder.Services.AddFluentValidationAutoValidation(configuration =>
-{
-    configuration.OverrideDefaultResultFactoryWith<CustomResultFactory>();
-});
 
 var app = builder.Build();
 

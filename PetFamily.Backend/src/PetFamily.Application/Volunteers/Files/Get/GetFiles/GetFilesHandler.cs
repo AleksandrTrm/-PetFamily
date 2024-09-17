@@ -18,11 +18,11 @@ public class GetFilesHandler
     }
 
     public async Task<Result<List<string>, Error>> Handle(
-        GetFilesRequest request, 
+        GetFilesCommand command, 
         CancellationToken cancellationToken = default)
     {
         List<FileData> filesData = [];   
-        foreach (var getFileRequest in request.GetFilesRequests)
+        foreach (var getFileRequest in command.GetFilesRequests)
         {
             var fileData = new FileData(null, getFileRequest.BucketName, getFileRequest.Path); 
             

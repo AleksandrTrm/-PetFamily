@@ -1,3 +1,3 @@
 ﻿namespace PetFamily.Application.Volunteers.Files.Get.GetFile;
 
-public record GetFileRequest(string BucketName, string Path);
+public record GetFileCommand(string BucketName, string Path);

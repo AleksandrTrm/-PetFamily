@@ -5,15 +5,15 @@ using PetFamily.Domain.VolunteersManagement.Volunteer.VolunteerValueObjects;
 
 namespace PetFamily.Application.Volunteers.Update.UpdateSocialMedias;
 
-public class UpdateSocialMediasRequestValidator : AbstractValidator<UpdateSocialMediasRequest>
+public class UpdateSocialMediasCommandValidator : AbstractValidator<UpdateSocialMediasCommand>
 {
-    public UpdateSocialMediasRequestValidator()
+    public UpdateSocialMediasCommandValidator()
     {
         RuleFor(r => r.VolunteerId)
             .NotEmpty()
             .WithError(Errors.General.InvalidValue());
 
-        RuleForEach(r => r.SocialMedias.SocialMedias)
+        RuleForEach(r => r.SocialMedias)
             .MustBeValueObject(r => SocialMedia.Create(r.Title, r.Link));
     }
 }

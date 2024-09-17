@@ -1,5 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Extensions;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.IDs;
 using PetFamily.Domain.ValueObjects;
@@ -12,38 +14,45 @@ public class CreateVolunteerHandler
 {
     private readonly IVolunteersRepository _repository;
     private readonly ILogger<CreateVolunteerHandler> _logger;
+    private IValidator<CreateVolunteerCommand> _validator;
 
     public CreateVolunteerHandler(
         IVolunteersRepository repository,
+        IValidator<CreateVolunteerCommand> validator,
         ILogger<CreateVolunteerHandler> logger)
     {
+        _validator = validator;
         _repository = repository;
         _logger = logger;
     }
 
-    public async Task<Result<Guid, Error>> Handle(
-        CreateVolunteerRequest request,
+    public async Task<Result<Guid, ErrorList>> Handle(
+        CreateVolunteerCommand command,
         CancellationToken cancellationToken = default)
     {
+        var validationResult = await _validator.ValidateAsync(command, cancellationToken);
+        if (validationResult.IsValid == false )
+            return validationResult.ToList();
+        
         var id = VolunteerId.NewVolunteerId();
 
-        var fullNameDto = request.FullName;
+        var fullNameDto = command.FullName;
         var fullName = FullName.Create(fullNameDto.Name, fullNameDto.Surname, fullNameDto.Patronymic).Value;
 
-        var description = request.Description;
+        var description = command.Description;
         var descriptionResult = Description.Create(description);
         
-        var phoneNumber = request.PhoneNumber;
+        var phoneNumber = command.PhoneNumber;
         var phoneNumberResult = PhoneNumber.Create(phoneNumber);
         
-        var socialMediasDto = request.SocialMedias.SocialMedias;
+        var socialMediasDto = command.SocialMedias;
         List<SocialMedia> socialMediasList = [];
         foreach (var socialMediaDto in socialMediasDto)
             socialMediasList.Add(SocialMedia.Create(socialMediaDto.Title, socialMediaDto.Link).Value);
 
         var socialMedias = new SocialMedias(socialMediasList);
 
-        var requisitesDto = request.Requisites.Requisites;
+        var requisitesDto = command.Requisites;
         List<Requisite> requisitesList = [];
         foreach (var requisiteDto in requisitesDto)
             requisitesList.Add(Requisite.Create(
@@ -53,10 +62,10 @@ public class CreateVolunteerHandler
         var requisites = Requisites.Create(requisitesList);
 
         var volunteerToCreate = Volunteer.Create(id, fullName, descriptionResult.Value, 
-            request.Experience, phoneNumberResult.Value, socialMedias, requisites.Value);
+            command.Experience, phoneNumberResult.Value, socialMedias, requisites.Value);
 
         await _repository.Create(volunteerToCreate.Value, cancellationToken);
-
+        
         _logger.LogInformation("Volunteer created with id {id}", id);
         
         return (Guid)volunteerToCreate.Value.Id;

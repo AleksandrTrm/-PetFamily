@@ -97,6 +97,11 @@ namespace PetFamily.Domain.VolunteersManagement.Volunteer
         {
             SocialMedias = socialMedias;
         }
+
+        public void AddPet(Pet pet)
+        {
+            _pets.Add(pet);
+        }
         
         public static Result<Volunteer, Error> Create(
             VolunteerId id, 

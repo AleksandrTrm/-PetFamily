@@ -18,10 +18,10 @@ public class GetFileHandler
     }
 
     public async Task<Result<string, Error>> Handle(
-        GetFileRequest request,
+        GetFileCommand command,
         CancellationToken cancellationToken = default)
     {
-        var fileData = new FileData(null, request.BucketName, request.Path);
+        var fileData = new FileData(null, command.BucketName, command.Path);
 
         var result = await _fileProvider.GetFile(fileData, cancellationToken);
 
