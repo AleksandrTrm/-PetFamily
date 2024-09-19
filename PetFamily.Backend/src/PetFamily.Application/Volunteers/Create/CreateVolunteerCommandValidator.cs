@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
 using PetFamily.Application.Validation;
+using PetFamily.Domain.Shared;
 using PetFamily.Domain.ValueObjects;
+using PetFamily.Domain.VolunteersManagement.Volunteer;
 using PetFamily.Domain.VolunteersManagement.Volunteer.VolunteerValueObjects;
 
 namespace PetFamily.Application.Volunteers.Create;
@@ -21,6 +23,11 @@ public class CreateVolunteerCommandValidator : AbstractValidator<CreateVolunteer
         RuleForEach(c => c.SocialMedias)
             .MustBeValueObject(s => SocialMedia.Create(s.Title, s.Link));
 
+        RuleFor(e => e.Experience)
+            .Must(e => e is >= Volunteer.MIN_EXPERIENCE_YEARS and < Volunteer.MAX_EXPERIENCE_YEARS)
+            .WithError(Errors.General.InvalidCount(
+                Volunteer.MIN_EXPERIENCE_YEARS, "experience", Volunteer.MAX_EXPERIENCE_YEARS));
+        
         RuleForEach(c => c.Requisites)
             .MustBeValueObject(r =>
             {

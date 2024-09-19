@@ -50,7 +50,7 @@ public class CreateVolunteerHandler
         foreach (var socialMediaDto in socialMediasDto)
             socialMediasList.Add(SocialMedia.Create(socialMediaDto.Title, socialMediaDto.Link).Value);
 
-        var socialMedias = new SocialMedias(socialMediasList);
+        var socialMedias = new ValueObjectList<SocialMedia>(socialMediasList);
 
         var requisitesDto = command.Requisites;
         List<Requisite> requisitesList = [];
@@ -59,15 +59,15 @@ public class CreateVolunteerHandler
                 requisiteDto.Title, 
                 Description.Create(requisiteDto.Description).Value).Value);
 
-        var requisites = Requisites.Create(requisitesList);
+        var requisites = new ValueObjectList<Requisite>(requisitesList);
 
-        var volunteerToCreate = Volunteer.Create(id, fullName, descriptionResult.Value, 
-            command.Experience, phoneNumberResult.Value, socialMedias, requisites.Value);
+        var volunteerToCreate = new Volunteer(id, fullName, descriptionResult.Value, 
+            command.Experience, phoneNumberResult.Value, socialMedias, requisites);
 
-        await _repository.Create(volunteerToCreate.Value, cancellationToken);
+        await _repository.Create(volunteerToCreate, cancellationToken);
         
         _logger.LogInformation("Volunteer created with id {id}", id);
         
-        return (Guid)volunteerToCreate.Value.Id;
+        return (Guid)volunteerToCreate.Id;
     }
 }

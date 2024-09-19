@@ -40,7 +40,7 @@ public class UpdateSocialMediasHandler
         foreach (var socialMedia in command.SocialMedias)
             socialMedias.Add(SocialMedia.Create(socialMedia.Title, socialMedia.Link).Value);
 
-        var socialMediasToUpdate = new SocialMedias(socialMedias);
+        var socialMediasToUpdate = new ValueObjectList<SocialMedia>(socialMedias);
         
         volunteerResult.Value.UpdateSocialMedias(socialMediasToUpdate);
 

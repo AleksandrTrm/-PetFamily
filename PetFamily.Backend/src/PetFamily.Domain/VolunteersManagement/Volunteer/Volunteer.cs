@@ -14,6 +14,7 @@ namespace PetFamily.Domain.VolunteersManagement.Volunteer
         private readonly List<Pet> _pets; 
             
         public const int MAX_EXPERIENCE_YEARS = 80;
+        public const int MIN_EXPERIENCE_YEARS = 0;
         
         //ef core
         private Volunteer(VolunteerId id) : base(id)
@@ -26,8 +27,8 @@ namespace PetFamily.Domain.VolunteersManagement.Volunteer
             Description description, 
             int experience,
             PhoneNumber phoneNumber, 
-            SocialMedias socialMedias, 
-            Requisites requisites) : base(id)
+            ValueObjectList<SocialMedia> socialMedias, 
+            ValueObjectList<Requisite> requisites) : base(id)
         {
             FullName = fullName;
             Description = description;
@@ -45,9 +46,9 @@ namespace PetFamily.Domain.VolunteersManagement.Volunteer
 
         public PhoneNumber PhoneNumber { get; private set; }
 
-        public SocialMedias SocialMedias { get; private set; }
+        public ValueObjectList<SocialMedia> SocialMedias { get; private set; }
 
-        public Requisites Requisites { get; private set; }
+        public ValueObjectList<Requisite> Requisites { get; private set; }
 
         public IReadOnlyList<Pet> Pets => _pets;
 
@@ -88,12 +89,12 @@ namespace PetFamily.Domain.VolunteersManagement.Volunteer
             PhoneNumber = phoneNumber;
         }
 
-        public void UpdateRequisites(Requisites requisites)
+        public void UpdateRequisites(ValueObjectList<Requisite> requisites)
         {
             Requisites = requisites;
         }
 
-        public void UpdateSocialMedias(SocialMedias socialMedias)
+        public void UpdateSocialMedias(ValueObjectList<SocialMedia> socialMedias)
         {
             SocialMedias = socialMedias;
         }
@@ -103,19 +104,13 @@ namespace PetFamily.Domain.VolunteersManagement.Volunteer
             _pets.Add(pet);
         }
         
-        public static Result<Volunteer, Error> Create(
-            VolunteerId id, 
-            FullName fullFullName, 
-            Description description, 
-            int experience,
-            PhoneNumber phoneNumber, 
-            SocialMedias socialMedias, 
-            Requisites requisites)
+        public Result<Pet, Error> GetPetById(PetId petId)
         {
-            if (experience is < 0 or > MAX_EXPERIENCE_YEARS)
-                return Errors.General.InvalidLength(MAX_EXPERIENCE_YEARS, nameof(experience));
-            
-            return new Volunteer(id, fullFullName, description, experience, phoneNumber, socialMedias, requisites);
+            var pet = _pets.FirstOrDefault(p => p.Id.Value == petId.Value);
+            if (pet is null)
+                return Errors.General.NotFound(petId.Value);
+
+            return pet;
         }
     }
 }

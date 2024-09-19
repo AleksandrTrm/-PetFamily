@@ -44,7 +44,7 @@ public record Error
         return string.Join(SEPARATOR, Code, Message, Type);
     }
 
-    public static Error Deserialize(string serialized)
+    public static Error Deserialize(string serialized, string? invalidField = null)
     {
         var parts = serialized.Split(SEPARATOR);
 
@@ -54,7 +54,7 @@ public record Error
         if (Enum.TryParse<ErrorType>(parts[2], out var type) == false)
             throw new ArgumentException("Invalid serialized format");
         
-        return new Error(parts[0], parts[1], type); 
+        return new Error(parts[0], parts[1], type, invalidField); 
     }
 
     public ErrorList ToErrorList() => new([this]);

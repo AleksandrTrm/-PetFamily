@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Controllers.Volunteers.Requests;
 using PetFamily.API.Extensions;
+using PetFamily.API.Processors;
 using PetFamily.API.Response;
 using PetFamily.Application.DTOs;
 using PetFamily.Application.DTOs.VolunteerDtos;
-using PetFamily.Application.Volunteers.AddPet;
 using PetFamily.Application.Volunteers.Create;
 using PetFamily.Application.Volunteers.Delete;
+using PetFamily.Application.Volunteers.Pet.AddPet;
+using PetFamily.Application.Volunteers.Pet.UploadPetFiles;
 using PetFamily.Application.Volunteers.Update.UpdateMainInfo;
 using PetFamily.Application.Volunteers.Update.UpdateRequisites;
 using PetFamily.Application.Volunteers.Update.UpdateSocialMedias;
@@ -44,6 +46,25 @@ public class VolunteersController : ApplicationController
             return addPetResult.Error.ToResponse();
 
         return Ok(addPetResult.Value);
+    }
+
+    [HttpPost("{id:guid}/pet/photos")]
+    public async Task<ActionResult> UploadPetFiles(
+        [FromRoute] Guid id,
+        [FromForm] UploadPetFilesRequest request,
+        [FromServices] UploadPetFilesHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var processor = new FileProcessor();
+        var fileContents = processor.Process(request.Files);
+        
+        var command = request.ToCommand(id, fileContents);
+
+        var fileUploadingResult = await handler.Handle(command, cancellationToken);
+        if (fileUploadingResult.IsFailure)
+            return fileUploadingResult.Error.ToResponse();
+        
+        return Ok(fileUploadingResult.Value);
     }
     
     [HttpPost]

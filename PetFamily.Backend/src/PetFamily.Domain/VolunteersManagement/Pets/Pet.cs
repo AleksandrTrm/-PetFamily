@@ -27,12 +27,12 @@ namespace PetFamily.Domain.VolunteersManagement.Pets
             double height, 
             PhoneNumber ownerPhone, 
             bool isCastrated, 
-            DateOnly dateOfBirth, 
+            DateTime dateOfBirth, 
             bool isVaccinated, 
             Status status, 
-            Requisites requisites, 
+            ValueObjectList<Requisite> requisites, 
             DateTime createdAt, 
-            PetPhotos petPhotos) : base(id)
+            ValueObjectList<PetPhoto> petPhotos) : base(id)
         {
             Nickname = nickname;
             Description = description;
@@ -72,18 +72,23 @@ namespace PetFamily.Domain.VolunteersManagement.Pets
 
         public bool IsCastrated { get; private set; }
 
-        public DateOnly DateOfBirth { get; private set; }
+        public DateTime DateOfBirth { get; private set; }
 
         public bool IsVaccinated { get; private set; }
 
         public Status Status { get; private set; }
 
-        public Requisites Requisites { get; private set; }
+        public ValueObjectList<Requisite> Requisites { get; private set; }
 
         public DateTime CreatedAt { get; private set; }
 
-        public PetPhotos PetPhotos { get; private set; }
+        public ValueObjectList<PetPhoto> PetPhotos { get; private set; }
 
+        public void UpdateFiles(ValueObjectList<PetPhoto> petPhotos)
+        {
+            PetPhotos = petPhotos;
+        }
+        
         public void Delete()
         {
             _isDeleted = true;

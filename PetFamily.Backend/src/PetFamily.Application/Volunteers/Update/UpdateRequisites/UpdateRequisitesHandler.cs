@@ -12,7 +12,7 @@ public class UpdateRequisitesHandler
 {
     private readonly IVolunteersRepository _repository;
     private readonly ILogger<UpdateRequisitesHandler> _logger;
-    private IValidator<UpdateRequisitesCommand> _validator;
+    private readonly IValidator<UpdateRequisitesCommand> _validator;
 
     public UpdateRequisitesHandler(
         IVolunteersRepository repository,
@@ -44,11 +44,9 @@ public class UpdateRequisitesHandler
             requisites.Add(Requisite.Create(requisite.Title, description).Value);
         }
 
-        var requisitesToUpdate = Requisites.Create(requisites);
-        if (requisitesToUpdate.IsFailure)
-            return requisitesToUpdate.Error.ToErrorList();
+        var requisitesToUpdate = new ValueObjectList<Requisite>(requisites);
         
-        volunteerResult.Value.UpdateRequisites(requisitesToUpdate.Value);
+        volunteerResult.Value.UpdateRequisites(requisitesToUpdate);
 
         await _repository.Save(volunteerResult.Value, cancellationToken);
         

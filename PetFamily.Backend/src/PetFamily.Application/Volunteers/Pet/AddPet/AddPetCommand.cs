@@ -2,7 +2,7 @@
 using PetFamily.Application.DTOs.Pets;
 using PetFamily.Domain.VolunteersManagement.Pets.Enums;
 
-namespace PetFamily.Application.Volunteers.AddPet;
+namespace PetFamily.Application.Volunteers.Pet.AddPet;
 
 public record AddPetCommand(
     Guid VolunteerId,
@@ -15,7 +15,7 @@ public record AddPetCommand(
     double Height, 
     string OwnerPhone, 
     bool IsCastrated, 
-    DateOnly DateOfBirth, 
+    DateTime DateOfBirth, 
     bool IsVaccinated, 
     Status Status, 
     IEnumerable<RequisiteDto> Requisites);

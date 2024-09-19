@@ -113,7 +113,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         {
             rb.ToJson();
 
-            rb.OwnsMany(r => r.Value, vb =>
+            rb.OwnsMany(r => r.Values, vb =>
             {
                 vb.Property(r => r.Title)
                     .IsRequired()
@@ -134,7 +134,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         {
             ppb.ToJson();
 
-            ppb.OwnsMany(pp => pp.Value, pb =>
+            ppb.OwnsMany(pp => pp.Values, pb =>
             {
                 pb.Property(p => p.IsMain)
                     .IsRequired();
@@ -144,7 +144,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             });
         });
         
-        builder.Property<bool>("isDeleted")
+        builder.Property<bool>("_isDeleted")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .HasColumnName("is_deleted");
     }

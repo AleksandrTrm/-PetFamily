@@ -59,7 +59,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         {
             sb.ToJson();
 
-            sb.OwnsMany(s => s.Value, m =>
+            sb.OwnsMany(s => s.Values, m =>
             {
                 m.Property(sm => sm.Title)
                     .IsRequired();
@@ -73,7 +73,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         {
             rb.ToJson();
 
-            rb.OwnsMany(r => r.Value, vb =>
+            rb.OwnsMany(r => r.Values, vb =>
             {
                 vb.Property(r => r.Title)
                     .IsRequired();

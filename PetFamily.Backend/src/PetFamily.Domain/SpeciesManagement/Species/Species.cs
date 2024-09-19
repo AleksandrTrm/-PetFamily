@@ -7,6 +7,8 @@ namespace PetFamily.Domain.SpeciesManagement.Species;
 
 public class Species : Shared.Entity<SpeciesId>
 {
+    private List<Breed> _breeds;
+    
     //ef core
     private Species(SpeciesId id) : base(id)
     {
@@ -17,7 +19,7 @@ public class Species : Shared.Entity<SpeciesId>
         Value = species;
     }
 
-    public List<Breed> Breeds { get; private set; }
+    public IReadOnlyList<Breed> Breeds => _breeds;
     
     public string Value { get; }
 

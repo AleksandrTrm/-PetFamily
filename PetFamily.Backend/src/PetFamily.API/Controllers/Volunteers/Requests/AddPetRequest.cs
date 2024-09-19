@@ -14,7 +14,7 @@ public record AddPetRequest(
     double Height,
     string OwnerPhone,
     bool IsCastrated,
-    DateOnly DateOfBirth,
+    DateTime DateOfBirth,
     bool IsVaccinated,
     Status Status,
     IEnumerable<RequisiteDto> Requisites);

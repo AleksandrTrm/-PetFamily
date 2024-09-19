@@ -4,7 +4,7 @@ using PetFamily.Domain.Shared;
 using PetFamily.Domain.ValueObjects;
 using PetFamily.Domain.VolunteersManagement.Pets.PetValueObjects;
 
-namespace PetFamily.Application.Volunteers.AddPet;
+namespace PetFamily.Application.Volunteers.Pet.AddPet;
 
 public class AddPetCommandValidator : AbstractValidator<AddPetCommand>
 {

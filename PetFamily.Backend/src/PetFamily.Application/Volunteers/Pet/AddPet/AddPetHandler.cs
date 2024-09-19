@@ -5,10 +5,9 @@ using PetFamily.Application.Extensions;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.IDs;
 using PetFamily.Domain.ValueObjects;
-using PetFamily.Domain.VolunteersManagement.Pets;
 using PetFamily.Domain.VolunteersManagement.Pets.PetValueObjects;
 
-namespace PetFamily.Application.Volunteers.AddPet;
+namespace PetFamily.Application.Volunteers.Pet.AddPet;
 
 public class AddPetHandler
 {
@@ -51,7 +50,7 @@ public class AddPetHandler
         return pet.Id.Value;
     }
 
-    private Pet CreatePet(AddPetCommand command)
+    private Domain.VolunteersManagement.Pets.Pet CreatePet(AddPetCommand command)
     {
         var speciesBreed = SpeciesBreed.Create(SpeciesId.NewSpeciesId(), Guid.NewGuid()).Value;
 
@@ -62,9 +61,13 @@ public class AddPetHandler
             requisites.Add(
                 Requisite.Create(requisite.Title, Description.Create(requisite.Description).Value).Value);
 
-        var createdAt = DateTime.UtcNow;
+        var requisitesList = new ValueObjectList<Requisite>(requisites);
         
-        return new Pet(
+        var createdAt = DateTime.UtcNow;
+
+        var petPhotos = new ValueObjectList<PetPhoto>([]);
+        
+        return new Domain.VolunteersManagement.Pets.Pet(
             PetId.NewPetId(),
             Nickname.Create(command.Nickname).Value,
             speciesBreed,
@@ -83,8 +86,8 @@ public class AddPetHandler
             command.DateOfBirth,
             command.IsVaccinated,
             command.Status,
-            Requisites.Create(requisites).Value,
+            requisitesList,
             createdAt,
-            PetPhotos.Create([]).Value);
+            petPhotos);
     }
 }
