@@ -1,4 +1,5 @@
-﻿using PetFamily.Domain.Shared.Enums;
+﻿using System.Data;
+using PetFamily.Domain.Shared.Enums;
 
 namespace PetFamily.Domain.Shared;
 
@@ -6,11 +7,16 @@ public record Error
 {
     private const string SEPARATOR = "||";
     
-    private Error(string code, string message, ErrorType type)
+    private Error(
+        string code, 
+        string message,
+        ErrorType type, 
+        string? invalidField = null)
     {
         Code = code;
         Message = message;
         Type = type;
+        InvalidField = invalidField;
     }
 
     public string Code { get; }
@@ -18,25 +24,27 @@ public record Error
     public string Message { get; }
     
     public ErrorType Type { get; }
+    
+    public string? InvalidField { get; }
 
-    public static Error Validation(string code, string message) =>
-        new Error(code, message, ErrorType.Validation);
+    public static Error Validation(string code, string message, string? invalidField = null) =>
+        new(code, message, ErrorType.Validation, invalidField);
     
     public static Error NotFound(string code, string message) =>
-        new Error(code, message, ErrorType.NotFound);
+        new(code, message, ErrorType.NotFound);
     
     public static Error Conflict(string code, string message) =>
-        new Error(code, message, ErrorType.Conflict);
+        new(code, message, ErrorType.Conflict);
     
     public static Error Failure(string code, string message) =>
-        new Error(code, message, ErrorType.Failure);
+        new(code, message, ErrorType.Failure);
 
     public string Serialize()
     {
         return string.Join(SEPARATOR, Code, Message, Type);
     }
 
-    public static Error Deserialize(string serialized)
+    public static Error Deserialize(string serialized, string? invalidField = null)
     {
         var parts = serialized.Split(SEPARATOR);
 
@@ -46,6 +54,8 @@ public record Error
         if (Enum.TryParse<ErrorType>(parts[2], out var type) == false)
             throw new ArgumentException("Invalid serialized format");
         
-        return new Error(parts[0], parts[1], type); 
+        return new Error(parts[0], parts[1], type, invalidField); 
     }
+
+    public ErrorList ToErrorList() => new([this]);
 }

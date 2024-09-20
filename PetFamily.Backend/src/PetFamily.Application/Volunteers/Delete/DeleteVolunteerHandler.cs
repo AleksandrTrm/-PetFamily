@@ -1,5 +1,8 @@
-﻿using CSharpFunctionalExtensions;
+﻿using System.ComponentModel.DataAnnotations;
+using CSharpFunctionalExtensions;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Extensions;
 using PetFamily.Domain.Shared;
 
 namespace PetFamily.Application.Volunteers.Delete;
@@ -8,28 +11,35 @@ public class DeleteVolunteerHandler
 {
     private readonly ILogger<DeleteVolunteerHandler> _logger;
     private readonly IVolunteersRepository _repository;
+    private IValidator<DeleteVolunteerCommand> _validator;
 
     public DeleteVolunteerHandler(
         IVolunteersRepository repository,
+        IValidator<DeleteVolunteerCommand> validator,
         ILogger<DeleteVolunteerHandler> logger)
     {
+        _validator = validator;
         _repository = repository;
         _logger = logger;
     }
 
-    public async Task<Result<Guid, Error>> Handle(
-        DeleteVolunteerRequest request, 
+    public async Task<Result<Guid, ErrorList>> Handle(
+        DeleteVolunteerCommand command, 
         CancellationToken cancellationToken)
     {
-        var volunteerResult = await _repository.GetById(request.VolunteerId, cancellationToken);
+        var validationResult = await _validator.ValidateAsync(command, cancellationToken);
+        if (validationResult.IsValid == false)
+            return validationResult.ToList();
+        
+        var volunteerResult = await _repository.GetById(command.VolunteerId, cancellationToken);
         if (volunteerResult.IsFailure)
-            return volunteerResult.Error;
+            return volunteerResult.Error.ToErrorList();
 
         volunteerResult.Value.Delete();
         
         var deleteResult = await _repository.Save(volunteerResult.Value, cancellationToken);
         
-        _logger.LogInformation("Volunteer with {id} has been deleted", request.VolunteerId);
+        _logger.LogInformation("Volunteer with {id} has been deleted", command.VolunteerId);
         
         return deleteResult.Value;
     }

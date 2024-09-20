@@ -15,26 +15,18 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSerilog();
 
 Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console()
-    .WriteTo.Debug()
-    .Enrich.WithThreadId()
-    .Enrich.WithMachineName()
-    .Enrich.WithEnvironmentUserName()
-    .WriteTo.Seq(builder.Configuration.GetConnectionString("Seq")
-                 ?? throw new ArgumentNullException( "Seq"))
-    .MinimumLevel.Override("Microsoft.AspnetCore.Hosting", LogEventLevel.Warning)
-    .MinimumLevel.Override("Microsoft.AspnetCore.Mvc", LogEventLevel.Warning)
-    .MinimumLevel.Override("Microsoft.AspnetCore.Routing", LogEventLevel.Warning)
+    .WriteTo.Seq(
+        builder.Configuration.GetConnectionString("Seq") ??
+        throw new ArgumentNullException("Argument was null")
+    )
+    .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
+    .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning)
+    .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
     .CreateLogger();
 
 builder.Services
     .AddInfrastructure(builder.Configuration)
     .AddApplication();
-
-builder.Services.AddFluentValidationAutoValidation(configuration =>
-{
-    configuration.OverrideDefaultResultFactoryWith<CustomResultFactory>();
-});
 
 var app = builder.Build();
 
@@ -48,10 +40,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseSerilogRequestLogging();
+
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
 app.MapControllers();
+
+app.UseHttpsRedirection();
 
 app.Run();

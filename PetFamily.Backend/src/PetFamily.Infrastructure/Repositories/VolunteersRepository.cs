@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PetFamily.Application.Volunteers;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.IDs;
+using PetFamily.Domain.ValueObjects;
 using PetFamily.Domain.VolunteersManagement.Volunteer;
 
 namespace PetFamily.Infrastructure.Repositories;
@@ -16,10 +17,13 @@ public class VolunteersRepository : IVolunteersRepository
         _context = context;
     }
 
-    public async Task<Result<Guid>> Create(Volunteer volunteer, CancellationToken cancellationToken = default)
+    public async Task<Result<Guid, Error>> Create(Volunteer volunteer, CancellationToken cancellationToken = default)
     {
+        var volunteerResult = await GetByPhoneNumber(volunteer.PhoneNumber, cancellationToken);
+        if (volunteerResult.IsSuccess)
+            return Errors.General.AlreadyExists("PhoneNumber");
+        
         await _context.Volunteers.AddAsync(volunteer, cancellationToken);
-
         await _context.SaveChangesAsync(cancellationToken);
 
         return (Guid)volunteer.Id;
@@ -37,6 +41,20 @@ public class VolunteersRepository : IVolunteersRepository
             return Errors.General.NotFound(volunteerId);
 
         return volunteer;
+    }
+
+    public async Task<Result<Volunteer, Error>> GetByPhoneNumber(
+        PhoneNumber phoneNumber,
+        CancellationToken cancellationToken = default)
+    {
+        var volunteerResult = await _context.Volunteers
+            .Include(v => v.Pets)
+            .FirstOrDefaultAsync(v => v.PhoneNumber == phoneNumber, cancellationToken);
+
+        if (volunteerResult is null)
+            return Errors.General.NotFound();
+
+        return volunteerResult;
     }
 
     public async Task<Result<Guid>> Save(

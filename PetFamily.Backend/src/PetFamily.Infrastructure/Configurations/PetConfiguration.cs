@@ -49,13 +49,19 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
         });
 
-        builder.Property(p => p.Color)
-            .IsRequired()
-            .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+        builder.ComplexProperty(p => p.Color, db =>
+        {
+            db.Property(t => t.Value)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+        });
 
-        builder.Property(p => p.HealthInfo)
-            .IsRequired()
-            .HasMaxLength(Constants.MAX_MIDDLE_HIGH_LENGTH);
+        builder.ComplexProperty(p => p.HealthInfo, db =>
+        {
+            db.Property(t => t.Value)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_MIDDLE_HIGH_LENGTH);
+        });
 
         builder.ComplexProperty(p => p.Address, ab =>
         {
@@ -107,7 +113,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         {
             rb.ToJson();
 
-            rb.OwnsMany(r => r.Value, vb =>
+            rb.OwnsMany(r => r.Values, vb =>
             {
                 vb.Property(r => r.Title)
                     .IsRequired()
@@ -128,7 +134,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         {
             ppb.ToJson();
 
-            ppb.OwnsMany(pp => pp.Value, pb =>
+            ppb.OwnsMany(pp => pp.Values, pb =>
             {
                 pb.Property(p => p.IsMain)
                     .IsRequired();
@@ -138,7 +144,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             });
         });
         
-        builder.Property<bool>("isDeleted")
+        builder.Property<bool>("_isDeleted")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .HasColumnName("is_deleted");
     }

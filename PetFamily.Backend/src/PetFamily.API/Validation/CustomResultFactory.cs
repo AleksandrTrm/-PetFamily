@@ -14,19 +14,18 @@ public class CustomResultFactory : IFluentValidationAutoValidationResultFactory
     {
         if (validationProblemDetails is null)
             throw new InvalidOperationException("ValidationProblemsDetails is null");
-
-        List<ResponseError> errors = [];
-
+        
+        List<Error> errors = [];
         foreach (var (invalidField, validationErrors) in validationProblemDetails.Errors)
         {
             var responseErrors = from errorMessage in validationErrors
                 let error = Error.Deserialize(errorMessage)
-                select new ResponseError(error.Code, error.Message, invalidField);
+                select Error.Validation(error.Code, error.Message, invalidField);
 
             errors.AddRange(responseErrors);
         }
 
-        var envelope = Envelope.Error(errors);
+        var envelope = Envelope.Error(new ErrorList(errors));
 
         return new ObjectResult(envelope)
         {
