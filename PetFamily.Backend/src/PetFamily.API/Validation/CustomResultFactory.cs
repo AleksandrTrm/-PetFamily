@@ -2,6 +2,7 @@
 using PetFamily.Domain.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using PetFamily.Domain.Shared.Error;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Results;
 
 namespace PetFamily.API.Validation;

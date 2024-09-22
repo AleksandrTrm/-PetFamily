@@ -4,7 +4,8 @@ using FluentValidation;
 using PetFamily.Domain.Shared.IDs;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.Extensions;
-using PetFamily.Domain.ValueObjects;
+using PetFamily.Domain.Shared.Error;
+using PetFamily.Domain.VolunteersManagement.ValueObjects.Shared;
 
 namespace PetFamily.Application.Volunteers.Update.UpdateRequisites;
 

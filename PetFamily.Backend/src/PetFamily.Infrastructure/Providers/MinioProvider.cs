@@ -4,6 +4,7 @@ using PetFamily.Domain.Shared;
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.FileProvider;
+using PetFamily.Domain.Shared.Error;
 
 namespace PetFamily.Infrastructure.Providers;
 

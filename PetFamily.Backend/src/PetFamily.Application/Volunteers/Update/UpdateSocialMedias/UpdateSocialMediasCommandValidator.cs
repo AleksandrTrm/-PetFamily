@@ -1,7 +1,8 @@
 ﻿using FluentValidation;
 using PetFamily.Application.Validation;
 using PetFamily.Domain.Shared;
-using PetFamily.Domain.VolunteersManagement.Volunteer.VolunteerValueObjects;
+using PetFamily.Domain.Shared.Error;
+using PetFamily.Domain.VolunteersManagement.ValueObjects.Volunteer;
 
 namespace PetFamily.Application.Volunteers.Update.UpdateSocialMedias;
 

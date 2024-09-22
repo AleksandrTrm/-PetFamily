@@ -6,9 +6,9 @@ using PetFamily.Application.Database;
 using PetFamily.Application.Extensions;
 using PetFamily.Application.FileProvider;
 using PetFamily.Domain.Shared;
+using PetFamily.Domain.Shared.Error;
 using PetFamily.Domain.Shared.IDs;
-using PetFamily.Domain.VolunteersManagement.Pets.PetValueObjects;
-using PetFamily.Infrastructure.Providers;
+using PetFamily.Domain.VolunteersManagement.ValueObjects.Pet;
 
 namespace PetFamily.Application.Volunteers.Pet.UploadPetFiles;
 

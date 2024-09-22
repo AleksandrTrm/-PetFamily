@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.IDs;
-using PetFamily.Domain.SpeciesManagement.Species;
+using PetFamily.Domain.SpeciesManagement.Entitites.Species;
 
 namespace PetFamily.Infrastructure.Configurations;
 
