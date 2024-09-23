@@ -4,7 +4,8 @@ using FluentValidation;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.Extensions;
 using PetFamily.Application.Volunteers.Update.UpdateRequisites;
-using PetFamily.Domain.VolunteersManagement.Volunteer.VolunteerValueObjects;
+using PetFamily.Domain.Shared.Error;
+using PetFamily.Domain.VolunteersManagement.ValueObjects.Volunteer;
 
 namespace PetFamily.Application.Volunteers.Update.UpdateSocialMedias;
 

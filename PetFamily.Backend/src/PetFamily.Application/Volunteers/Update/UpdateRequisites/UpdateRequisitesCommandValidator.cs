@@ -1,7 +1,8 @@
 ﻿using FluentValidation;
 using PetFamily.Domain.Shared;
-using PetFamily.Domain.ValueObjects;
 using PetFamily.Application.Validation;
+using PetFamily.Domain.Shared.Error;
+using PetFamily.Domain.VolunteersManagement.ValueObjects.Shared;
 
 namespace PetFamily.Application.Volunteers.Update.UpdateRequisites;
 

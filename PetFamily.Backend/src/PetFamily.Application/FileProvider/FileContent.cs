@@ -1,4 +1,4 @@
-﻿using PetFamily.Domain.VolunteersManagement.Pets.PetValueObjects;
+﻿using PetFamily.Domain.VolunteersManagement.ValueObjects.Pet;
 
 namespace PetFamily.Application.FileProvider;
 

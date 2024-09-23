@@ -3,9 +3,10 @@ using FluentValidation;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.Extensions;
 using PetFamily.Domain.Shared;
+using PetFamily.Domain.Shared.Error;
 using PetFamily.Domain.Shared.IDs;
-using PetFamily.Domain.ValueObjects;
-using PetFamily.Domain.VolunteersManagement.Pets.PetValueObjects;
+using PetFamily.Domain.VolunteersManagement.ValueObjects.Pet;
+using PetFamily.Domain.VolunteersManagement.ValueObjects.Shared;
 
 namespace PetFamily.Application.Volunteers.Pet.AddPet;
 
@@ -50,7 +51,7 @@ public class AddPetHandler
         return pet.Id.Value;
     }
 
-    private Domain.VolunteersManagement.Pets.Pet CreatePet(AddPetCommand command)
+    private Domain.VolunteersManagement.Entities.Pets.Pet CreatePet(AddPetCommand command)
     {
         var speciesBreed = SpeciesBreed.Create(SpeciesId.NewSpeciesId(), Guid.NewGuid()).Value;
 
@@ -67,7 +68,7 @@ public class AddPetHandler
 
         var petPhotos = new ValueObjectList<PetPhoto>([]);
         
-        return new Domain.VolunteersManagement.Pets.Pet(
+        return new Domain.VolunteersManagement.Entities.Pets.Pet(
             PetId.NewPetId(),
             Nickname.Create(command.Nickname).Value,
             speciesBreed,

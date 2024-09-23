@@ -3,7 +3,8 @@ using PetFamily.Domain.Shared;
 using Microsoft.AspNetCore.Mvc;
 using CSharpFunctionalExtensions;
 using FluentValidation.Results;
-using PetFamily.Domain.Shared.Enums;
+using PetFamily.Domain.Shared.Error;
+using PetFamily.Domain.Shared.Error.Enums;
 
 namespace PetFamily.API.Extensions;
 

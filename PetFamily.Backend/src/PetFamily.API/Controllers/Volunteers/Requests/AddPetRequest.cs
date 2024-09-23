@@ -1,6 +1,6 @@
 ﻿using PetFamily.Application.DTOs;
 using PetFamily.Application.DTOs.Pets;
-using PetFamily.Domain.VolunteersManagement.Pets.Enums;
+using PetFamily.Domain.VolunteersManagement.Entities.Pets.Enums;
 
 namespace PetFamily.API.Controllers.Volunteers.Requests;
 

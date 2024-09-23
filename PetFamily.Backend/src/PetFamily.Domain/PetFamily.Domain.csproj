@@ -10,4 +10,9 @@
     <PackageReference Include="CSharpFunctionalExtensions" Version="2.42.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="SpeciesManagement\Entitites\" />
+    <Folder Include="VolunteersManagement\Entities\" />
+  </ItemGroup>
+
 </Project>

@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.Domain.Shared.IDs;
-using PetFamily.Domain.ValueObjects;
-using PetFamily.Domain.VolunteersManagement.Pets;
-using PetFamily.Domain.VolunteersManagement.Pets.Enums;
+using PetFamily.Domain.VolunteersManagement.Entities.Pets;
+using PetFamily.Domain.VolunteersManagement.Entities.Pets.Enums;
+using PetFamily.Domain.VolunteersManagement.ValueObjects.Shared;
 
 namespace PetFamily.Infrastructure.Configurations;
 
@@ -47,6 +47,12 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             db.Property(t => t.Value)
                 .IsRequired()
                 .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
+        });
+        
+        builder.ComplexProperty(p => p.SerialNumber, db =>
+        {
+            db.Property(t => t.Value)
+                .IsRequired();
         });
 
         builder.ComplexProperty(p => p.Color, db =>

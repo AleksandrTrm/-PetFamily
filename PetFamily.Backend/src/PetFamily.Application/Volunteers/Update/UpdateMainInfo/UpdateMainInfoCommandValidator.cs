@@ -1,10 +1,12 @@
 ﻿using FluentValidation;
 using PetFamily.Application.DTOs.VolunteerDtos;
 using PetFamily.Domain.Shared;
-using PetFamily.Domain.ValueObjects;
 using PetFamily.Application.Validation;
-using PetFamily.Domain.VolunteersManagement.Volunteer;
-using PetFamily.Domain.VolunteersManagement.Volunteer.VolunteerValueObjects;
+using PetFamily.Domain.Shared.Error;
+using PetFamily.Domain.VolunteersManagement;
+using PetFamily.Domain.VolunteersManagement.AggregateRoot;
+using PetFamily.Domain.VolunteersManagement.ValueObjects.Shared;
+using PetFamily.Domain.VolunteersManagement.ValueObjects.Volunteer;
 
 namespace PetFamily.Application.Volunteers.Update.UpdateMainInfo;
 

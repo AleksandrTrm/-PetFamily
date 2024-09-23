@@ -1,10 +1,10 @@
 ﻿using PetFamily.Domain.Shared;
-using PetFamily.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.Domain.Shared.IDs;
-using PetFamily.Domain.VolunteersManagement.Volunteer;
-using PetFamily.Domain.VolunteersManagement.Volunteer.VolunteerValueObjects;
+using PetFamily.Domain.VolunteersManagement;
+using PetFamily.Domain.VolunteersManagement.AggregateRoot;
+using PetFamily.Domain.VolunteersManagement.ValueObjects.Shared;
 
 namespace PetFamily.Infrastructure.Configurations;
 
