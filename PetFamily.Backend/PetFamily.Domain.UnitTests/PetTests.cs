@@ -15,7 +15,7 @@ public class PetTests
     [Fact]
     public async Task ChangePetSerialNumber_ShouldReturnError_WhenVolunteerHaveOnePet()
     {
-        var volunteer = CreateVolunteer(1);
+        var volunteer = CreateVolunteerWithPets(1);
 
         var result = volunteer.MovePet(volunteer.Pets[0].Id, SerialNumber.Create(2).Value);
 
@@ -26,7 +26,7 @@ public class PetTests
     [Fact]
     public async Task ChangePetSerialNumber_ShouldReturnError_WhenVolunteerHaveNotAnyPets()
     {
-        var volunteer = CreateVolunteer(0);
+        var volunteer = CreateVolunteerWithPets(0);
 
         var result = volunteer.MovePet(PetId.NewPetId(), SerialNumber.Create(1).Value);
 
@@ -37,7 +37,7 @@ public class PetTests
     [Fact]
     public async Task ChangePetSerialNumber_ShouldReturnError_WhenNewSerialNumberIsOutOfRange()
     {
-        var volunteer = CreateVolunteer(2);
+        var volunteer = CreateVolunteerWithPets(2);
 
         var result = volunteer.MovePet(volunteer.Pets[0].Id, SerialNumber.Create(3).Value);
 
@@ -47,7 +47,7 @@ public class PetTests
     [Fact]
     public async Task ChangePetSerialNumber_ShouldReturnError_WhenPetIsNotExists()
     {
-        var volunteer = CreateVolunteer(4);
+        var volunteer = CreateVolunteerWithPets(4);
 
         var petId = PetId.NewPetId();
         var result = volunteer.MovePet(petId, SerialNumber.Create(1).Value);
@@ -59,7 +59,7 @@ public class PetTests
     [Fact]
     public async Task ChangePetSerialNumber_ShouldReturnSuccess_WhenNewPetPlaceWasTheSameAsOldPlace()
     {
-        var volunteer = CreateVolunteer(3);
+        var volunteer = CreateVolunteerWithPets(3);
 
         var result = volunteer.MovePet(volunteer.Pets[0].Id, SerialNumber.Create(1).Value);
 
@@ -69,7 +69,7 @@ public class PetTests
     [Fact]
     public async Task ChangePetSerialNumber_ShouldMoveFirstPetToLastPlace()
     {
-        var volunteer = CreateVolunteer(5);
+        var volunteer = CreateVolunteerWithPets(5);
 
         var result = volunteer.MovePet(volunteer.Pets[0].Id, SerialNumber.Create(5).Value);
 
@@ -84,7 +84,7 @@ public class PetTests
     [Fact]
     public async Task ChangePetSerialNumber_ShouldMoveLastPetToFirstPlace()
     {
-        var volunteer = CreateVolunteer(5);
+        var volunteer = CreateVolunteerWithPets(5);
 
         var result = volunteer.MovePet(volunteer.Pets[4].Id, SerialNumber.Create(1).Value);
 
@@ -99,7 +99,7 @@ public class PetTests
     [Fact]
     public async Task ChangePetSerialNumber_ShouldMoveFirstPetToSecondPlace()
     {
-        var volunteer = CreateVolunteer(3);
+        var volunteer = CreateVolunteerWithPets(3);
 
         var result = volunteer.MovePet(volunteer.Pets[0].Id, SerialNumber.Create(2).Value);
 
@@ -109,7 +109,7 @@ public class PetTests
         volunteer.Pets[2].SerialNumber.Value.Should().Be(3);
     }
 
-    private Volunteer CreateVolunteer(int desiredPetCount)
+    private Volunteer CreateVolunteerWithPets(int desiredPetCount)
     {
         var volunteer = new Volunteer(
             VolunteerId.NewVolunteerId(),
