@@ -10,7 +10,6 @@ namespace PetFamily.Infrastructure.Providers;
 
 public class MinioProvider : IFileProvider
 {
-    private const int MIN_FILES_COUNT = 1;
     private const int THREADS_LIMIT = 5;
     
     private readonly IMinioClient _minioClient;

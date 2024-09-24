@@ -35,15 +35,6 @@ public class UploadPetFilesCommandValidator : AbstractValidator<UploadPetFilesCo
             RuleFor(p => p.Content.Length)
                 .Must(x => x <= MAX_FILE_SIZE)
                 .WithError(Errors.General.InvalidValue("file size"));
-
-            //RuleFor(p => p.FileName)
-            //    .Must(name =>
-            //    {
-            //        var extension = Path.GetExtension(name);
-            //        
-            //        return Constants.ALLOWED_IMAGES_EXTENSIONS.Contains(name);
-            //    })
-            //    .WithError(Errors.General.InvalidValue("file type"));
         }
     }
 }
