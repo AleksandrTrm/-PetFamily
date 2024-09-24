@@ -1,10 +1,10 @@
 ﻿using Minio;
 using Minio.DataModel.Args;
-using PetFamily.Domain.Shared;
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.FileProvider;
 using PetFamily.Domain.Shared.Error;
+using FileInfo = PetFamily.Application.FileProvider.FileInfo;
 
 namespace PetFamily.Infrastructure.Providers;
 
@@ -25,12 +25,14 @@ public class MinioProvider : IFileProvider
         IEnumerable<FileContent> files,
         CancellationToken cancellationToken = default)
     {
+        return Errors.General.NotFound();
+        
         var fileContents = files.ToList();
         
         var semaphoreSlim = new SemaphoreSlim(THREADS_LIMIT);
         try
         {
-            await BucketExistsCheck(fileContents.Select(f => f.BucketName), cancellationToken);
+            await BucketExistsCheck(fileContents.Select(f => f.FileInfo.BucketName), cancellationToken);
             
             var tasks = fileContents
                 .Select(async f => await UploadFile(f, semaphoreSlim, cancellationToken));
@@ -59,21 +61,21 @@ public class MinioProvider : IFileProvider
         await semaphoreSlim.WaitAsync(cancellationToken);
 
         var putObjectArgs = new PutObjectArgs()
-            .WithBucket(fileContent.BucketName)
+            .WithBucket(fileContent.FileInfo.BucketName)
             .WithStreamData(fileContent.Stream)
             .WithObjectSize(fileContent.Stream.Length)
-            .WithObject(fileContent.Path);
+            .WithObject(fileContent.FileInfo.Path);
 
         try
         {
             await _minioClient.PutObjectAsync(putObjectArgs, cancellationToken);
 
-            return fileContent.Path.Path;
+            return fileContent.FileInfo.Path;
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error while uploading file with path - '{path}' to bucket '{bucket}'",
-                fileContent.Path, fileContent.BucketName);
+                fileContent.FileInfo.Path, fileContent.FileInfo.BucketName);
 
             return Error.Failure("File.Upload", "Occurred error while uploading file to minio");
         }
@@ -84,24 +86,25 @@ public class MinioProvider : IFileProvider
     }
 
     public async Task<Result<string, Error>> Remove(
-        FileContent fileContent,
+        FileInfo fileInfo,
         CancellationToken cancellationToken = default)
     {
         try
         {
-            await BucketExistsCheck([fileContent.BucketName], cancellationToken);
+            await BucketExistsCheck([fileInfo.BucketName], cancellationToken);
 
             var removeObjectArgs = new RemoveObjectArgs()
-                .WithBucket(fileContent.BucketName)
-                .WithObject(fileContent.Path);
+                .WithBucket(fileInfo.BucketName)
+                .WithObject(fileInfo.Path);
 
             await _minioClient.RemoveObjectAsync(removeObjectArgs, cancellationToken);
 
-            return fileContent.Path.Path;
+            return fileInfo.Path;
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Fail to delete file in minio");
+            
             return Error.Failure("file.delete", "Fail to delete file in minio");
         }
     }
@@ -112,19 +115,22 @@ public class MinioProvider : IFileProvider
     {
         try
         {
-            await BucketExistsCheck([fileContent.BucketName], cancellationToken);
+            await BucketExistsCheck([fileContent.FileInfo.BucketName], cancellationToken);
 
             var presignedGetObjectArgs = new PresignedGetObjectArgs()
-                .WithBucket(fileContent.BucketName)
-                .WithObject(fileContent.Path)
+                .WithBucket(fileContent.FileInfo.BucketName)
+                .WithObject(fileContent.FileInfo.Path)
                 .WithExpiry(60 * 60);
 
             return await _minioClient.PresignedGetObjectAsync(presignedGetObjectArgs);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "File on the path '{path}' does not exists", fileContent.Path);
-            return Error.Failure("file.get", $"The file can not be found at the path '{fileContent.Path}'");
+            _logger.LogError(ex, "File on the path '{path}' does not exists", fileContent.FileInfo.Path);
+            
+            return Error.Failure(
+                "file.get",
+                $"The file can not be found at the path '{fileContent.FileInfo.Path}'");
         }
     }
 
@@ -137,19 +143,22 @@ public class MinioProvider : IFileProvider
         {
             try
             {
-                await BucketExistsCheck([fileContent.BucketName], cancellationToken);
+                await BucketExistsCheck([fileContent.FileInfo.BucketName], cancellationToken);
 
                 var presignedGetObjectArgs = new PresignedGetObjectArgs()
-                    .WithBucket(fileContent.BucketName)
-                    .WithObject(fileContent.Path)
+                    .WithBucket(fileContent.FileInfo.BucketName)
+                    .WithObject(fileContent.FileInfo.Path)
                     .WithExpiry(60 * 60);
 
                 filesLinks.Add(await _minioClient.PresignedGetObjectAsync(presignedGetObjectArgs));
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "File on the path '{path}' does not exists", fileContent.Path);
-                return Error.Failure("file.get", $"The file can not be found at the path '{fileContent.Path}'");
+                _logger.LogError(ex, "File on the path '{path}' does not exists", fileContent.FileInfo.Path);
+                
+                return Error.Failure(
+                    "file.get", 
+                    $"The file can not be found at the path '{fileContent.FileInfo.Path}'");
             }
         }
 

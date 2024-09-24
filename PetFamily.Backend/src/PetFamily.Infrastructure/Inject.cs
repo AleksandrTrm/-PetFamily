@@ -6,7 +6,12 @@ using PetFamily.Infrastructure.Providers;
 using Microsoft.Extensions.Configuration;
 using PetFamily.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using PetFamily.Application.FileProvider;
+using PetFamily.Application.Messaging;
+using PetFamily.Infrastructure.BackgroundServices;
+using PetFamily.Infrastructure.MessageQueues;
+using FileInfo = PetFamily.Application.FileProvider.FileInfo;
 
 namespace PetFamily.Infrastructure;
 
@@ -20,6 +25,11 @@ public static class Inject
         services.AddScoped<IVolunteersRepository, VolunteersRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddMinio(configuration);
+
+        services.AddHostedService<FilesCleanerBackgroundService>();
+        
+        services.AddScoped<IFilesCleanerService, FilesCleanerService>();
+        services.AddSingleton<IMessageQueue<IEnumerable<FileInfo>>, InMemoryMessageQueue<IEnumerable<FileInfo>>>();
         
         return services;
     }
