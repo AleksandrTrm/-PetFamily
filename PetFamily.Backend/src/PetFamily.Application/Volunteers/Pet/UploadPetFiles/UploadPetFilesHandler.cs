@@ -1,14 +1,15 @@
-﻿using System.Runtime.CompilerServices;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.Database;
 using PetFamily.Application.Extensions;
 using PetFamily.Application.FileProvider;
+using PetFamily.Application.Messaging;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.Error;
 using PetFamily.Domain.Shared.IDs;
 using PetFamily.Domain.VolunteersManagement.ValueObjects.Pet;
+using FileInfo = PetFamily.Application.FileProvider.FileInfo;
 
 namespace PetFamily.Application.Volunteers.Pet.UploadPetFiles;
 
@@ -21,14 +22,17 @@ public class UploadPetFilesHandler
     private ILogger<UploadPetFilesHandler> _logger;
     private IFileProvider _fileProvider;
     private IValidator<UploadPetFilesCommand> _validator;
+    private IMessageQueue<IEnumerable<FileInfo>> _messageQueue;
 
     public UploadPetFilesHandler(
         IVolunteersRepository repository, 
         IUnitOfWork unitOfWork, 
         IFileProvider fileProvider,
+        IMessageQueue<IEnumerable<FileInfo>> messageQueue,
         IValidator<UploadPetFilesCommand> validator,
         ILogger<UploadPetFilesHandler> logger)
     {
+        _messageQueue = messageQueue;
         _validator = validator;
         _fileProvider = fileProvider;
         _logger = logger;
@@ -65,19 +69,23 @@ public class UploadPetFilesHandler
                 if (fileContentPath.IsFailure)
                     return fileContentPath.Error.ToErrorList();
 
-                petFiles.Add(new FileContent(file.Content, fileContentPath.Value, BUCKET_NAME));
+                petFiles.Add(new FileContent(file.Content, new FileInfo(fileContentPath.Value, BUCKET_NAME)));
             }
 
             var petFilesList = petFiles
-                .Select(f => PetPhoto.Create(f.Path, false))
+                .Select(f => PetPhoto.Create(f.FileInfo.Path, false))
                 .Select(f => f.Value);
 
             petResult.Value.UpdateFiles(new ValueObjectList<PetPhoto>(petFilesList));
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-
+            
             var uploadFilesResult = await _fileProvider.UploadFiles(petFiles, cancellationToken);
             if (uploadFilesResult.IsFailure)
+            {
+                await _messageQueue.WriteAsync(petFiles.Select(f => f.FileInfo), cancellationToken);
+                
                 return uploadFilesResult.Error.ToErrorList();
+            }
 
             transaction.Commit();
 

@@ -1,10 +1,8 @@
 using PetFamily.Application;
 using PetFamily.Infrastructure;
 using PetFamily.API.Middlewares;
-using PetFamily.API.Validation;
 using Serilog;
 using Serilog.Events;
-using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +17,7 @@ Log.Logger = new LoggerConfiguration()
         builder.Configuration.GetConnectionString("Seq") ??
         throw new ArgumentNullException("Argument was null")
     )
+    .WriteTo.Console()
     .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
     .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning)
     .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)

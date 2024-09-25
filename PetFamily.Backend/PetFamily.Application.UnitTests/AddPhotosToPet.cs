@@ -1,13 +1,14 @@
-﻿using System.Data;
+﻿using System.Collections;
+using Moq;
+using System.Data;
 using CSharpFunctionalExtensions;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using Moq;
 using PetFamily.Application.Database;
 using PetFamily.Application.FileProvider;
+using PetFamily.Application.Messaging;
 using PetFamily.Application.Volunteers;
 using PetFamily.Application.Volunteers.Pet.UploadPetFiles;
 using PetFamily.Domain.Shared;
@@ -19,30 +20,24 @@ using PetFamily.Domain.VolunteersManagement.Entities.Pets.Enums;
 using PetFamily.Domain.VolunteersManagement.ValueObjects.Pet;
 using PetFamily.Domain.VolunteersManagement.ValueObjects.Shared;
 using PetFamily.Domain.VolunteersManagement.ValueObjects.Volunteer;
+using FileInfo = PetFamily.Application.FileProvider.FileInfo;
 
 namespace PetFamily.Application.UnitTests;
 
 public class AddPhotosToPet
 {
-    private readonly Mock<IVolunteersRepository> _repositoryMock;
-    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-    private readonly Mock<ILogger<UploadPetFilesHandler>> _loggerMock;
-    private readonly Mock<IFileProvider> _fileProviderMock;
+    private readonly Mock<IVolunteersRepository> _repositoryMock = new();
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
+    private readonly Mock<ILogger<UploadPetFilesHandler>> _loggerMock = new();
+    private readonly Mock<IFileProvider> _fileProviderMock = new();
     private readonly Mock<IDbTransaction> _dbTransaction = new();
-    private readonly Mock<IValidator<UploadPetFilesCommand>> _validatorMock;
-    
-    public AddPhotosToPet()
-    {
-        _repositoryMock = new Mock<IVolunteersRepository>();
-        _unitOfWorkMock = new Mock<IUnitOfWork>();
-        _loggerMock = new Mock<ILogger<UploadPetFilesHandler>>();
-        _fileProviderMock = new Mock<IFileProvider>();
-        _validatorMock = new Mock<IValidator<UploadPetFilesCommand>>();
-    }
+    private readonly Mock<IValidator<UploadPetFilesCommand>> _validatorMock = new();
+    private readonly Mock<IMessageQueue<IEnumerable<FileInfo>>> _messageQueueMock = new();
 
     [Fact]
     public async Task AddPhotosToPet_ShouldReturnSuccess()
     {
+        //arrange
         var ct = new CancellationToken();
         
         var volunteer = CreateVolunteerWithPets(1);
@@ -65,7 +60,8 @@ public class AddPhotosToPet
             .Returns(Task.CompletedTask);
 
         _fileProviderMock.Setup(fp => fp.UploadFiles(filesContents, ct))
-            .ReturnsAsync(Result.Success<IEnumerable<string>, Error>(filesContents.Select(f => f.Path.Path)));
+            .ReturnsAsync(Result.Success<IEnumerable<string>, Error>(filesContents
+                .Select(f => f.FileInfo.Path)));
 
         _validatorMock.Setup(v => v.ValidateAsync(command, ct))
             .ReturnsAsync(new ValidationResult());
@@ -74,17 +70,21 @@ public class AddPhotosToPet
             _repositoryMock.Object, 
             _unitOfWorkMock.Object,
             _fileProviderMock.Object,
+            _messageQueueMock.Object,
             _validatorMock.Object,
             _loggerMock.Object);
         
+        //act
         var result = await handler.Handle(command, ct);
 
+        //assert
         result.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
     public async Task AddPhotosToPet_ShouldReturnError_WhileValidateCommand()
     {
+        //arrange
         var ct = new CancellationToken();
 
         var volunteer = CreateVolunteerWithPets(1);
@@ -110,11 +110,14 @@ public class AddPhotosToPet
             _repositoryMock.Object, 
             _unitOfWorkMock.Object,
             _fileProviderMock.Object,
+            _messageQueueMock.Object,
             _validatorMock.Object,
             _loggerMock.Object);
         
+        //act
         var result = await handler.Handle(command, ct);
 
+        //assert
         result.IsFailure.Should().BeTrue();
         result.Error.First().InvalidField.Should().Be(nameof(command.Files));
     }
@@ -122,6 +125,7 @@ public class AddPhotosToPet
     [Fact]
     public async Task AddPhotosToPet_ShouldReturnError_WhenVolunteerNotFound()
     {
+        //arrange
         var ct = new CancellationToken();
 
         var volunteer = CreateVolunteerWithPets(1);
@@ -144,11 +148,14 @@ public class AddPhotosToPet
             _repositoryMock.Object, 
             _unitOfWorkMock.Object,
             _fileProviderMock.Object,
+            _messageQueueMock.Object,
             _validatorMock.Object,
             _loggerMock.Object);
         
+        //act
         var result = await handler.Handle(command, ct);
 
+        //assert
         var error = result.Error.First();
         
         result.IsFailure.Should().BeTrue();
@@ -159,6 +166,7 @@ public class AddPhotosToPet
     [Fact]
     public async Task AddPhotosToPet_ShouldReturnError_WhileSavingPhotos()
     {
+        //arrange
         var ct = new CancellationToken();
 
         var volunteer = CreateVolunteerWithPets(1);
@@ -190,11 +198,14 @@ public class AddPhotosToPet
             _repositoryMock.Object, 
             _unitOfWorkMock.Object,
             _fileProviderMock.Object,
+            _messageQueueMock.Object,
             _validatorMock.Object,
             loggerMock.Object);
         
+        //act
         var result = await handler.Handle(command, ct);
 
+        //assert
         var error = result.Error.First();
         
         result.IsFailure.Should().BeTrue();
@@ -206,8 +217,11 @@ public class AddPhotosToPet
     {
         var filesContents = new List<FileContent>()
         {
-            new(new MemoryStream(), FilePath.Create(Guid.NewGuid().ToString() + ".jpg").Value, "photos"),
-            new(new MemoryStream(), FilePath.Create(Guid.NewGuid().ToString() + ".jpg").Value, "photos")
+            new(new MemoryStream(), 
+                new FileInfo(FilePath.Create(Guid.NewGuid().ToString() + ".jpg").Value, "photos")),
+            
+            new(new MemoryStream(), 
+                new FileInfo(FilePath.Create(Guid.NewGuid().ToString() + ".jpg").Value, "photos"))
         };
 
         return filesContents;
@@ -215,7 +229,7 @@ public class AddPhotosToPet
     
     private IEnumerable<UploadFileCommand> CreateFilesCommands(IEnumerable<FileContent> filesContents)
     {
-        return filesContents.Select(fc => new UploadFileCommand(fc.Stream, fc.Path));
+        return filesContents.Select(fc => new UploadFileCommand(fc.Stream, fc.FileInfo.Path));
     }
     
     private Volunteer CreateVolunteerWithPets(int desiredPetCount)

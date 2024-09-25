@@ -10,7 +10,7 @@ public interface IFileProvider
         CancellationToken cancellationToken = default);
 
     Task<Result<string, Error>> Remove(
-        FileContent fileContent,
+        FileInfo fileInfo,
         CancellationToken cancellationToken = default);
 
     Task<Result<string, Error>> GetFile(
