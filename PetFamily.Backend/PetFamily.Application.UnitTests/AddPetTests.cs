@@ -35,6 +35,7 @@ public class CreatePetTests
     [Fact]
     public async Task AddPet_ShouldReturnSuccess()
     {
+        //arrange
         var ct = new CancellationToken();
         var volunteer = CreateVolunteerWithPets(0);
 
@@ -65,8 +66,10 @@ public class CreatePetTests
         var handler = new AddPetHandler(_volunteerRepositoryMock.Object, _addPetLoggerMock.Object, 
             _addPetValidatorMock.Object);
 
+        //act
         var result = await handler.Handle(command, ct);
         
+        //assert
         result.IsSuccess.Should().BeTrue();
         volunteer.Pets.Should().ContainSingle();
     }
@@ -74,6 +77,7 @@ public class CreatePetTests
     [Fact]
     public async Task AddPet_ShouldReturnValidationError_WhenCommandIsInvalid()
     {
+        //arrange
         var ct = new CancellationToken();
         var volunteer = CreateVolunteerWithPets(0);
 
@@ -107,12 +111,14 @@ public class CreatePetTests
 
         _addPetValidatorMock.Setup(a => a.ValidateAsync(command, ct))
             .ReturnsAsync(validationResult);
-
+        
         var handler = new AddPetHandler(_volunteerRepositoryMock.Object, _addPetLoggerMock.Object, 
             _addPetValidatorMock.Object);
 
+        //act
         var result = await handler.Handle(command, ct);
 
+        //assert
         result.IsFailure.Should().BeTrue();
         result.Error.First().InvalidField.Should().Be("OwnerPhone");
     }
@@ -120,6 +126,7 @@ public class CreatePetTests
     [Fact]
     public async Task AddPet_ShouldReturnError_WhenSavingPet()
     {
+        //arrange
         var ct = new CancellationToken();
         var volunteer = CreateVolunteerWithPets(0);
 

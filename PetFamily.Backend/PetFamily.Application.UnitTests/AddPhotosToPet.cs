@@ -37,6 +37,7 @@ public class AddPhotosToPet
     [Fact]
     public async Task AddPhotosToPet_ShouldReturnSuccess()
     {
+        //arrange
         var ct = new CancellationToken();
         
         var volunteer = CreateVolunteerWithPets(1);
@@ -73,14 +74,17 @@ public class AddPhotosToPet
             _validatorMock.Object,
             _loggerMock.Object);
         
+        //act
         var result = await handler.Handle(command, ct);
 
+        //assert
         result.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
     public async Task AddPhotosToPet_ShouldReturnError_WhileValidateCommand()
     {
+        //arrange
         var ct = new CancellationToken();
 
         var volunteer = CreateVolunteerWithPets(1);
@@ -110,8 +114,10 @@ public class AddPhotosToPet
             _validatorMock.Object,
             _loggerMock.Object);
         
+        //act
         var result = await handler.Handle(command, ct);
 
+        //assert
         result.IsFailure.Should().BeTrue();
         result.Error.First().InvalidField.Should().Be(nameof(command.Files));
     }
@@ -119,6 +125,7 @@ public class AddPhotosToPet
     [Fact]
     public async Task AddPhotosToPet_ShouldReturnError_WhenVolunteerNotFound()
     {
+        //arrange
         var ct = new CancellationToken();
 
         var volunteer = CreateVolunteerWithPets(1);
@@ -145,8 +152,10 @@ public class AddPhotosToPet
             _validatorMock.Object,
             _loggerMock.Object);
         
+        //act
         var result = await handler.Handle(command, ct);
 
+        //assert
         var error = result.Error.First();
         
         result.IsFailure.Should().BeTrue();
@@ -157,6 +166,7 @@ public class AddPhotosToPet
     [Fact]
     public async Task AddPhotosToPet_ShouldReturnError_WhileSavingPhotos()
     {
+        //arrange
         var ct = new CancellationToken();
 
         var volunteer = CreateVolunteerWithPets(1);
@@ -192,8 +202,10 @@ public class AddPhotosToPet
             _validatorMock.Object,
             loggerMock.Object);
         
+        //act
         var result = await handler.Handle(command, ct);
 
+        //assert
         var error = result.Error.First();
         
         result.IsFailure.Should().BeTrue();
