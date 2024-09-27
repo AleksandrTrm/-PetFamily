@@ -1,4 +1,6 @@
 ﻿using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace PetFamily.Infrastructure.Extensions;
@@ -11,8 +13,10 @@ public static class EfCoreFluentApiExtensions
         Func<TDto, TValueObject> toValueObjectsSelector)
     {
         return property.HasConversion(
-            values => JsonSerializer.Serialize(values, JsonSerializerOptions.Default),
-            json => );
+                values => SerializeValueObjectCollection(values, toDtoSelector),
+                json => DeserializeDtoCollection(json, toValueObjectsSelector),
+                CreateCollectionValueComparer<TValueObject>())
+            .HasColumnType("jsonb");
     }
 
     private static string SerializeValueObjectCollection<TValueObject, TDto>(
@@ -24,11 +28,19 @@ public static class EfCoreFluentApiExtensions
     }
 
     private static IReadOnlyList<TValueObject> DeserializeDtoCollection<TValueObject, TDto>(
-        string json, Func<TValueObject, TDto> selector)
+        string json, Func<TDto, TValueObject> selector)
 
     {
-        var values = JsonSerializer.Deserialize<IEnumerable<>>(json);
-        
-        return 
+        var values = JsonSerializer.Deserialize<IEnumerable<TDto>>(json) ?? [];
+
+        return values.Select(selector).ToList();
+    }
+
+    private static ValueComparer<IReadOnlyList<T>> CreateCollectionValueComparer<T>()
+    {
+        return new(
+            (c1, c2) => c1!.SequenceEqual(c2!),
+            c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v!.GetHashCode())),
+            c => c.ToList());
     }
 }

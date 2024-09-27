@@ -12,5 +12,5 @@ public class VolunteerDto
 
     public RequisiteDto[] Requisites { get; init; }
     
-    public SocialMediaDto[] SocialMedias { get; init; }
+    public IEnumerable<SocialMediaDto> SocialMedias { get; init; }
 }

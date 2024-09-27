@@ -248,7 +248,8 @@ public class AddPhotosToPet
             var pet = new Pet(
                 PetId.NewPetId(),
                 Nickname.Create($"Pet " + (i + 1)).Value,
-                SpeciesBreed.Create(SpeciesId.NewSpeciesId(), BreedId.NewBreedId().Value).Value,
+                Guid.NewGuid(),
+                BreedId.NewBreedId(), 
                 Description.Create("generalDescription").Value,
                 Color.Create("color").Value,
                 HealthInfo.Create("healthInfo").Value,

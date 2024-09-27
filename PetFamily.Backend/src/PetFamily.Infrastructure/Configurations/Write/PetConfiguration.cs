@@ -29,18 +29,13 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH);
         });
 
-        builder.ComplexProperty(p => p.SpeciesBreed, sbb =>
-        {
-            sbb.Property(s => s.SpeciesId)
-                .HasConversion(
-                    s => s.Value,
-                    v => SpeciesId.Create(v))
-                .IsRequired();
-            
-            sbb.Property(b => b.BreedId)
-                .IsRequired();
-        });
+        builder.Property(v => v.SpeciesId);
 
+        builder.ComplexProperty(v => v.BreedId, bb =>
+        {
+            bb.Property(b => b.Value);
+        });
+        
         builder.ComplexProperty(p => p.Description, db =>
         {
             db.Property(t => t.Value)

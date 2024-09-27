@@ -54,8 +54,6 @@ public class AddPetHandler : ICommandHandler<Guid, AddPetCommand>
 
     private Domain.VolunteersManagement.Entities.Pets.Pet CreatePet(AddPetCommand command)
     {
-        var speciesBreed = SpeciesBreed.Create(SpeciesId.NewSpeciesId(), Guid.NewGuid()).Value;
-
         var addressDto = command.Address;
 
         List<Requisite> requisites = [];
@@ -72,7 +70,8 @@ public class AddPetHandler : ICommandHandler<Guid, AddPetCommand>
         return new Domain.VolunteersManagement.Entities.Pets.Pet(
             PetId.NewPetId(),
             Nickname.Create(command.Nickname).Value,
-            speciesBreed,
+            Guid.NewGuid(),
+            BreedId.NewBreedId(), 
             Description.Create(command.Description).Value,
             Color.Create(command.Color).Value,
             HealthInfo.Create(command.HealthInfo).Value,

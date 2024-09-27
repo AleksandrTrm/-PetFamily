@@ -2,5 +2,5 @@
 
 public class PetDto
 {
-    
+    public string Nickname { get; init; }
 }

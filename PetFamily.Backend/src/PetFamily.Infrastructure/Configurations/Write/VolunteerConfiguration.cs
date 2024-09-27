@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using System.Text.Json;
+﻿using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -10,6 +9,7 @@ using PetFamily.Domain.Shared.IDs;
 using PetFamily.Domain.VolunteersManagement.AggregateRoot;
 using PetFamily.Domain.VolunteersManagement.ValueObjects.Shared;
 using PetFamily.Domain.VolunteersManagement.ValueObjects.Volunteer;
+using PetFamily.Infrastructure.Extensions;
 
 namespace PetFamily.Infrastructure.Configurations.Write;
 
@@ -60,34 +60,15 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 .HasMaxLength(PhoneNumber.MAX_PHONE_NUMBER_LENGTH);
         });
 
-        builder.Property(v => v.SocialMedias)
-            .HasConversion(
-                sm => JsonSerializer.Serialize(sm
-                    .Select(s => new SocialMediaDto(s.Title, s.Link)), JsonSerializerOptions.Default),
-                json => JsonSerializer
-                    .Deserialize<IReadOnlyList<SocialMediaDto>>(json, JsonSerializerOptions.Default)!
-                    .Select(sm => SocialMedia.Create(sm.Title, sm.Link).Value)
-                    .ToList(),
-                new ValueComparer<IReadOnlyList<SocialMediaDto>>(
-                    (c1, c2) => c1.SequenceEqual(c2),
-                    c => c
-                        .Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
-                    c => c.ToList()));
+        builder.Property(v => v.Requisites.Values)
+            .HasValueObjectsJsonConversion(
+                r => new RequisiteDto(r.Title, r.Description.Value),
+                dto => Requisite.Create(dto.Title, Description.Create(dto.Description).Value).Value);
 
-        builder.Property(v => v.Requisites)
-            .HasConversion(
-                r => JsonSerializer.Serialize(r
-                    .Select(r => new RequisiteDto(r.Title, r.Description.Value)), JsonSerializerOptions.Default),
-                json => JsonSerializer
-                    .Deserialize<IReadOnlyList<RequisiteDto>>(json, JsonSerializerOptions.Default)!
-                    .Select(sm => Requisite.Create(sm.Title, Description.Create(sm.Description).Value).Value)
-                    .ToList(),
-                new ValueComparer<IReadOnlyList<SocialMediaDto>>(
-                    (c1, c2) => c1.SequenceEqual(c2),
-                    c => c
-                        .Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
-                    c => c.ToList()))
-            .HasJsonPropertyName("requisites");
+        builder.Property(v => v.SocialMedias.Values)
+            .HasValueObjectsJsonConversion(
+                sm => new SocialMediaDto(sm.Title, sm.Link),
+                dto => SocialMedia.Create(dto.Title, dto.Link).Value);
 
         builder.HasMany(v => v.Pets)
             .WithOne()

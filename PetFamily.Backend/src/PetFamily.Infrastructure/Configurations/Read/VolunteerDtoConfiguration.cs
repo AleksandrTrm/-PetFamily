@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.Application.DTOs.VolunteerDtos;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace PetFamily.Infrastructure.Configurations.Read;
 
@@ -21,6 +21,6 @@ public class VolunteerDtoConfiguration : IEntityTypeConfiguration<VolunteerDto>
             .HasConversion(
                 sm => JsonSerializer.Serialize(string.Empty, JsonSerializerOptions.Default),
                 json => JsonSerializer
-                    .Deserialize<SocialMediaDto[]>(json, JsonSerializerOptions.Default)!);
+                    .Deserialize<IEnumerable<SocialMediaDto>>(json, JsonSerializerOptions.Default)!);
     }
 }
