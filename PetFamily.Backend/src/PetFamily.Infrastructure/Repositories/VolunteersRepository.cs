@@ -1,20 +1,21 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
-using PetFamily.Application.Volunteers;
+using PetFamily.Application.Features.Commands.Volunteers;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.Error;
 using PetFamily.Domain.Shared.IDs;
 using PetFamily.Domain.VolunteersManagement;
 using PetFamily.Domain.VolunteersManagement.AggregateRoot;
 using PetFamily.Domain.VolunteersManagement.ValueObjects.Shared;
+using PetFamily.Infrastructure.DbContexts;
 
 namespace PetFamily.Infrastructure.Repositories;
 
 public class VolunteersRepository : IVolunteersRepository
 {
-    private ApplicationDbContext _context;
+    private WriteDbContext _context;
 
-    public VolunteersRepository(ApplicationDbContext context)
+    public VolunteersRepository(WriteDbContext context)
     {
         _context = context;
     }
