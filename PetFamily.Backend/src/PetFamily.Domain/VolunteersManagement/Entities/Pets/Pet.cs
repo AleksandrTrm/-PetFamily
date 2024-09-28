@@ -3,6 +3,7 @@ using PetFamily.Domain.Shared.IDs;
 using PetFamily.Domain.VolunteersManagement.Entities.Pets.Enums;
 using PetFamily.Domain.VolunteersManagement.ValueObjects.Pet;
 using PetFamily.Domain.VolunteersManagement.ValueObjects.Shared;
+using PetFamily.Domain.VolunteersManagement.ValueObjects.Volunteer;
 
 namespace PetFamily.Domain.VolunteersManagement.Entities.Pets
 {
@@ -10,7 +11,6 @@ namespace PetFamily.Domain.VolunteersManagement.Entities.Pets
     {
         private bool _isDeleted = false;
         
-        //ef core
         private Pet(PetId id) : base(id)
         {
         }
@@ -30,9 +30,9 @@ namespace PetFamily.Domain.VolunteersManagement.Entities.Pets
             DateTime dateOfBirth, 
             bool isVaccinated, 
             Status status, 
-            ValueObjectList<Requisite> requisites, 
             DateTime createdAt, 
-            ValueObjectList<PetPhoto> petPhotos) : base(id)
+            IReadOnlyList<Requisite> requisites, 
+            IReadOnlyList<PetPhoto> petPhotos) : base(id)
         {
             Nickname = nickname;
             Description = description;
@@ -83,11 +83,11 @@ namespace PetFamily.Domain.VolunteersManagement.Entities.Pets
 
         public Status Status { get; private set; }
 
-        public ValueObjectList<Requisite> Requisites { get; private set; }
+        public IReadOnlyList<Requisite> Requisites { get; private set; }
+
+        public IReadOnlyList<PetPhoto> PetPhotos { get; private set; }
 
         public DateTime CreatedAt { get; private set; }
-
-        public ValueObjectList<PetPhoto> PetPhotos { get; private set; }
 
         public void SetSerialNumber(SerialNumber serialNumber) =>
             SerialNumber = serialNumber;

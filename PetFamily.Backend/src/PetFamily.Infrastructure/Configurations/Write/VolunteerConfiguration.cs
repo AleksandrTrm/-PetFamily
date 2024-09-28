@@ -25,21 +25,25 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             .HasConversion(
                 v => v.Value,
                 v => VolunteerId.Create(v))
-            .IsRequired();
+            .IsRequired()
+            .HasColumnName("id");
 
         builder.ComplexProperty(v => v.FullName, nb =>
         {
-            nb.Property(n => n.FirstName)
+            nb.Property(n => n.Name)
                 .IsRequired()
-                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH)
+                .HasColumnName("name");
 
-            nb.Property(n => n.LastName)
+            nb.Property(n => n.Surname)
                 .IsRequired()
-                .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH);
+                .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH)
+                .HasColumnName("surname");
 
             nb.Property(n => n.Patronymic)
                 .IsRequired()
-                .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH);
+                .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH)
+                .HasColumnName("patronymic");
         });
 
 
@@ -47,28 +51,33 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         {
             db.Property(t => t.Value)
                 .IsRequired()
-                .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
+                .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH)
+                .HasColumnName("description");
         });
 
         builder.Property(v => v.Experience)
-            .IsRequired();
+            .IsRequired()
+            .HasColumnName("experience");
 
         builder.ComplexProperty(p => p.PhoneNumber, pb =>
         {
             pb.Property(t => t.Value)
                 .IsRequired()
-                .HasMaxLength(PhoneNumber.MAX_PHONE_NUMBER_LENGTH);
+                .HasMaxLength(PhoneNumber.MAX_PHONE_NUMBER_LENGTH)
+                .HasColumnName("phone_number");
         });
 
-        builder.Property(v => v.Requisites.Values)
+        builder.Property(v => v.Requisites)
             .HasValueObjectsJsonConversion(
                 r => new RequisiteDto(r.Title, r.Description.Value),
-                dto => Requisite.Create(dto.Title, Description.Create(dto.Description).Value).Value);
+                dto => Requisite.Create(dto.Title, Description.Create(dto.Description).Value).Value)
+            .HasColumnName("requisites");
 
-        builder.Property(v => v.SocialMedias.Values)
+        builder.Property(v => v.SocialMedias)
             .HasValueObjectsJsonConversion(
                 sm => new SocialMediaDto(sm.Title, sm.Link),
-                dto => SocialMedia.Create(dto.Title, dto.Link).Value);
+                dto => SocialMedia.Create(dto.Title, dto.Link).Value)
+            .HasColumnName("social_medias");
 
         builder.HasMany(v => v.Pets)
             .WithOne()

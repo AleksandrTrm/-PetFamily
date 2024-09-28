@@ -1,6 +1,6 @@
 ﻿using PetFamily.Application.Features.Commands.Volunteers.Pet.UploadPetFiles;
 
-namespace PetFamily.API.Controllers.Volunteers.Requests;
+namespace PetFamily.API.Controllers.Volunteers.Write.Requests;
 
 public record UploadPetFilesRequest(Guid PetId, IFormFileCollection Files)
 {

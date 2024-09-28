@@ -66,7 +66,14 @@ public class CreateVolunteerHandler : ICommandHandler<Guid, CreateVolunteerComma
         var volunteerToCreate = new Volunteer(id, fullName, descriptionResult.Value, 
             command.Experience, phoneNumberResult.Value, socialMedias, requisites);
 
-        await _repository.Create(volunteerToCreate, cancellationToken);
+        var createResult = await _repository.Create(volunteerToCreate, cancellationToken);
+        if (createResult.IsFailure)
+        {
+            _logger.LogInformation("Attempt of create volunteer with already exists phone number. VolunteerId was {id}",
+                volunteerToCreate.Id.Value);
+            
+            return createResult.Error.ToErrorList();
+        }
         
         _logger.LogInformation("Volunteer created with id {id}", id);
         

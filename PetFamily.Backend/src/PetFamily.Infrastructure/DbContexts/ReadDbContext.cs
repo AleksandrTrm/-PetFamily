@@ -25,7 +25,9 @@ public class ReadDbContext(IConfiguration configuration) : DbContext, IReadDbCon
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(WriteDbContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(
+            typeof(ReadDbContext).Assembly,
+            type => type.FullName?.Contains("Configurations.Read") ?? false);
     } 
 
     private ILoggerFactory CreateLoggerFactory() =>

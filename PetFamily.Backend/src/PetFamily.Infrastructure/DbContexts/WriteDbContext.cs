@@ -22,7 +22,9 @@ public class WriteDbContext(IConfiguration configuration) : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(WriteDbContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(
+            typeof(WriteDbContext).Assembly,
+            type => type.FullName?.Contains("Configurations.Write") ?? false);
     } 
 
     private ILoggerFactory CreateLoggerFactory() =>

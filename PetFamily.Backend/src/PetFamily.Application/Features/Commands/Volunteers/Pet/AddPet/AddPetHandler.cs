@@ -87,8 +87,8 @@ public class AddPetHandler : ICommandHandler<Guid, AddPetCommand>
             command.DateOfBirth,
             command.IsVaccinated,
             command.Status,
-            requisitesList,
             createdAt,
+            requisitesList,
             petPhotos);
     }
 }

@@ -1,3 +1,4 @@
+using PetFamily.API.Extensions;
 using PetFamily.Application;
 using PetFamily.Infrastructure;
 using PetFamily.API.Middlewares;
@@ -37,6 +38,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    await app.ApplyMigrations();
 }
 
 app.UseSerilogRequestLogging();

@@ -261,9 +261,9 @@ public class AddPhotosToPet
                 DateTime.Now,
                 true,
                 Status.LookingForHome,
-                new ValueObjectList<Requisite>(new List<Requisite>()),
                 DateTime.Now,
-                new ValueObjectList<PetPhoto>(new List<PetPhoto>()));
+                new List<Requisite>(),
+                new List<PetPhoto>(new List<PetPhoto>()));
 
             volunteer.AddPet(pet);
         }

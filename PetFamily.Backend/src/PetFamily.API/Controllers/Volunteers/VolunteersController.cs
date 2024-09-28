@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PetFamily.API.Controllers.Volunteers.Requests;
+using PetFamily.API.Controllers.Volunteers.Get.Requests;
+using PetFamily.API.Controllers.Volunteers.Write.Requests;
 using PetFamily.API.Extensions;
 using PetFamily.API.Processors;
 using PetFamily.API.Response;
@@ -12,12 +13,25 @@ using PetFamily.Application.Features.Commands.Volunteers.Pet.UploadPetFiles;
 using PetFamily.Application.Features.Commands.Volunteers.Update.UpdateMainInfo;
 using PetFamily.Application.Features.Commands.Volunteers.Update.UpdateRequisites;
 using PetFamily.Application.Features.Commands.Volunteers.Update.UpdateSocialMedias;
+using PetFamily.Application.Features.Queries.Volunteers.GetFilteredVolunteersWithPagination;
+using PetFamily.Application.Models;
 using UpdateVolunteerMainInfoDto = PetFamily.Application.DTOs.VolunteerDtos.UpdateVolunteerMainInfoDto;
 
 namespace PetFamily.API.Controllers.Volunteers;
 
 public class VolunteersController : ApplicationController
 {
+    [HttpGet("volunteers")]
+    public async Task<ActionResult> GetVolunteers(
+        [FromQuery] GetVolunteersRequest request,
+        [FromServices] GetFilteredVolunteersWithPaginationQueryHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var result = await handler.Handle(request.ToQuery(), cancellationToken);
+
+        return Ok(result);
+    }
+    
     [HttpPost("{id:guid}/pet")]
     public async Task<ActionResult> AddPet(
         [FromRoute] Guid id,

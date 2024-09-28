@@ -24,6 +24,7 @@ public static class Inject
         services
             .AddDatabase()
             .AddRepositories()
+            .AddHostedServices()
             .AddMinio(configuration);
         
         return services;

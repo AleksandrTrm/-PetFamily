@@ -1,10 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PetFamily.Application.DTOs;
+using PetFamily.Application.DTOs.Pets;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.IDs;
 using PetFamily.Domain.VolunteersManagement.Entities.Pets;
 using PetFamily.Domain.VolunteersManagement.Entities.Pets.Enums;
+using PetFamily.Domain.VolunteersManagement.ValueObjects.Pet;
 using PetFamily.Domain.VolunteersManagement.ValueObjects.Shared;
+using PetFamily.Infrastructure.Extensions;
 
 namespace PetFamily.Infrastructure.Configurations.Write;
 
@@ -109,40 +113,17 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 s => s.ToString(),
                 s => (Status)Enum.Parse(typeof(Status), s));
 
-        builder.OwnsOne(p => p.Requisites, rb =>
-        {
-            rb.ToJson();
+        builder.Property(p => p.Requisites)
+            .HasValueObjectsJsonConversion(
+                value => new RequisiteDto(value.Title, value.Description.Value),
+                dto => Requisite.Create(dto.Title, Description.Create(dto.Description).Value).Value);
 
-            rb.OwnsMany(r => r.Values, vb =>
-            {
-                vb.Property(r => r.Title)
-                    .IsRequired()
-                    .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
-
-                vb.OwnsOne(r => r.Description, db =>
-                {
-                    db.Property(d => d.Value)
-                        .IsRequired()
-                        .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
-                });
-            });
-        });
-
-        builder.Property(p => p.CreatedAt);
+        builder.Property(p => p.PetPhotos)
+            .HasValueObjectsJsonConversion(
+                value => new PetPhotoDto(value.Path, value.IsMain),
+                dto => PetPhoto.Create(dto.Path, dto.IsMain).Value);
         
-        builder.OwnsOne(p => p.PetPhotos, ppb =>
-        {
-            ppb.ToJson();
-
-            ppb.OwnsMany(pp => pp.Values, pb =>
-            {
-                pb.Property(p => p.IsMain)
-                    .IsRequired();
-
-                pb.Property(p => p.Path)
-                    .IsRequired();
-            });
-        });
+        builder.Property(p => p.CreatedAt);
         
         builder.Property<bool>("_isDeleted")
             .UsePropertyAccessMode(PropertyAccessMode.Field)

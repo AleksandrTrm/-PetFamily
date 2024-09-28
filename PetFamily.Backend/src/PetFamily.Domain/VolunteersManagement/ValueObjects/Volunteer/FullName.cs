@@ -6,18 +6,18 @@ namespace PetFamily.Domain.VolunteersManagement.ValueObjects.Volunteer;
 
 public class FullName
 {
-    private FullName(string firstName, string lastName, string? patronymic = null)
+    private FullName(string name, string surname, string? patronymic = null)
     {
-        FirstName = firstName;
-        LastName = lastName;
+        Name = name;
+        Surname = surname;
         
         if (patronymic is not null)
             Patronymic = patronymic;
     }
 
-    public string FirstName { get; }
+    public string Name { get; }
     
-    public string LastName { get; }
+    public string Surname { get; }
 
     public string Patronymic { get; } = string.Empty;
 

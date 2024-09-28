@@ -2,5 +2,5 @@
 
 public interface IQueryHandler<TResponse, in TCommand>
 {
-    Task<TResponse> Handle(TCommand command, CancellationToken cancellationToken);
+    Task<TResponse> Handle(TCommand query, CancellationToken cancellationToken);
 }
