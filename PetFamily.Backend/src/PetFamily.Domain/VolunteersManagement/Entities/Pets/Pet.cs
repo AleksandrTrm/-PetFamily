@@ -17,8 +17,7 @@ namespace PetFamily.Domain.VolunteersManagement.Entities.Pets
 
         public Pet(PetId id, 
             Nickname nickname, 
-            Guid speciesId, 
-            BreedId breedId,
+            SpeciesBreed speciesBreed,
             Description description,
             Color color, 
             HealthInfo healthInfo, 
@@ -36,8 +35,7 @@ namespace PetFamily.Domain.VolunteersManagement.Entities.Pets
         {
             Nickname = nickname;
             Description = description;
-            SpeciesId = speciesId;
-            BreedId = breedId;
+            SpeciesBreed = speciesBreed;
             Color = color;
             HealthInfo = healthInfo;
             Address = address;
@@ -55,9 +53,7 @@ namespace PetFamily.Domain.VolunteersManagement.Entities.Pets
 
         public Nickname Nickname { get; private set; }
 
-        public Guid SpeciesId { get; private set; }
-        
-        public BreedId BreedId { get; private set; } 
+        public SpeciesBreed SpeciesBreed { get; private set; }
 
         public Description Description { get; private set; }
 

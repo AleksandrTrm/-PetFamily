@@ -70,8 +70,7 @@ public class AddPetHandler : ICommandHandler<Guid, AddPetCommand>
         return new Domain.VolunteersManagement.Entities.Pets.Pet(
             PetId.NewPetId(),
             Nickname.Create(command.Nickname).Value,
-            Guid.NewGuid(),
-            BreedId.NewBreedId(), 
+            new SpeciesBreed(SpeciesId.NewSpeciesId(), Guid.NewGuid()), 
             Description.Create(command.Description).Value,
             Color.Create(command.Color).Value,
             HealthInfo.Create(command.HealthInfo).Value,

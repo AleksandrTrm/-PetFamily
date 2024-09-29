@@ -31,7 +31,7 @@ public class GetFilteredVolunteersWithPaginationQueryHandler
         Expression<Func<VolunteerDto, object>> keySelector = query.SortBy?.ToLower() switch
         {
             "name" => volunteer => volunteer.FullName.Name,
-            "surname" => volunteer => volunteer.FullName.Patronymic!,
+            "surname" => volunteer => volunteer.FullName.Surname,
             "experience" => volunteer => volunteer.Experience,
             _ => (volunteer) => volunteer.Id
         };

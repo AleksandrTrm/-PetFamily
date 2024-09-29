@@ -33,11 +33,15 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasMaxLength(Constants.MAX_MIDDLE_TEXT_LENGTH);
         });
 
-        builder.Property(v => v.SpeciesId);
-
-        builder.ComplexProperty(v => v.BreedId, bb =>
+        builder.ComplexProperty(v => v.SpeciesBreed, bb =>
         {
-            bb.Property(b => b.Value);
+            bb.Property(s => s.SpeciesId)
+                .HasConversion(
+                    p => p.Value,
+                    value => SpeciesId.Create(value))
+                .IsRequired();
+            
+            bb.Property(b => b.BreedId);
         });
         
         builder.ComplexProperty(p => p.Description, db =>
