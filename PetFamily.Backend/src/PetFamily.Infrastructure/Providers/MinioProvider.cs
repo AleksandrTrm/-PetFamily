@@ -25,8 +25,6 @@ public class MinioProvider : IFileProvider
         IEnumerable<FileContent> files,
         CancellationToken cancellationToken = default)
     {
-        return Errors.General.NotFound();
-        
         var fileContents = files.ToList();
         
         var semaphoreSlim = new SemaphoreSlim(THREADS_LIMIT);

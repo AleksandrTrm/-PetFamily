@@ -29,8 +29,8 @@ namespace PetFamily.Domain.VolunteersManagement.AggregateRoot
             Description description, 
             int experience,
             PhoneNumber phoneNumber, 
-            ValueObjectList<SocialMedia> socialMedias, 
-            ValueObjectList<Requisite> requisites) : base(id)
+            IReadOnlyList<SocialMedia> socialMedias, 
+            IReadOnlyList<Requisite> requisites) : base(id)
         {
             FullName = fullName;
             Description = description;
@@ -48,9 +48,9 @@ namespace PetFamily.Domain.VolunteersManagement.AggregateRoot
 
         public PhoneNumber PhoneNumber { get; private set; }
 
-        public ValueObjectList<SocialMedia> SocialMedias { get; private set; }
+        public IReadOnlyList<SocialMedia> SocialMedias { get; private set; }
 
-        public ValueObjectList<Requisite> Requisites { get; private set; }
+        public IReadOnlyList<Requisite> Requisites { get; private set; }
 
         public IReadOnlyList<Pet> Pets => _pets;
 

@@ -7,10 +7,10 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.Database;
+using PetFamily.Application.Features.Commands.Volunteers;
+using PetFamily.Application.Features.Commands.Volunteers.Pet.UploadPetFiles;
 using PetFamily.Application.FileProvider;
 using PetFamily.Application.Messaging;
-using PetFamily.Application.Volunteers;
-using PetFamily.Application.Volunteers.Pet.UploadPetFiles;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.IDs;
 using PetFamily.Domain.Shared.Error;
@@ -248,7 +248,7 @@ public class AddPhotosToPet
             var pet = new Pet(
                 PetId.NewPetId(),
                 Nickname.Create($"Pet " + (i + 1)).Value,
-                SpeciesBreed.Create(SpeciesId.NewSpeciesId(), BreedId.NewBreedId().Value).Value,
+                new SpeciesBreed(SpeciesId.NewSpeciesId(), Guid.NewGuid()),
                 Description.Create("generalDescription").Value,
                 Color.Create("color").Value,
                 HealthInfo.Create("healthInfo").Value,
@@ -260,9 +260,9 @@ public class AddPhotosToPet
                 DateTime.Now,
                 true,
                 Status.LookingForHome,
-                new ValueObjectList<Requisite>(new List<Requisite>()),
                 DateTime.Now,
-                new ValueObjectList<PetPhoto>(new List<PetPhoto>()));
+                new List<Requisite>(),
+                new List<PetPhoto>(new List<PetPhoto>()));
 
             volunteer.AddPet(pet);
         }

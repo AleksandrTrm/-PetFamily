@@ -149,7 +149,7 @@ public class PetTests
             var pet = new Pet(
                 PetId.NewPetId(),
                 Nickname.Create($"Pet " + (i + 1)).Value,
-                SpeciesBreed.Create(SpeciesId.NewSpeciesId(), BreedId.NewBreedId().Value).Value,
+                new SpeciesBreed(SpeciesId.NewSpeciesId(), Guid.NewGuid()),
                 Description.Create("generalDescription").Value,
                 Color.Create("color").Value,
                 HealthInfo.Create("healthInfo").Value,
@@ -161,9 +161,9 @@ public class PetTests
                 DateTime.Now,
                 true,
                 Status.LookingForHome,
-                new ValueObjectList<Requisite>(new List<Requisite>()),
                 DateTime.Now,
-                new ValueObjectList<PetPhoto>(new List<PetPhoto>()));
+                new List<Requisite>(),
+                new List<PetPhoto>(new List<PetPhoto>()));
 
             volunteer.AddPet(pet);
         }

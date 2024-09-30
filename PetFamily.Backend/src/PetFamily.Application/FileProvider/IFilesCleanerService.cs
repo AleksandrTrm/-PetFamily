@@ -1,4 +1,4 @@
-﻿namespace PetFamily.Infrastructure.BackgroundServices;
+﻿namespace PetFamily.Application.FileProvider;
 
 public interface IFilesCleanerService
 {

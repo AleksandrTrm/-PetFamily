@@ -8,8 +8,8 @@ using PetFamily.Domain.Shared.IDs;
 using Microsoft.Extensions.Logging;
 using PetFamily.Domain.Shared.Error;
 using PetFamily.Application.DTOs.Pets;
-using PetFamily.Application.Volunteers;
-using PetFamily.Application.Volunteers.Pet.AddPet;
+using PetFamily.Application.Features.Commands.Volunteers;
+using PetFamily.Application.Features.Commands.Volunteers.Pet.AddPet;
 using PetFamily.Domain.VolunteersManagement.AggregateRoot;
 using PetFamily.Domain.VolunteersManagement.Entities.Pets;
 using PetFamily.Domain.VolunteersManagement.Entities.Pets.Enums;
@@ -173,7 +173,7 @@ public class CreatePetTests
             var pet = new Pet(
                 PetId.NewPetId(),
                 Nickname.Create($"Pet " + (i + 1)).Value,
-                SpeciesBreed.Create(SpeciesId.NewSpeciesId(), BreedId.NewBreedId().Value).Value,
+                new SpeciesBreed(SpeciesId.NewSpeciesId(), Guid.NewGuid()),
                 Description.Create("generalDescription").Value,
                 Color.Create("color").Value,
                 HealthInfo.Create("healthInfo").Value,
@@ -185,9 +185,9 @@ public class CreatePetTests
                 DateTime.Now,
                 true,
                 Status.LookingForHome,
-                new ValueObjectList<Requisite>(new List<Requisite>()),
                 DateTime.Now,
-                new ValueObjectList<PetPhoto>(new List<PetPhoto>()));
+                new List<Requisite>(),
+                new List<PetPhoto>(new List<PetPhoto>()));
 
             volunteer.AddPet(pet);
         }
