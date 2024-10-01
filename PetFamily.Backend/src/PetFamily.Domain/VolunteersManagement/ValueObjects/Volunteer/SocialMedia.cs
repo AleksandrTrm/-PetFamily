@@ -4,7 +4,7 @@ using PetFamily.Domain.Shared.Error;
 
 namespace PetFamily.Domain.VolunteersManagement.ValueObjects.Volunteer
 {
-    public class SocialMedia
+    public record SocialMedia
     {
         //ef core
         private SocialMedia()

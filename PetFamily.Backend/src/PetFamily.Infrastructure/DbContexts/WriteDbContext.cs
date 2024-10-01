@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using PetFamily.Domain.SpeciesManagement.Entitites.Species;
+using PetFamily.Domain.SpeciesManagement.AggregateRoot;
 using PetFamily.Domain.VolunteersManagement.AggregateRoot;
 
 namespace PetFamily.Infrastructure.DbContexts;
