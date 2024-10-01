@@ -1,6 +1,6 @@
 ﻿namespace PetFamily.Domain.Shared.IDs;
 
-public class BreedId
+public record BreedId
 {
     //ef core
     private BreedId()
