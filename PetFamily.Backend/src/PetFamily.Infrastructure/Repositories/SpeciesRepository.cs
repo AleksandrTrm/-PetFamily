@@ -18,15 +18,34 @@ public class SpeciesRepository : ISpeciesRepository
         _context = context;
     }
 
+    public async Task<Result<Breed, Error>> GetBreedByName(Guid speciesId, string name)
+    {
+        var species = await _context.Species
+            .Include(s => s.Breeds)
+            .FirstOrDefaultAsync(s => s.Id == SpeciesId.Create(speciesId));
+        if (species is null)
+            return Errors.General.NotFound(speciesId);
+
+        var breed = species.Breeds.FirstOrDefault(b => b.Name == name);
+        if (breed is null)
+            return Errors.General.NotFound();
+
+        return breed;
+    }
+
+    public async Task<Result<Species, Error>> GetSpeciesByName(string name)
+    {
+        var species = await _context.Species.FirstOrDefaultAsync(s => s.Name == name);
+        if (species is null)
+            return Errors.General.NotFound();
+
+        return species;
+    }
+    
     public async Task<Result<Guid, Error>> CreateSpecies(
         Species species, 
         CancellationToken cancellationToken = default)
     {
-        var getSpeciesResult = await _context.Species
-            .FirstOrDefaultAsync(s => s.Value == species.Value, cancellationToken);
-        if (getSpeciesResult is not null)
-            return Errors.General.AlreadyExists(nameof(species));
-
         await _context.Species.AddAsync(species, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
         
@@ -43,10 +62,6 @@ public class SpeciesRepository : ISpeciesRepository
             .FirstOrDefaultAsync(s => s.Id == speciesId, cancellationToken);
         if (getSpeciesResult is null)
             return Errors.General.NotFound(speciesId.Value, "species");
-
-        var getBreedResult = getSpeciesResult.FindBreed(breed);
-        if (getBreedResult is not null)
-            return Errors.General.AlreadyExists(nameof(breed));
 
         getSpeciesResult.AddBreed(breed);
 

@@ -8,6 +8,10 @@ namespace PetFamily.Application.Features.Commands.SpeciesManagement;
 
 public interface ISpeciesRepository
 {
+    Task<Result<Breed, Error>> GetBreedByName(Guid speciesId, string name);
+    
+    Task<Result<Species, Error>> GetSpeciesByName(string name);
+    
     Task<Result<Guid, Error>> CreateSpecies(
         Species species, 
         CancellationToken cancellationToken = default);

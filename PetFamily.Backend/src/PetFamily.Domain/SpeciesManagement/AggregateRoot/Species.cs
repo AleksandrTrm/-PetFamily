@@ -1,4 +1,6 @@
-﻿using PetFamily.Domain.Shared.IDs;
+﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared.Error;
+using PetFamily.Domain.Shared.IDs;
 using PetFamily.Domain.SpeciesManagement.Entitites;
 using PetFamily.Domain.SpeciesManagement.ValueObjects;
 
@@ -13,22 +15,27 @@ public class Species : Shared.Entity<SpeciesId>
     {
     }
     
-    public Species(SpeciesId id, SpeciesValue value) : base(id)
+    public Species(SpeciesId id, string name) : base(id)
     {
-        Value = value;
+        Name = name;
     }
 
     public IReadOnlyList<Breed> Breeds => _breeds;
     
-    public SpeciesValue Value { get; }
+    public string Name { get; }
 
     public Breed? FindBreed(Breed breed)
     {
-        return _breeds.FirstOrDefault(b => b.Value.Value == breed.Value.Value);
+        return _breeds.FirstOrDefault(b => b.Name == breed.Name);
     }
 
-    public void AddBreed(Breed breed)
+    public UnitResult<Error> AddBreed(Breed breed)
     {
+        if (_breeds.FirstOrDefault(b => b.Name == breed.Name) is not null)
+            return Error.Conflict("record.already.exists", "This breed already exists");
+        
         _breeds.Add(breed);
+
+        return Result.Success<Error>();
     }
 }

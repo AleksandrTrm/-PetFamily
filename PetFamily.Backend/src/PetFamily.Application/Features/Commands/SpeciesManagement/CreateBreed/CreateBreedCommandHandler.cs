@@ -31,7 +31,11 @@ public class CreateBreedCommandHandler : ICommandHandler<Guid, CreateBreedComman
         if (validationResult.IsValid == false)
             return validationResult.ToList();
 
-        var breed = new Breed(BreedId.NewBreedId(), BreedValue.Create(command.Breed).Value);
+        var getBreedResult = await _repository.GetBreedByName(command.SpeciesId, command.Breed);
+        if (getBreedResult.IsSuccess)
+            return Errors.General.AlreadyExists().ToErrorList();
+        
+        var breed = new Breed(BreedId.NewBreedId(), command.Breed);
 
         var createBreedResult = await _repository
             .CreateBreed(SpeciesId.Create(command.SpeciesId), breed, cancellationToken);

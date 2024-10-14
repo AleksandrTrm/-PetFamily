@@ -13,8 +13,9 @@ public static class Errors
         
         public static Error NotFound(Guid? id = null, string? title = null)
         {
-            var forId = id == null ? "" : $" for id - {id}";
-            return Error.NotFound("record.not.found", $"Record '{title}' not found{forId}");
+            var forId = id is null ? "" : $" for id - {id}";
+            var withTitle = title is null ? "" : $" '{title}'";
+            return Error.NotFound("record.not.found", $"Record{withTitle} not found{forId}");
         }
 
         public static Error InvalidValue(string? name = null, string? invalidField = null)

@@ -11,7 +11,7 @@ public class BreedConfiguration : IEntityTypeConfiguration<Breed>
     public void Configure(EntityTypeBuilder<Breed> builder)
     {
         builder.ToTable("breeds");
-        
+
         builder.HasKey(b => b.Id);
 
         builder.Property(b => b.Id)
@@ -20,12 +20,9 @@ public class BreedConfiguration : IEntityTypeConfiguration<Breed>
                 v => BreedId.Create(v))
             .IsRequired();
 
-        builder.ComplexProperty(b => b.Value, bb =>
-        {
-            bb.Property(b => b.Value)
-                .HasMaxLength(Constants.MAX_MIDDLE_HIGH_LENGTH)
-                .IsRequired()
-                .HasColumnName("value");
-        });
+        builder.Property(b => b.Name)
+            .HasMaxLength(Constants.MAX_MIDDLE_HIGH_LENGTH)
+            .IsRequired()
+            .HasColumnName("value");
     }
 }

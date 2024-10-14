@@ -31,7 +31,11 @@ public class CreateSpeciesCommandHandler : ICommandHandler<Guid, CreateSpeciesCo
         if (validationResult.IsValid == false)
             return validationResult.ToList();
 
-        var species = new Species(SpeciesId.NewSpeciesId(), SpeciesValue.Create(command.Species).Value);
+        var getSpeciesResult = await _repository.GetSpeciesByName(command.Species);
+        if (getSpeciesResult.IsSuccess)
+            return Errors.General.AlreadyExists().ToErrorList();
+        
+        var species = new Species(SpeciesId.NewSpeciesId(), command.Species);
 
         var createSpeciesResult = await _repository.CreateSpecies(species, cancellationToken);
         if (createSpeciesResult.IsFailure)

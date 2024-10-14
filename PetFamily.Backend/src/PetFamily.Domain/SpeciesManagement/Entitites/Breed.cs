@@ -1,5 +1,4 @@
 ﻿using PetFamily.Domain.Shared.IDs;
-using PetFamily.Domain.SpeciesManagement.ValueObjects;
 
 namespace PetFamily.Domain.SpeciesManagement.Entitites;
 
@@ -10,10 +9,10 @@ public class Breed : Shared.Entity<BreedId>
     {
     }
     
-    public Breed(BreedId id, BreedValue value) : base(id)
+    public Breed(BreedId id, string name) : base(id)
     {
-        Value = value;
+        Name = name;
     }
     
-    public BreedValue Value { get; private set; }
+    public string Name { get; private set; }
 }
