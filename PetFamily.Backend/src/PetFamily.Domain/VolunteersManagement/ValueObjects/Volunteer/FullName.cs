@@ -4,7 +4,7 @@ using PetFamily.Domain.Shared.Error;
 
 namespace PetFamily.Domain.VolunteersManagement.ValueObjects.Volunteer;
 
-public class FullName
+public record FullName
 {
     private FullName(string name, string surname, string? patronymic = null)
     {

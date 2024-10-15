@@ -5,6 +5,7 @@ using PetFamily.Infrastructure.Providers;
 using Microsoft.Extensions.Configuration;
 using PetFamily.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
+using PetFamily.Application.Features.Commands.SpeciesManagement;
 using PetFamily.Application.Features.Commands.Volunteers;
 using PetFamily.Application.FileProvider;
 using PetFamily.Application.Messaging;
@@ -33,6 +34,7 @@ public static class Inject
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IVolunteersRepository, VolunteersRepository>();
+        services.AddScoped<ISpeciesRepository, SpeciesRepository>();
 
         return services;
     }
