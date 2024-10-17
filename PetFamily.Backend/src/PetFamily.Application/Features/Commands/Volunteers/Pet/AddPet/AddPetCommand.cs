@@ -11,6 +11,7 @@ public record AddPetCommand(
     string Description,
     string Color, 
     string HealthInfo, 
+    SpeciesBreedDto SpeciesBreed,
     AddressDto Address, 
     double Weight, 
     double Height, 

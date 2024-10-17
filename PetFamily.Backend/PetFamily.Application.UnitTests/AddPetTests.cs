@@ -4,10 +4,13 @@ using PetFamily.Domain.Shared;
 using FluentValidation.Results;
 using CSharpFunctionalExtensions;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using PetFamily.Domain.Shared.IDs;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Database;
 using PetFamily.Domain.Shared.Error;
 using PetFamily.Application.DTOs.Pets;
+using PetFamily.Application.DTOs.Species;
 using PetFamily.Application.Features.Commands.Volunteers;
 using PetFamily.Application.Features.Commands.Volunteers.Pet.AddPet;
 using PetFamily.Domain.VolunteersManagement.AggregateRoot;
@@ -24,12 +27,14 @@ public class CreatePetTests
     private readonly Mock<IVolunteersRepository> _volunteerRepositoryMock;
     private readonly Mock<IValidator<AddPetCommand>> _addPetValidatorMock;
     private readonly Mock<ILogger<AddPetHandler>> _addPetLoggerMock;
+    private readonly Mock<IReadDbContext> _readDbContextMock;
     
     public CreatePetTests()
     {
         _volunteerRepositoryMock = new Mock<IVolunteersRepository>();
         _addPetValidatorMock = new Mock<IValidator<AddPetCommand>>();
         _addPetLoggerMock = new Mock<ILogger<AddPetHandler>>();
+        _readDbContextMock = new Mock<IReadDbContext>();
     }
     
     [Fact]
@@ -45,6 +50,7 @@ public class CreatePetTests
             "Test",
             "Test",
             "Test",
+            new SpeciesBreedDto(Guid.NewGuid(), Guid.NewGuid()),
             new AddressDto("test", "test", "test", "test"),
             10,
             10,
@@ -62,8 +68,11 @@ public class CreatePetTests
 
         _addPetValidatorMock.Setup(a => a.ValidateAsync(command, ct))
             .ReturnsAsync(new ValidationResult());
-
-        var handler = new AddPetHandler(_volunteerRepositoryMock.Object, _addPetLoggerMock.Object, 
+        
+        var handler = new AddPetHandler(
+            _volunteerRepositoryMock.Object, 
+            _addPetLoggerMock.Object, 
+            _readDbContextMock.Object,
             _addPetValidatorMock.Object);
 
         //act
@@ -87,6 +96,7 @@ public class CreatePetTests
             "Test",
             "Test",
             "Test",
+            new SpeciesBreedDto(Guid.NewGuid(), Guid.NewGuid()),
             new AddressDto("test", "test", "test", "test"),
             10,
             10,
@@ -112,7 +122,12 @@ public class CreatePetTests
         _addPetValidatorMock.Setup(a => a.ValidateAsync(command, ct))
             .ReturnsAsync(validationResult);
         
-        var handler = new AddPetHandler(_volunteerRepositoryMock.Object, _addPetLoggerMock.Object, 
+        _readDbContextMock.Setup(a => a.Breeds);
+        
+        var handler = new AddPetHandler(
+            _volunteerRepositoryMock.Object, 
+            _addPetLoggerMock.Object, 
+            _readDbContextMock.Object,
             _addPetValidatorMock.Object);
 
         //act
@@ -136,6 +151,7 @@ public class CreatePetTests
             "Test",
             "Test",
             "Test",
+            new SpeciesBreedDto(Guid.NewGuid(), Guid.NewGuid()),
             new AddressDto("test", "test", "test", "test"),
             10,
             10,
