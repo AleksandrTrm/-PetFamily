@@ -7,6 +7,7 @@ using PetFamily.Application.Database;
 using PetFamily.Application.DTOs.Species;
 using PetFamily.Application.Extensions;
 using PetFamily.Domain.Shared.Error;
+using PetFamily.Domain.Shared.IDs;
 
 namespace PetFamily.Application.Features.Commands.SpeciesManagement.DeleteBreed;
 
@@ -54,10 +55,14 @@ public class DeleteBreedCommandHandler : ICommandHandler<Guid, DeleteBreedComman
                 .Failure("breed.was.not.null", "Can not delete breed what used by pet")
                 .ToErrorList();
 
-        var deleteBreedByIdResult = await _repository
-            .DeleteBreedById(command.SpeciesId, command.BreedId, cancellationToken);
-        if (deleteBreedByIdResult.IsFailure)
-            return deleteBreedByIdResult.Error.ToErrorList();
+        var speciesResult = await _repository.GetSpeciesById(command.SpeciesId, cancellationToken);
+        if (speciesResult.IsFailure)
+            return speciesResult.Error.ToErrorList();
+
+        var breedToDelete = speciesResult.Value.Breeds.First(b => b.Id == BreedId.Create(command.BreedId));
+        speciesResult.Value.RemoveBreed(breedToDelete);
+
+        await _repository.SaveChanges(speciesResult.Value, cancellationToken);
         
         return command.BreedId;
     }
