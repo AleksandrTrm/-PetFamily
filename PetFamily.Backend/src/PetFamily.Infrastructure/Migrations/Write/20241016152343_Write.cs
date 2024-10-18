@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace PetFamily.Infrastructure.Migrations.WriteDb
+namespace PetFamily.Infrastructure.Migrations.Write
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class Write : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -48,8 +48,8 @@ namespace PetFamily.Infrastructure.Migrations.WriteDb
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    species_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    value = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false)
+                    value = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    species_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {

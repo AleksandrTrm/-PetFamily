@@ -119,8 +119,8 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
 
         builder.Property(p => p.Requisites)
             .HasValueObjectsJsonConversion(
-                value => new RequisiteDto(value.Title, value.Description.Value),
-                dto => Requisite.Create(dto.Title, Description.Create(dto.Description).Value).Value);
+                value => new RequisiteDto(value.Title, value.Description),
+                dto => Requisite.Create(dto.Title, dto.Description).Value);
 
         builder.Property(p => p.PetPhotos)
             .HasValueObjectsJsonConversion(

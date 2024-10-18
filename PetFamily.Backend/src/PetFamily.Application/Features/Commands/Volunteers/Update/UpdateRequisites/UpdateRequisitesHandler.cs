@@ -39,11 +39,7 @@ public class UpdateRequisitesHandler : ICommandHandler<Guid, UpdateRequisitesCom
 
         List<Requisite> requisites = [];
         foreach (var requisite in command.Requisites)
-        {
-            var description = Description.Create(requisite.Description).Value;
-            
-            requisites.Add(Requisite.Create(requisite.Title, description).Value);
-        }
+            requisites.Add(Requisite.Create(requisite.Title, requisite.Description).Value);
 
         var requisitesToUpdate = new ValueObjectList<Requisite>(requisites);
         

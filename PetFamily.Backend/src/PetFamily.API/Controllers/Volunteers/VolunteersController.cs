@@ -14,7 +14,7 @@ using PetFamily.Application.Features.Commands.Volunteers.Update.UpdateMainInfo;
 using PetFamily.Application.Features.Commands.Volunteers.Update.UpdateRequisites;
 using PetFamily.Application.Features.Commands.Volunteers.Update.UpdateSocialMedias;
 using PetFamily.Application.Features.Queries.Volunteers.GetFilteredVolunteersWithPagination;
-using PetFamily.Application.Models;
+using PetFamily.Application.Features.Queries.Volunteers.GetVolunteerById;
 using UpdateVolunteerMainInfoDto = PetFamily.Application.DTOs.VolunteerDtos.UpdateVolunteerMainInfoDto;
 
 namespace PetFamily.API.Controllers.Volunteers;
@@ -31,6 +31,19 @@ public class VolunteersController : ApplicationController
 
         return Ok(result);
     }
+
+    [HttpGet("volunteer/{id:guid}")]
+    public async Task<ActionResult> GetVolunteerById(
+        [FromRoute] Guid id,
+        [FromServices] GetVolunteerByIdQueryHandler handler,
+        CancellationToken cancellationToken)
+        {
+        var result = await handler.Handle(new GetVolunteerByIdQuery(id), cancellationToken);
+        if (result.IsFailure)
+            return NotFound(result.Error);
+        
+        return Ok(result.Value);
+    }
     
     [HttpPost("{id:guid}/pet")]
     public async Task<ActionResult> AddPet(
@@ -45,6 +58,7 @@ public class VolunteersController : ApplicationController
             request.Description,
             request.Color,
             request.HealthInfo,
+            request.SpeciesBreed,
             request.Address,
             request.Weight,
             request.Height,

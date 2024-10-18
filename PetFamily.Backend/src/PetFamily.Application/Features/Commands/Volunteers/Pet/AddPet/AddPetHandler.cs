@@ -1,7 +1,9 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.Abstractions;
+using PetFamily.Application.Database;
 using PetFamily.Application.Extensions;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.Error;
@@ -16,12 +18,15 @@ public class AddPetHandler : ICommandHandler<Guid, AddPetCommand>
     private IVolunteersRepository _repository;
     private ILogger<AddPetHandler> _logger;
     private IValidator<AddPetCommand> _validator;
+    private IReadDbContext _readDbContext;
 
     public AddPetHandler(
         IVolunteersRepository repository,
         ILogger<AddPetHandler> logger,
+        IReadDbContext readDbContext,
         IValidator<AddPetCommand> validator)
     {
+        _readDbContext = readDbContext;
         _validator = validator;
         _logger = logger;
         _repository = repository;
@@ -38,6 +43,13 @@ public class AddPetHandler : ICommandHandler<Guid, AddPetCommand>
         var volunteerResult = await _repository.GetById(command.VolunteerId, cancellationToken);
         if (volunteerResult.IsFailure)
             return volunteerResult.Error.ToErrorList();
+
+        var isBreedExists = await _readDbContext.Breeds
+            .Where(b => b.SpeciesId == command.SpeciesBreed.SpeciesId && b.Id == command.SpeciesBreed.BreedId)
+            .ToListAsync(cancellationToken);
+
+        if (isBreedExists.Count == 0)
+            return Errors.General.NotFound(command.SpeciesBreed.BreedId, "breed").ToErrorList();
         
         var pet = CreatePet(command);
 
@@ -59,7 +71,7 @@ public class AddPetHandler : ICommandHandler<Guid, AddPetCommand>
         List<Requisite> requisites = [];
         foreach (var requisite in command.Requisites)
             requisites.Add(
-                Requisite.Create(requisite.Title, Description.Create(requisite.Description).Value).Value);
+                Requisite.Create(requisite.Title, requisite.Description).Value);
 
         var requisitesList = new ValueObjectList<Requisite>(requisites);
         
@@ -70,7 +82,7 @@ public class AddPetHandler : ICommandHandler<Guid, AddPetCommand>
         return new Domain.VolunteersManagement.Entities.Pets.Pet(
             PetId.NewPetId(),
             Nickname.Create(command.Nickname).Value,
-            new SpeciesBreed(SpeciesId.NewSpeciesId(), Guid.NewGuid()), 
+            new SpeciesBreed(SpeciesId.Create(command.SpeciesBreed.SpeciesId), command.SpeciesBreed.BreedId), 
             Description.Create(command.Description).Value,
             Color.Create(command.Color).Value,
             HealthInfo.Create(command.HealthInfo).Value,

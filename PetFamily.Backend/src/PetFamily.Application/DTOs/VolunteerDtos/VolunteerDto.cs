@@ -6,17 +6,21 @@ public class VolunteerDto
 {
     public Guid Id { get; init; }
 
-    public FullNameDto FullName { get; init; }
+    public string Name { get; set; }
 
-    public string Description { get; init; } = string.Empty;
+    public string Surname { get; set; }
 
-    public int Experience { get; init; }
+    public string Patronymic { get; set; }
 
-    public string PhoneNumber { get; init; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
 
-    public IEnumerable<PetDto> Pets { get; init; } = [];
+    public int Experience { get; set; }
 
-    public IEnumerable<RequisiteDto> Requisites { get; init; } = [];
+    public string PhoneNumber { get; set; } = string.Empty;
 
-    public IEnumerable<SocialMediaDto> SocialMedias { get; init; } = [];
+    public IEnumerable<PetDto> Pets { get; set; } = [];
+
+    public IEnumerable<RequisiteDto> Requisites { get; set; } = [];
+
+    public IEnumerable<SocialMediaDto> SocialMedias { get; set; } = [];
 }

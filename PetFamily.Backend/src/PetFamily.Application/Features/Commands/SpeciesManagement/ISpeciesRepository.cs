@@ -8,6 +8,10 @@ namespace PetFamily.Application.Features.Commands.SpeciesManagement;
 
 public interface ISpeciesRepository
 {
+    Task SaveChanges(Species species, CancellationToken cancellationToken);
+    
+    Task<Result<Species, Error>> GetSpeciesById(Guid speciesId, CancellationToken cancellationToken);
+    
     Task<Result<Breed, Error>> GetBreedByName(Guid speciesId, string name);
     
     Task<Result<Species, Error>> GetSpeciesByName(string name);
@@ -20,4 +24,6 @@ public interface ISpeciesRepository
         SpeciesId speciesId,
         Breed breed,
         CancellationToken cancellationToken = default);
+
+    Task<Result<Guid>> DeleteSpeciesById(Guid id, CancellationToken cancellationToken = default);
 }
