@@ -10,11 +10,11 @@ using PetFamily.Infrastructure.DbContexts;
 
 #nullable disable
 
-namespace PetFamily.Infrastructure.Migrations.WriteDb
+namespace PetFamily.Infrastructure.Migrations.Write
 {
     [DbContext(typeof(WriteDbContext))]
-    [Migration("20241001121650_Initial")]
-    partial class Initial
+    [Migration("20241016152343_Write")]
+    partial class Write
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,16 +32,11 @@ namespace PetFamily.Infrastructure.Migrations.WriteDb
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.ComplexProperty<Dictionary<string, object>>("Value", "PetFamily.Domain.SpeciesManagement.AggregateRoot.Species.Value#SpeciesValue", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(200)
-                                .HasColumnType("character varying(200)")
-                                .HasColumnName("value");
-                        });
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("value");
 
                     b.HasKey("Id")
                         .HasName("pk_species");
@@ -55,20 +50,15 @@ namespace PetFamily.Infrastructure.Migrations.WriteDb
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("value");
+
                     b.Property<Guid>("SpeciesId")
                         .HasColumnType("uuid")
                         .HasColumnName("species_id");
-
-                    b.ComplexProperty<Dictionary<string, object>>("Value", "PetFamily.Domain.SpeciesManagement.Entitites.Breed.Value#BreedValue", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(200)
-                                .HasColumnType("character varying(200)")
-                                .HasColumnName("value");
-                        });
 
                     b.HasKey("Id")
                         .HasName("pk_breeds");

@@ -29,14 +29,6 @@ public class CreateVolunteerCommandValidator : AbstractValidator<CreateVolunteer
                 Volunteer.MIN_EXPERIENCE_YEARS, "experience", Volunteer.MAX_EXPERIENCE_YEARS));
         
         RuleForEach(c => c.Requisites)
-            .MustBeValueObject(r =>
-            {
-                var descriptionResult = Description.Create(r.Description);
-
-                if (descriptionResult.IsFailure)
-                    return descriptionResult.Error;
-
-                return Requisite.Create(r.Title, descriptionResult.Value);
-            });
+            .MustBeValueObject(r => Requisite.Create(r.Title, r.Description));
     }
 }

@@ -18,6 +18,17 @@ public class SpeciesRepository : ISpeciesRepository
         _context = context;
     }
 
+    public async Task<Result<Species, Error>> GetSpeciesById(Guid speciesId, CancellationToken cancellationToken)
+    {
+        var getSpeciesByIdResult = await _context.Species
+            .Include(s => s.Breeds)
+            .FirstOrDefaultAsync(s => s.Id == SpeciesId.Create(speciesId), cancellationToken);
+        if (getSpeciesByIdResult is null)
+            return Errors.General.NotFound(speciesId, "species");
+
+        return getSpeciesByIdResult;
+    }
+    
     public async Task<Result<Breed, Error>> GetBreedByName(Guid speciesId, string name)
     {
         var species = await _context.Species
@@ -68,5 +79,23 @@ public class SpeciesRepository : ISpeciesRepository
         await _context.SaveChangesAsync(cancellationToken);
 
         return breed.Id.Value;
+    }
+
+    public async Task<Result<Guid>> DeleteSpeciesById(Guid id, CancellationToken cancellationToken = default)
+    {
+        var speciesToDelete = await _context.Species.FirstOrDefaultAsync(s => s.Id == SpeciesId.Create(id));
+        if (speciesToDelete is null)
+            return id;
+
+        _context.Species.Remove(speciesToDelete);
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return id;
+    }
+
+    public async Task SaveChanges(Species species, CancellationToken cancellationToken)
+    {
+        _context.Species.Attach(species);
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }

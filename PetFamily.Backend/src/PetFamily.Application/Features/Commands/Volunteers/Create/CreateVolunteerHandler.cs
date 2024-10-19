@@ -59,7 +59,7 @@ public class CreateVolunteerHandler : ICommandHandler<Guid, CreateVolunteerComma
         foreach (var requisiteDto in requisitesDto)
             requisitesList.Add(Requisite.Create(
                 requisiteDto.Title, 
-                Description.Create(requisiteDto.Description).Value).Value);
+                requisiteDto.Description).Value);
 
         var requisites = new ValueObjectList<Requisite>(requisitesList);
 

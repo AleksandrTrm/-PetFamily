@@ -24,10 +24,8 @@ public class Species : Shared.Entity<SpeciesId>
     
     public string Name { get; }
 
-    public Breed? FindBreed(Breed breed)
-    {
-        return _breeds.FirstOrDefault(b => b.Name == breed.Name);
-    }
+    public Breed? FindBreed(string name) =>
+        _breeds.FirstOrDefault(b => b.Name == name);
 
     public UnitResult<Error> AddBreed(Breed breed)
     {
@@ -38,4 +36,7 @@ public class Species : Shared.Entity<SpeciesId>
 
         return Result.Success<Error>();
     }
+
+    public void RemoveBreed(Breed breed) =>
+        _breeds.Remove(breed);
 }

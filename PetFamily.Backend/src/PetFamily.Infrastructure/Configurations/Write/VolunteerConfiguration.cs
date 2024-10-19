@@ -69,8 +69,8 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.Property(v => v.Requisites)
             .HasValueObjectsJsonConversion(
-                r => new RequisiteDto(r.Title, r.Description.Value),
-                dto => Requisite.Create(dto.Title, Description.Create(dto.Description).Value).Value)
+                r => new RequisiteDto(r.Title, r.Description),
+                dto => Requisite.Create(dto.Title, dto.Description).Value)
             .HasColumnName("requisites");
 
         builder.Property(v => v.SocialMedias)
