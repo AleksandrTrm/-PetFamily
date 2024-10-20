@@ -2,6 +2,7 @@
 using Minio.DataModel.Args;
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
+using Minio.Exceptions;
 using PetFamily.Application.FileProvider;
 using PetFamily.Domain.Shared.Error;
 using FileInfo = PetFamily.Application.FileProvider.FileInfo;
@@ -99,11 +100,40 @@ public class MinioProvider : IFileProvider
 
             return fileInfo.Path;
         }
+        catch (AuthorizationException ex)
+        {
+            _logger.LogError(ex, "Authorization failed");
+
+            return Error
+                .Failure("authorization.failed", "Authorization failed while connection to file provider");
+        }
+        catch (InvalidBucketNameException ex)
+        {
+            _logger.LogError(ex, "Invalid bucket name while trying to delete file");
+
+            return Error
+                .Failure("invalid.bucket.name", "Failed to delete file because bucket name was invalid");
+        }
+        catch (InvalidObjectNameException ex)
+        {
+            _logger.LogError(ex, "Invalid object name");
+
+            return Error
+                .Failure("invalid.object.name", "Object name was invalid");
+        }
+        catch (BucketNotFoundException ex)
+        {
+            _logger.LogError(ex, "Bucket not found");
+
+            return Error
+                .Failure("bucket.not.found", $"Can not find bucket with name '{fileInfo.BucketName}'");
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Fail to delete file in minio");
             
-            return Error.Failure("file.delete", "Fail to delete file in minio");
+            return Error
+                .Failure("file.delete", $"Fail to delete file in minio with path - '{fileInfo.Path}'");
         }
     }
 

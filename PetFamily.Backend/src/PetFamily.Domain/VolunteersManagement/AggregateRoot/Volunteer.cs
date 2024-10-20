@@ -12,7 +12,6 @@ namespace PetFamily.Domain.VolunteersManagement.AggregateRoot
 {
     public class Volunteer : Shared.Entity<VolunteerId>
     {
-        private bool _isDeleted = false;
         private readonly List<Pet> _pets = []; 
             
         public const int MAX_EXPERIENCE_YEARS = 80;
@@ -54,6 +53,8 @@ namespace PetFamily.Domain.VolunteersManagement.AggregateRoot
 
         public IReadOnlyList<Pet> Pets => _pets;
 
+        public bool IsDeleted { get; private set; } = false;
+
         public int GetCountOfPetsThatFoundHome() =>
             _pets.Count(p => p.Status == Status.FoundHome);
         
@@ -65,7 +66,7 @@ namespace PetFamily.Domain.VolunteersManagement.AggregateRoot
 
         public void Delete()
         {
-            _isDeleted = true;
+            IsDeleted = true;
 
             foreach (var pet in _pets)
                 pet.Delete();
@@ -73,7 +74,7 @@ namespace PetFamily.Domain.VolunteersManagement.AggregateRoot
 
         public void Recover()
         {
-            _isDeleted = false;
+            IsDeleted = false;
             
             foreach (var pet in _pets)
                 pet.Recover();

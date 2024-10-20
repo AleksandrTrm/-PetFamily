@@ -55,7 +55,7 @@ public class AddPetHandler : ICommandHandler<Guid, AddPetCommand>
 
         volunteerResult.Value.AddPet(pet);
 
-        await _repository.Save(volunteerResult.Value, cancellationToken);
+        await _repository.SaveChanges(volunteerResult.Value, cancellationToken);
         
         _logger.LogInformation("Added pet with id '{petId}' for volunteer with id '{volunteerId}'", 
             pet.Id.Value, 

@@ -12,7 +12,7 @@ public interface IVolunteersRepository
         Volunteer volunteer,
         CancellationToken cancellationToken = default);
 
-    Task<Result<Guid, Error>> Save(
+    Task<Result<Guid, Error>> SaveChanges(
         Volunteer volunteer,
         CancellationToken cancellationToken = default);
 

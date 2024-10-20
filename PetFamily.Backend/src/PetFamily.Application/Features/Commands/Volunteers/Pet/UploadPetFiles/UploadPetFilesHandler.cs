@@ -1,4 +1,5 @@
-﻿using CSharpFunctionalExtensions;
+﻿using System.IO.Enumeration;
+using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.Abstractions;
@@ -73,9 +74,22 @@ public class UploadPetFilesHandler : ICommandHandler<Guid, UploadPetFilesCommand
                 petFiles.Add(new FileContent(file.Content, new FileInfo(fileContentPath.Value, BUCKET_NAME)));
             }
 
-            var petFilesList = petFiles
-                .Select(f => PetPhoto.Create(f.FileInfo.Path, false))
-                .Select(f => f.Value);
+            var petFilesList = new List<PetPhoto>();
+            if (petResult.Value.PetPhotos.Count is 0)
+            {
+                petFilesList.Add(PetPhoto.Create(petFiles[0].FileInfo.Path, true).Value);
+                
+                petFilesList.AddRange(petFiles
+                    .Skip(1)
+                    .Select(f => PetPhoto.Create(f.FileInfo.Path, false))
+                    .Select(f => f.Value));
+            }
+            else
+            {
+                petFilesList.AddRange(petFiles
+                    .Select(f => PetPhoto.Create(f.FileInfo.Path, false))
+                    .Select(f => f.Value));   
+            }
 
             petResult.Value.UpdateFiles(new ValueObjectList<PetPhoto>(petFilesList));
             await _unitOfWork.SaveChangesAsync(cancellationToken);
