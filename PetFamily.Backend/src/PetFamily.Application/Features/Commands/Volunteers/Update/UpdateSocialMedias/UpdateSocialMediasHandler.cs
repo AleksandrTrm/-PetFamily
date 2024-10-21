@@ -46,7 +46,7 @@ public class UpdateSocialMediasHandler : ICommandHandler<Guid, UpdateSocialMedia
         
         volunteerResult.Value.UpdateSocialMedias(socialMediasToUpdate);
 
-        await _repository.Save(volunteerResult.Value, cancellationToken);
+        await _repository.SaveChanges(volunteerResult.Value, cancellationToken);
         
         _logger.LogInformation("Social medias of volunteer with {id} has been updated", command.VolunteerId);
 

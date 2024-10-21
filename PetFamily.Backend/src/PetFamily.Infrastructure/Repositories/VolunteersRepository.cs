@@ -60,7 +60,7 @@ public class VolunteersRepository : IVolunteersRepository
         return volunteerResult;
     }
 
-    public async Task<Result<Guid, Error>> Save(
+    public async Task<Result<Guid, Error>> SaveChanges(
         Volunteer volunteer,
         CancellationToken cancellationToken = default)
     {

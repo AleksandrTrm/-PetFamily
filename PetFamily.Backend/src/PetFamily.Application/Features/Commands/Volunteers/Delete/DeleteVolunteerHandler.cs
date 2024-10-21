@@ -37,7 +37,7 @@ public class DeleteVolunteerHandler : ICommandHandler<Guid, DeleteVolunteerComma
 
         volunteerResult.Value.Delete();
         
-        var deleteResult = await _repository.Save(volunteerResult.Value, cancellationToken);
+        var deleteResult = await _repository.SaveChanges(volunteerResult.Value, cancellationToken);
         
         _logger.LogInformation("Volunteer with {id} has been deleted", command.VolunteerId);
         

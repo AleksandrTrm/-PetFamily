@@ -64,7 +64,7 @@ public class CreatePetTests
         _volunteerRepositoryMock.Setup(v => v.GetById(It.IsAny<VolunteerId>(), ct))
             .ReturnsAsync(Result.Success<Volunteer, Error>(volunteer));
 
-        _volunteerRepositoryMock.Setup(l => l.Save(It.IsAny<Volunteer>(), ct));
+        _volunteerRepositoryMock.Setup(l => l.SaveChanges(It.IsAny<Volunteer>(), ct));
 
         _addPetValidatorMock.Setup(a => a.ValidateAsync(command, ct))
             .ReturnsAsync(new ValidationResult());
@@ -117,7 +117,7 @@ public class CreatePetTests
         _volunteerRepositoryMock.Setup(v => v.GetById(It.IsAny<VolunteerId>(), ct))
             .ReturnsAsync(Result.Success<Volunteer, Error>(volunteer));
 
-        _volunteerRepositoryMock.Setup(l => l.Save(It.IsAny<Volunteer>(), ct));
+        _volunteerRepositoryMock.Setup(l => l.SaveChanges(It.IsAny<Volunteer>(), ct));
 
         _addPetValidatorMock.Setup(a => a.ValidateAsync(command, ct))
             .ReturnsAsync(validationResult);
@@ -165,7 +165,7 @@ public class CreatePetTests
         _volunteerRepositoryMock.Setup(v => v.GetById(It.IsAny<VolunteerId>(), ct))
             .ReturnsAsync(Result.Success<Volunteer, Error>(volunteer));
 
-        _volunteerRepositoryMock.Setup(l => l.Save(It.IsAny<Volunteer>(), ct))
+        _volunteerRepositoryMock.Setup(l => l.SaveChanges(It.IsAny<Volunteer>(), ct))
             .ReturnsAsync(
                 Result.Failure<Guid, Error>(Error.Failure("save.error", "An error occurred while saving")));
 
