@@ -55,9 +55,9 @@ public class UploadPetFilesHandler : ICommandHandler<Guid, UploadPetFilesCommand
             return volunteer.Error.ToErrorList();
 
         var petId = PetId.Create(command.PetId);
-        var petResult = volunteer.Value.GetPetById(petId);
-        if (petResult.IsFailure)
-            return petResult.Error.ToErrorList();
+        var pet = volunteer.Value.GetPetById(petId);
+        if (pet.IsFailure)
+            return pet.Error.ToErrorList();
 
         var transaction = await _unitOfWork.BeginTransaction(cancellationToken);
 
@@ -75,7 +75,7 @@ public class UploadPetFilesHandler : ICommandHandler<Guid, UploadPetFilesCommand
             }
 
             var petFilesList = new List<PetPhoto>();
-            if (petResult.Value.PetPhotos.Count is 0)
+            if (pet.Value.PetPhotos.Count is 0)
             {
                 petFilesList.Add(PetPhoto.Create(petFiles[0].FileInfo.Path, true).Value);
                 
@@ -91,7 +91,7 @@ public class UploadPetFilesHandler : ICommandHandler<Guid, UploadPetFilesCommand
                     .Select(f => f.Value));   
             }
 
-            petResult.Value.UpdateFiles(new ValueObjectList<PetPhoto>(petFilesList));
+            pet.Value.UpdateFiles(new ValueObjectList<PetPhoto>(petFilesList));
             await _unitOfWork.SaveChangesAsync(cancellationToken);
             
             var uploadFilesResult = await _fileProvider.UploadFiles(petFiles, cancellationToken);

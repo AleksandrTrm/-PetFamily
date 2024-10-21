@@ -30,17 +30,17 @@ public class UpdatePetStatusHandler : ICommandHandler<Guid, UpdatePetStatusComma
         if (validationResult.IsValid == false)
             return validationResult.ToList();
 
-        var getVolunteerResult = await _repository.GetById(command.Id, cancellationToken);
-        if (getVolunteerResult.IsFailure)
-            return getVolunteerResult.Error.ToErrorList();
+        var volunteerResult = await _repository.GetById(command.Id, cancellationToken);
+        if (volunteerResult.IsFailure)
+            return volunteerResult.Error.ToErrorList();
 
-        var petResult = getVolunteerResult.Value.Pets.FirstOrDefault(p => p.Id == PetId.Create(command.PetId));
-        if (petResult is null)
+        var pet = volunteerResult.Value.Pets.FirstOrDefault(p => p.Id == PetId.Create(command.PetId));
+        if (pet is null)
             return Errors.General.NotFound(command.PetId, "pet").ToErrorList();
 
-        petResult.UpdateStatus(command.Status);
+        pet.UpdateStatus(command.Status);
 
-        await _repository.SaveChanges(getVolunteerResult.Value, cancellationToken);
+        await _repository.SaveChanges(volunteerResult.Value, cancellationToken);
 
         return command.PetId;
     }

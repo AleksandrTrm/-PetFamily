@@ -31,15 +31,15 @@ public class SetMainPhotoHandler : ICommandHandler<Guid, SetMainPhotoCommand>
         if (validationResult.IsValid == false)
             return validationResult.ToList();
         
-        var getVolunteerResult = await _repository.GetById(command.Id, cancellationToken);
-        if (getVolunteerResult.IsFailure)
-            return getVolunteerResult.Error.ToErrorList();
+        var volunteerResult = await _repository.GetById(command.Id, cancellationToken);
+        if (volunteerResult.IsFailure)
+            return volunteerResult.Error.ToErrorList();
 
-        var petResult = getVolunteerResult.Value.Pets.FirstOrDefault(p => p.Id == PetId.Create(command.PetId));
-        if (petResult is null)
+        var pet = volunteerResult.Value.Pets.FirstOrDefault(p => p.Id == PetId.Create(command.PetId));
+        if (pet is null)
             return Errors.General.NotFound(command.PetId, "pet").ToErrorList();
 
-        var photoToSetMain = petResult.PetPhotos.FirstOrDefault(p => p.Path.Contains(command.Name.ToString()));
+        var photoToSetMain = pet.PetPhotos.FirstOrDefault(p => p.Path.Contains(command.Name.ToString()));
         if (photoToSetMain is null)
             return Error
                 .NotFound("photo.not.found", $"Can not find photo with name - '{command.Name}'")
@@ -47,9 +47,9 @@ public class SetMainPhotoHandler : ICommandHandler<Guid, SetMainPhotoCommand>
 
         var mainPhoto = PetPhoto.Create(photoToSetMain.Path, true).Value;
 
-        petResult.SetMainPhoto(mainPhoto);
+        pet.SetMainPhoto(mainPhoto);
         
-        await _repository.SaveChanges(getVolunteerResult.Value, cancellationToken);
+        await _repository.SaveChanges(volunteerResult.Value, cancellationToken);
 
         return command.PetId;
     }

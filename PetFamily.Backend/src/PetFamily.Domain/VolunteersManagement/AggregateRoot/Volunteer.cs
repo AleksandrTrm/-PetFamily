@@ -79,6 +79,9 @@ namespace PetFamily.Domain.VolunteersManagement.AggregateRoot
             foreach (var pet in _pets)
                 pet.Recover();
         }
+
+        public void DeletePet(Pet pet) =>
+            pet.Delete();
         
         public void UpdateMainInfo(
             FullName fullName,

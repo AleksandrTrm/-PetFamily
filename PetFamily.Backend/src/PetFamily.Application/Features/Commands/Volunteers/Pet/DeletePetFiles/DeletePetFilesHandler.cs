@@ -48,20 +48,20 @@ public class DeletePetFilesHandler : ICommandHandler<IReadOnlyList<Guid>, Delete
         if (validationResult.IsValid == false)
             return validationResult.ToList();
 
-        var volunteer = await _repository.GetById(command.VolunteerId, cancellationToken);
-        if (volunteer.IsFailure)
-            return volunteer.Error.ToErrorList();
+        var volunteerResult = await _repository.GetById(command.VolunteerId, cancellationToken);
+        if (volunteerResult.IsFailure)
+            return volunteerResult.Error.ToErrorList();
 
-        var petResult = volunteer.Value.GetPetById(PetId.Create(command.PetId));
-        if (petResult.IsFailure)
-            return petResult.Error.ToErrorList();
+        var pet = volunteerResult.Value.GetPetById(PetId.Create(command.PetId));
+        if (pet.IsFailure)
+            return pet.Error.ToErrorList();
 
         var transaction = await _unitOfWork.BeginTransaction(cancellationToken);
 
-        var deletedPhotos = petResult.Value.DeletePhotos(command.FilesNames);
+        var deletedPhotos = pet.Value.DeletePhotos(command.FilesNames);
         if (deletedPhotos.Count > 0)
         {
-            await _repository.SaveChanges(volunteer.Value, cancellationToken);
+            await _repository.SaveChanges(volunteerResult.Value, cancellationToken);
 
             var filesInfo = new List<FileInfo>();
             foreach (var deletedPhoto in deletedPhotos)

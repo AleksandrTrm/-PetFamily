@@ -51,20 +51,20 @@ public class UpdatePetMainInfoHandler : ICommandHandler<Guid, UpdatePetMainInfoC
                     $"of species with id - '{command.SpeciesBreed.SpeciesId}'")
                 .ToErrorList();
 
-        var getVolunteerResult = await _repository
+        var volunteerResult = await _repository
             .GetById(VolunteerId.Create(command.VolunteerId), cancellationToken);
-        if (getVolunteerResult.IsFailure)
-            return getVolunteerResult.Error.ToErrorList();
+        if (volunteerResult.IsFailure)
+            return volunteerResult.Error.ToErrorList();
 
-        var getPetResult = getVolunteerResult.Value.Pets.FirstOrDefault(p => p.Id == PetId.Create(command.Id));
-        if (getPetResult is null)
+        var pet = volunteerResult.Value.Pets.FirstOrDefault(p => p.Id == PetId.Create(command.Id));
+        if (pet is null)
             return Errors.General.NotFound(command.Id, "pet").ToErrorList();
 
         var requisites = new List<Requisite>();
         foreach (var requisiteDto in command.Requisites)
             requisites.Add(Requisite.Create(requisiteDto.Title, requisiteDto.Description).Value);
         
-        getPetResult.UpdateMainInfo(
+        pet.UpdateMainInfo(
             Nickname.Create(command.Nickname).Value,
             new SpeciesBreed(SpeciesId.Create(command.SpeciesBreed.SpeciesId), command.SpeciesBreed.BreedId),
             Description.Create(command.Description).Value,
@@ -83,7 +83,7 @@ public class UpdatePetMainInfoHandler : ICommandHandler<Guid, UpdatePetMainInfoC
             command.IsVaccinated,
             requisites);
 
-        await _repository.SaveChanges(getVolunteerResult.Value, cancellationToken);
+        await _repository.SaveChanges(volunteerResult.Value, cancellationToken);
 
         _logger.LogInformation("Main info of pet with id - '{id}' has been changed", command.Id);
         
