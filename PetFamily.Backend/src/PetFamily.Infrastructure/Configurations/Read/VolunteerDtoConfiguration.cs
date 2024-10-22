@@ -15,8 +15,7 @@ public class VolunteerDtoConfiguration : IEntityTypeConfiguration<VolunteerDto>
 
         builder.HasKey(v => v.Id)
             .HasName("id");
-
-
+        
         builder.Property(n => n.Name)
             .IsRequired()
             .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH)
@@ -52,7 +51,7 @@ public class VolunteerDtoConfiguration : IEntityTypeConfiguration<VolunteerDto>
             .HasConversion(
                 r => JsonSerializer.Serialize(string.Empty, JsonSerializerOptions.Default),
                 json => JsonSerializer.Deserialize<List<RequisiteDto>>(json, JsonSerializerOptions.Default)!);
-
+        
         builder.HasMany(v => v.Pets)
             .WithOne();
     }

@@ -45,7 +45,7 @@ public class UpdateRequisitesHandler : ICommandHandler<Guid, UpdateRequisitesCom
         
         volunteerResult.Value.UpdateRequisites(requisitesToUpdate);
 
-        await _repository.Save(volunteerResult.Value, cancellationToken);
+        await _repository.SaveChanges(volunteerResult.Value, cancellationToken);
         
         _logger.LogInformation("Requisites of volunteer with {id} has been updated", command.VolunteerId);
 
