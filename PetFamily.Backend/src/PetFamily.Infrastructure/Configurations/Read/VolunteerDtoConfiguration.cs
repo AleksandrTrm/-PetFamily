@@ -53,6 +53,7 @@ public class VolunteerDtoConfiguration : IEntityTypeConfiguration<VolunteerDto>
                 json => JsonSerializer.Deserialize<List<RequisiteDto>>(json, JsonSerializerOptions.Default)!);
         
         builder.HasMany(v => v.Pets)
-            .WithOne();
+            .WithOne()
+            .HasForeignKey(p => p.VolunteerId);
     }
 }

@@ -19,7 +19,7 @@ public static class QueriesExtensions
             .Take(pageSize)
             .ToListAsync(cancellationToken);
 
-        return new PagedList<T>()
+        return new PagedList<T>
         {
             TotalCount = count,
             Page = page,

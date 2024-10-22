@@ -18,6 +18,8 @@ using PetFamily.Application.Features.Commands.Volunteers.Pet.UploadPetFiles;
 using PetFamily.Application.Features.Commands.Volunteers.Update.UpdateMainInfo;
 using PetFamily.Application.Features.Commands.Volunteers.Update.UpdateRequisites;
 using PetFamily.Application.Features.Commands.Volunteers.Update.UpdateSocialMedias;
+using PetFamily.Application.Features.Queries.Pets.GetFilteredPetsWithPagination;
+using PetFamily.Application.Features.Queries.Pets.GetPetById;
 using PetFamily.Application.Features.Queries.Volunteers.GetFilteredVolunteersWithPagination;
 using PetFamily.Application.Features.Queries.Volunteers.GetVolunteerById;
 using UpdateVolunteerMainInfoDto = PetFamily.Application.DTOs.VolunteerDtos.UpdateVolunteerMainInfoDto;
@@ -47,6 +49,28 @@ public class VolunteersController : ApplicationController
         if (result.IsFailure)
             return NotFound(result.Error);
         
+        return Ok(result.Value);
+    }
+
+    [HttpGet("pets")]
+    public async Task<ActionResult> GetPets(
+        [FromServices] GetFilteredPetsWithPaginationQueryHandler handler,
+        [FromQuery] GetPetsRequest request,
+        CancellationToken cancellationToken)
+    {
+        return Ok(await handler.Handle(request.ToQuery(), cancellationToken));
+    }
+
+    [HttpGet("pets/{id:guid}")]
+    public async Task<ActionResult> GetPetById(
+        [FromRoute] Guid id,
+        [FromServices] GetPetByIdQueryHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var result = await handler.Handle(new GetPetByIdQuery(id), cancellationToken);
+        if (result.IsFailure)
+            return BadRequest(result.Error);
+
         return Ok(result.Value);
     }
     

@@ -50,7 +50,7 @@ namespace PetFamily.Domain.VolunteersManagement.Entities.Pets
         }
 
         public Nickname Nickname { get; private set; }
-
+        
         public SpeciesBreed SpeciesBreed { get; private set; }
 
         public Description Description { get; private set; }
@@ -84,6 +84,8 @@ namespace PetFamily.Domain.VolunteersManagement.Entities.Pets
         public DateTime CreatedAt { get; private set; }
 
         public bool IsDeleted { get; private set; } = false;
+
+        public VolunteerId VolunteerId { get; private set; }
 
         public void SetSerialNumber(SerialNumber serialNumber) =>
             SerialNumber = serialNumber;
