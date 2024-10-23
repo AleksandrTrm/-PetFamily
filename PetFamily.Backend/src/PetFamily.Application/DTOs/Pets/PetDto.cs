@@ -37,4 +37,6 @@ public class PetDto
     public IEnumerable<PetPhotoDto> PetPhotos { get; init; }
 
     public DateTime CreatedAt { get; init; }
+    
+    public Guid VolunteerId { get; init; }
 }

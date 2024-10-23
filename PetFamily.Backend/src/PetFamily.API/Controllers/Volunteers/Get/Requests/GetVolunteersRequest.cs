@@ -8,8 +8,8 @@ public record GetVolunteersRequest(
     int Page,
     int PageSize)
 {
-    public GetFilteredVolunteersWithPaginationQuery ToQuery()
-    {
-        return new(SortBy, SortDirection, Page, PageSize);
-    }
+    public GetFilteredVolunteersWithPaginationQuery ToQuery() =>
+        new(SortBy, SortDirection, Page, PageSize);
+    
+    
 }

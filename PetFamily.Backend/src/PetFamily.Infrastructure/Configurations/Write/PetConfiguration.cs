@@ -128,7 +128,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 dto => PetPhoto.Create(dto.Path, dto.IsMain).Value);
         
         builder.Property(p => p.CreatedAt);
-
+        
         builder.Property(p => p.IsDeleted)
             .IsRequired();
     }
