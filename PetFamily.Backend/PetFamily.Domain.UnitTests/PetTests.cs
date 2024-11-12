@@ -1,12 +1,12 @@
 using FluentAssertions;
-using PetFamily.Domain.Shared;
-using PetFamily.Domain.Shared.IDs;
-using PetFamily.Domain.VolunteersManagement.AggregateRoot;
-using PetFamily.Domain.VolunteersManagement.Entities.Pets;
-using PetFamily.Domain.VolunteersManagement.Entities.Pets.Enums;
-using PetFamily.Domain.VolunteersManagement.ValueObjects.Pet;
-using PetFamily.Domain.VolunteersManagement.ValueObjects.Shared;
-using PetFamily.Domain.VolunteersManagement.ValueObjects.Volunteer;
+using PetFamily.Shared.SharedKernel;
+using PetFamily.Shared.SharedKernel.IDs;
+using PetFamily.Shared.SharedKernel.ValueObjects.Volunteers.Pets;
+using PetFamily.Shared.SharedKernel.ValueObjects.Volunteers.Shared;
+using PetFamily.Shared.SharedKernel.ValueObjects.Volunteers.Volunteer;
+using PetFamily.VolunteersManagement.Domain.AggregateRoot;
+using PetFamily.VolunteersManagement.Domain.Entities.Pets;
+using PetFamily.VolunteersManagement.Domain.Entities.Pets.Enums;
 
 namespace PetFamily.Domain.UnitTests;
 

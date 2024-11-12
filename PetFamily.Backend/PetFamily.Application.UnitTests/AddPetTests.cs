@@ -1,24 +1,24 @@
 using Moq;
 using FluentValidation;
-using PetFamily.Domain.Shared;
 using FluentValidation.Results;
 using CSharpFunctionalExtensions;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
-using PetFamily.Domain.Shared.IDs;
 using Microsoft.Extensions.Logging;
-using PetFamily.Application.Database;
-using PetFamily.Domain.Shared.Error;
-using PetFamily.Application.DTOs.Pets;
-using PetFamily.Application.DTOs.Species;
-using PetFamily.Application.Features.Commands.Volunteers;
-using PetFamily.Application.Features.Commands.Volunteers.Pet.AddPet;
-using PetFamily.Domain.VolunteersManagement.AggregateRoot;
-using PetFamily.Domain.VolunteersManagement.Entities.Pets;
-using PetFamily.Domain.VolunteersManagement.Entities.Pets.Enums;
-using PetFamily.Domain.VolunteersManagement.ValueObjects.Pet;
-using PetFamily.Domain.VolunteersManagement.ValueObjects.Shared;
-using PetFamily.Domain.VolunteersManagement.ValueObjects.Volunteer;
+using PetFamily.BreedsManagement.Contracts;
+using PetFamily.Shared.Core.DTOs;
+using PetFamily.Shared.Core.DTOs.Pets;
+using PetFamily.Shared.SharedKernel;
+using PetFamily.Shared.SharedKernel.Error;
+using PetFamily.Shared.SharedKernel.IDs;
+using PetFamily.Shared.SharedKernel.ValueObjects.Volunteers.Pets;
+using PetFamily.Shared.SharedKernel.ValueObjects.Volunteers.Shared;
+using PetFamily.Shared.SharedKernel.ValueObjects.Volunteers.Volunteer;
+using PetFamily.VolunteersManagement.Application.Abstractions;
+using PetFamily.VolunteersManagement.Application.Commands.Volunteers.Pet.AddPet;
+using PetFamily.VolunteersManagement.Domain.AggregateRoot;
+using PetFamily.VolunteersManagement.Domain.Entities.Pets;
+using PetFamily.VolunteersManagement.Domain.Entities.Pets.Enums;
+using ValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace PetFamily.Application.UnitTests;
 
@@ -28,6 +28,7 @@ public class CreatePetTests
     private readonly Mock<IValidator<AddPetCommand>> _addPetValidatorMock;
     private readonly Mock<ILogger<AddPetHandler>> _addPetLoggerMock;
     private readonly Mock<IReadDbContext> _readDbContextMock;
+    private readonly Mock<IBreedsManagementContracts> _breedsManagementContracts;
     
     public CreatePetTests()
     {
@@ -35,6 +36,7 @@ public class CreatePetTests
         _addPetValidatorMock = new Mock<IValidator<AddPetCommand>>();
         _addPetLoggerMock = new Mock<ILogger<AddPetHandler>>();
         _readDbContextMock = new Mock<IReadDbContext>();
+        _breedsManagementContracts = new Mock<IBreedsManagementContracts>();
     }
     
     [Fact]
@@ -68,12 +70,17 @@ public class CreatePetTests
 
         _addPetValidatorMock.Setup(a => a.ValidateAsync(command, ct))
             .ReturnsAsync(new ValidationResult());
+
+        _breedsManagementContracts
+            .Setup(v => v.GetBreedsBySpeciesId(Guid.NewGuid(), default))
+            .ReturnsAsync(new List<BreedDto> { new BreedDto() } );
         
         var handler = new AddPetHandler(
             _volunteerRepositoryMock.Object, 
             _addPetLoggerMock.Object, 
             _readDbContextMock.Object,
-            _addPetValidatorMock.Object);
+            _addPetValidatorMock.Object,
+            _breedsManagementContracts.Object);
 
         //act
         var result = await handler.Handle(command, ct);
@@ -122,13 +129,20 @@ public class CreatePetTests
         _addPetValidatorMock.Setup(a => a.ValidateAsync(command, ct))
             .ReturnsAsync(validationResult);
         
-        _readDbContextMock.Setup(a => a.Breeds);
+        _breedsManagementContracts
+            .Setup(v => v.GetBreedsBySpeciesId(Guid.NewGuid(), default))
+            .ReturnsAsync(new List<BreedDto> { new BreedDto() } );
+        
+        _breedsManagementContracts
+            .Setup(v => v.GetBreedsBySpeciesId(Guid.NewGuid(), default))
+            .ReturnsAsync(new List<BreedDto> { new BreedDto() } );
         
         var handler = new AddPetHandler(
             _volunteerRepositoryMock.Object, 
             _addPetLoggerMock.Object, 
             _readDbContextMock.Object,
-            _addPetValidatorMock.Object);
+            _addPetValidatorMock.Object,
+            _breedsManagementContracts.Object);
 
         //act
         var result = await handler.Handle(command, ct);

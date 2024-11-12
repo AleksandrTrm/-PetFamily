@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.App" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\..\VolunteersManagement\PetFamily.VolunteersManagement.Application\PetFamily.VolunteersManagement.Application.csproj" />
+      <ProjectReference Include="..\PetFamily.Shared.Core\PetFamily.Shared.Core.csproj" />
+      <ProjectReference Include="..\PetFamily.Shared.SharedKernel\PetFamily.Shared.SharedKernel.csproj" />
+    </ItemGroup>
+
+</Project>

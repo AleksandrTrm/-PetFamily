@@ -1,26 +1,27 @@
-﻿using System.Collections;
-using Moq;
+﻿using Moq;
 using System.Data;
 using CSharpFunctionalExtensions;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
-using PetFamily.Application.Database;
-using PetFamily.Application.Features.Commands.Volunteers;
-using PetFamily.Application.Features.Commands.Volunteers.Pet.UploadPetFiles;
-using PetFamily.Application.FileProvider;
-using PetFamily.Application.Messaging;
-using PetFamily.Domain.Shared;
-using PetFamily.Domain.Shared.IDs;
-using PetFamily.Domain.Shared.Error;
-using PetFamily.Domain.VolunteersManagement.AggregateRoot;
-using PetFamily.Domain.VolunteersManagement.Entities.Pets;
-using PetFamily.Domain.VolunteersManagement.Entities.Pets.Enums;
-using PetFamily.Domain.VolunteersManagement.ValueObjects.Pet;
-using PetFamily.Domain.VolunteersManagement.ValueObjects.Shared;
-using PetFamily.Domain.VolunteersManagement.ValueObjects.Volunteer;
-using FileInfo = PetFamily.Application.FileProvider.FileInfo;
+using PetFamily.Shared.Core.Abstractions;
+using PetFamily.Shared.Core.Messaging.MessageQueues;
+using PetFamily.Shared.SharedKernel;
+using PetFamily.Shared.SharedKernel.Abstractions;
+using PetFamily.Shared.SharedKernel.Error;
+using PetFamily.Shared.SharedKernel.FileProviders;
+using PetFamily.Shared.SharedKernel.IDs;
+using PetFamily.Shared.SharedKernel.ValueObjects.Volunteers.Pets;
+using PetFamily.Shared.SharedKernel.ValueObjects.Volunteers.Shared;
+using PetFamily.Shared.SharedKernel.ValueObjects.Volunteers.Volunteer;
+using PetFamily.VolunteersManagement.Application.Abstractions;
+using PetFamily.VolunteersManagement.Application.Commands.Volunteers.Pet.UploadPetFiles;
+using PetFamily.VolunteersManagement.Domain.AggregateRoot;
+using PetFamily.VolunteersManagement.Domain.Entities.Pets;
+using PetFamily.VolunteersManagement.Domain.Entities.Pets.Enums;
+using FileInfo = PetFamily.Shared.SharedKernel.FileProviders.FileInfo;
+using ValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace PetFamily.Application.UnitTests;
 
@@ -191,6 +192,8 @@ public class AddPhotosToPet
         _fileProviderMock.Setup(fp => fp.UploadFiles(It.IsAny<List<FileContent>>(), ct))
             .ReturnsAsync(Result.Failure<IEnumerable<string>, Error>(
                 Error.Failure("files.upload.error", "Failed to upload files to storage")));
+
+        _messageQueueMock.Setup(m => filesContents);
 
         var loggerMock = new Mock<ILogger<UploadPetFilesHandler>>();
         
