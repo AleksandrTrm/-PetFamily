@@ -1,6 +1,6 @@
 ﻿using PetFamily.VolunteersManagement.Application.Queries.Volunteers.GetFilteredVolunteersWithPagination;
 
-namespace PetFamily.WebAPI.Controllers.Volunteers.Get.Requests;
+namespace PetFamily.VolunteersManagement.Presentation.Requests.Get;
 
 public record GetVolunteersRequest(
     string? SortBy,

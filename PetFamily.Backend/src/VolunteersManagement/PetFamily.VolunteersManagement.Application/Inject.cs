@@ -15,7 +15,7 @@ public static class Inject
 
         return services;
     }
-
+    
     private static IServiceCollection AddCommands(this IServiceCollection services)
     {
         return services.Scan(scan => scan.FromAssemblies(typeof(Inject).Assembly)

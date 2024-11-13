@@ -2,7 +2,7 @@
 using PetFamily.Shared.Core.DTOs.VolunteerDtos;
 using PetFamily.VolunteersManagement.Application.Commands.Volunteers.Create;
 
-namespace PetFamily.WebAPI.Controllers.Volunteers.Write.Requests;
+namespace PetFamily.VolunteersManagement.Presentation.Requests.Write;
 
 public record CreateVolunteerRequest(
     FullNameDto FullName,

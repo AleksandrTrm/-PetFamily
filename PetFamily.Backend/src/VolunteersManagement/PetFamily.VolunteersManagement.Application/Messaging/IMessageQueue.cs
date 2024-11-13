@@ -1,4 +1,4 @@
-﻿namespace PetFamily.Shared.Core.Messaging.MessageQueues;
+﻿namespace PetFamily.VolunteersManagement.Application.Messaging;
 
 public interface IMessageQueue<TMessage>
 {

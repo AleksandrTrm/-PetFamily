@@ -1,4 +1,4 @@
-﻿namespace PetFamily.Shared.SharedKernel.FileProviders;
+﻿namespace PetFamily.VolunteersManagement.Application.FileProvider;
 
 public record FileContent(Stream Stream, FileInfo FileInfo);
 

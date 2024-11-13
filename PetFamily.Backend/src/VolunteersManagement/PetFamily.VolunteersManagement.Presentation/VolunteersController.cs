@@ -21,10 +21,10 @@ using PetFamily.VolunteersManagement.Application.Queries.Pets.GetFilteredPetsWit
 using PetFamily.VolunteersManagement.Application.Queries.Pets.GetPetById;
 using PetFamily.VolunteersManagement.Application.Queries.Volunteers.GetFilteredVolunteersWithPagination;
 using PetFamily.VolunteersManagement.Application.Queries.Volunteers.GetVolunteerById;
-using PetFamily.WebAPI.Controllers.Volunteers.Get.Requests;
-using PetFamily.WebAPI.Controllers.Volunteers.Write.Requests;
+using PetFamily.VolunteersManagement.Presentation.Requests.Get;
+using PetFamily.VolunteersManagement.Presentation.Requests.Write;
 
-namespace PetFamily.WebAPI.Controllers.Volunteers;
+namespace PetFamily.VolunteersManagement.Presentation;
 
 public class VolunteersController : ApplicationController
 {

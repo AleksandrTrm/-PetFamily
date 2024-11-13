@@ -2,7 +2,7 @@
 using PetFamily.Shared.Core.DTOs.Pets;
 using PetFamily.VolunteersManagement.Domain.Entities.Pets.Enums;
 
-namespace PetFamily.WebAPI.Controllers.Volunteers.Write.Requests;
+namespace PetFamily.VolunteersManagement.Presentation.Requests.Write;
 
 public record UpdatePetMainInfoRequest(
     string Nickname, 

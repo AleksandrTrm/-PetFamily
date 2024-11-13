@@ -1,7 +1,7 @@
 ﻿using PetFamily.VolunteersManagement.Application.Commands.Volunteers.Pet.UpdatePetStatus;
 using PetFamily.VolunteersManagement.Domain.Entities.Pets.Enums;
 
-namespace PetFamily.WebAPI.Controllers.Volunteers.Write.Requests;
+namespace PetFamily.VolunteersManagement.Presentation.Requests.Write;
 
 public record UpdatePetStatusRequest(Status Status)
 {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using PetFamily.Shared.SharedKernel.Abstractions;
+using PetFamily.VolunteersManagement.Application.FileProvider;
 
-namespace PetFamily.Shared.Framework.BackgroundServices;
+namespace PetFamily.VolunteersManagement.Infrastructure.BackgroundServices;
 
 public class FilesCleanerBackgroundService : BackgroundService
 {

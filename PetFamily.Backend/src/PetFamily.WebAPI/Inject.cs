@@ -13,8 +13,8 @@ public static class Inject
         this IServiceCollection services, 
         IConfiguration configuration)
     {
-        services.AddBreedsManagement();
         services.AddVolunteersManagement(configuration);
+        services.AddBreedsManagement();
         
         return services;
     }

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Channels;
+using PetFamily.VolunteersManagement.Application.Messaging;
 
-namespace PetFamily.Shared.Core.Messaging.MessageQueues;
+namespace PetFamily.VolunteersManagement.Infrastructure.MessageQueues;
 
 public class InMemoryMessageQueue<TMessage> : IMessageQueue<TMessage>
 {

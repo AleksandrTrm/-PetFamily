@@ -47,13 +47,16 @@ public class SpeciesController : ApplicationController
         return Ok(createSpeciesResult.Value);
     }
 
-    [HttpPost("breeds")]
+    [HttpPost("{id:guid}/breeds")]
     public async Task<ActionResult> CreateBreed(
-        [FromBody] CreateBreedRequest request,
+        [FromRoute] Guid id,
+        [FromBody] string breed,
         [FromServices] CreateBreedCommandHandler handler,
         CancellationToken cancellationToken)
     {
-        var createBreedResult = await handler.Handle(request.ToCommand(), cancellationToken);
+        var command = new CreateBreedCommand(id, breed);
+        
+        var createBreedResult = await handler.Handle(command, cancellationToken);
         if (createBreedResult.IsFailure)
             return BadRequest(createBreedResult.Error);
 

@@ -3,10 +3,9 @@ using Microsoft.Extensions.Logging;
 using Minio;
 using Minio.DataModel.Args;
 using Minio.Exceptions;
-using PetFamily.Shared.SharedKernel.Abstractions;
 using PetFamily.Shared.SharedKernel.Error;
-using PetFamily.Shared.SharedKernel.FileProviders;
-using FileInfo = PetFamily.Shared.SharedKernel.FileProviders.FileInfo;
+using PetFamily.VolunteersManagement.Application.FileProvider;
+using FileInfo = PetFamily.VolunteersManagement.Application.FileProvider.FileInfo;
 
 namespace PetFamily.VolunteersManagement.Infrastructure.Providers;
 

@@ -2,15 +2,16 @@
 using Microsoft.Extensions.DependencyInjection;
 using Minio;
 using PetFamily.Shared.Core.Abstractions;
-using PetFamily.Shared.Core.BackgroundServices;
-using PetFamily.Shared.Core.Messaging.MessageQueues;
 using PetFamily.Shared.Core.Options;
-using PetFamily.Shared.Framework.BackgroundServices;
-using PetFamily.Shared.SharedKernel.Abstractions;
 using PetFamily.VolunteersManagement.Application.Abstractions;
+using PetFamily.VolunteersManagement.Application.FileProvider;
+using PetFamily.VolunteersManagement.Application.Messaging;
+using PetFamily.VolunteersManagement.Infrastructure.BackgroundServices;
 using PetFamily.VolunteersManagement.Infrastructure.DbContexts;
+using PetFamily.VolunteersManagement.Infrastructure.MessageQueues;
 using PetFamily.VolunteersManagement.Infrastructure.Providers;
 using PetFamily.VolunteersManagement.Infrastructure.Repositories;
+using FileInfo = PetFamily.VolunteersManagement.Application.FileProvider.FileInfo;
 
 namespace PetFamily.VolunteersManagement.Infrastructure;
 

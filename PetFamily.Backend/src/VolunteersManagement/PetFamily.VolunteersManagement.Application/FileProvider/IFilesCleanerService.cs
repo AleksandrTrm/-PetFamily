@@ -1,4 +1,4 @@
-﻿namespace PetFamily.Shared.SharedKernel.Abstractions;
+﻿namespace PetFamily.VolunteersManagement.Application.FileProvider;
 
 public interface IFilesCleanerService
 {

@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
-using PetFamily.Shared.Core.Messaging.MessageQueues;
-using PetFamily.Shared.SharedKernel.Abstractions;
-using FileInfo = PetFamily.Shared.SharedKernel.FileProviders.FileInfo;
+using PetFamily.VolunteersManagement.Application.FileProvider;
+using PetFamily.VolunteersManagement.Application.Messaging;
+using FileInfo = PetFamily.VolunteersManagement.Application.FileProvider.FileInfo;
 
 
-namespace PetFamily.Shared.Core.BackgroundServices;
+namespace PetFamily.VolunteersManagement.Infrastructure.BackgroundServices;
 
 public class FilesCleanerService : IFilesCleanerService
 {

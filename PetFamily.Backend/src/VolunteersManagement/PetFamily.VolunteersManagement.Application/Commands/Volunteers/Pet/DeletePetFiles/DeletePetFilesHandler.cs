@@ -3,12 +3,12 @@ using FluentValidation;
 using Microsoft.Extensions.Logging;
 using PetFamily.Shared.Core.Abstractions;
 using PetFamily.Shared.Core.Extensions;
-using PetFamily.Shared.Core.Messaging.MessageQueues;
-using PetFamily.Shared.SharedKernel.Abstractions;
 using PetFamily.Shared.SharedKernel.Error;
 using PetFamily.Shared.SharedKernel.IDs;
 using PetFamily.VolunteersManagement.Application.Abstractions;
-using FileInfo = PetFamily.Shared.SharedKernel.FileProviders.FileInfo;
+using PetFamily.VolunteersManagement.Application.FileProvider;
+using PetFamily.VolunteersManagement.Application.Messaging;
+using FileInfo = PetFamily.VolunteersManagement.Application.FileProvider.FileInfo;
 
 namespace PetFamily.VolunteersManagement.Application.Commands.Volunteers.Pet.DeletePetFiles;
 

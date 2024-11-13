@@ -1,24 +1,22 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFamily.Shared.SharedKernel.FileProviders;
-using FileInfo = PetFamily.Shared.SharedKernel.FileProviders.FileInfo;
 
-namespace PetFamily.Shared.SharedKernel.Abstractions;
+namespace PetFamily.VolunteersManagement.Application.FileProvider;
 
 public interface IFileProvider
 {
-    Task<Result<IEnumerable<string>, Error.Error>> UploadFiles(
+    Task<Result<IEnumerable<string>, Shared.SharedKernel.Error.Error>> UploadFiles(
         IEnumerable<FileContent> files,
         CancellationToken cancellationToken = default);
 
-    Task<Result<string, Error.Error>> Remove(
+    Task<Result<string, Shared.SharedKernel.Error.Error>> Remove(
         FileInfo fileInfo,
         CancellationToken cancellationToken = default);
 
-    Task<Result<string, Error.Error>> GetFile(
+    Task<Result<string, Shared.SharedKernel.Error.Error>> GetFile(
         FileContent fileContent,
         CancellationToken cancellationToken = default);
 
-    Task<Result<List<string>, Error.Error>> GetFiles(
+    Task<Result<List<string>, Shared.SharedKernel.Error.Error>> GetFiles(
         IEnumerable<FileContent> files,
         CancellationToken cancellationToken = default);
 }

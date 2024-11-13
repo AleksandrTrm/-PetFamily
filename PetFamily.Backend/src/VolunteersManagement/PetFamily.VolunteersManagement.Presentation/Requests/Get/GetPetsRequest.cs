@@ -1,7 +1,7 @@
 ﻿using PetFamily.VolunteersManagement.Application.Queries.Pets.GetFilteredPetsWithPagination;
 using PetFamily.VolunteersManagement.Domain.Entities.Pets.Enums;
 
-namespace PetFamily.WebAPI.Controllers.Volunteers.Get.Requests;
+namespace PetFamily.VolunteersManagement.Presentation.Requests.Get;
 
 public record GetPetsRequest(
     Guid? VolunteerId,
