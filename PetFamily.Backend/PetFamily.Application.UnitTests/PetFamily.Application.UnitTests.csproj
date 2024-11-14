@@ -23,8 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\src\PetFamily.Application\PetFamily.Application.csproj" />
-      <ProjectReference Include="..\src\PetFamily.Domain\PetFamily.Domain.csproj" />
+      <ProjectReference Include="..\src\VolunteersManagement\PetFamily.VolunteersManagement.Application\PetFamily.VolunteersManagement.Application.csproj" />
     </ItemGroup>
 
 </Project>
