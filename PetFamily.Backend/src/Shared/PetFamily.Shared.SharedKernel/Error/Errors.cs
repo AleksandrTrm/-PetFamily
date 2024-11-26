@@ -37,4 +37,14 @@ public static class Errors
             return Error.Validation("out.of.range", $"Value{label} can not be less than {min}{forMaxLabel}");
         }
     }
+    
+    public static class Accounts
+    {
+        public static Error InvalidCredentials()
+        {
+            return Error.Validation(
+                "credentials.is.invalid", 
+                $"Your credentials is invalid");
+        }
+    }
 }

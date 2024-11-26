@@ -1,4 +1,6 @@
-﻿using PetFamily.BreedsManagement.Application;
+﻿using PetFamily.AccountsManagement.Application;
+using PetFamily.AccountsManagement.Infrastructure;
+using PetFamily.BreedsManagement.Application;
 using PetFamily.BreedsManagement.Infrastructure;
 using PetFamily.BreedsManagement.Presentation;
 using PetFamily.VolunteersManagement.Application;
@@ -15,6 +17,7 @@ public static class Inject
     {
         services.AddVolunteersManagement(configuration);
         services.AddBreedsManagement();
+        services.AddAccountManagement(configuration);
         
         return services;
     }
@@ -37,6 +40,16 @@ public static class Inject
             .AddVolunteersManagementInfrastructure(configuration)
             .AddVolunteersManagementApplication()
             .AddVolunteersManagementPresentation();
+
+        return services;
+    }
+
+    private static IServiceCollection AddAccountManagement(
+        this IServiceCollection services, IConfiguration configuration)
+    {
+        services
+            .AddAccountsManagementInfrastructure(configuration)
+            .AddAccountsManagementApplication();
 
         return services;
     }

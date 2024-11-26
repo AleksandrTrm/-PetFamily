@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetFamily.Shared.Framework;
 using PetFamily.BreedsManagement.Application.Commands.CreateBreed;
 using PetFamily.BreedsManagement.Application.Commands.CreateSpecies;
@@ -12,6 +13,7 @@ namespace PetFamily.BreedsManagement.Presentation;
 
 public class SpeciesController : ApplicationController
 {
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult> GetSpeciesWithPagination(
         CancellationToken cancellationToken,
@@ -23,6 +25,7 @@ public class SpeciesController : ApplicationController
         return Ok(result);
     }
 
+    [Authorize]
     [HttpGet("breeds")]
     public async Task<ActionResult> GetBreedsBySpeciesId(
         [FromQuery] GetBreedsBySpeciesIdRequest request,
@@ -34,6 +37,7 @@ public class SpeciesController : ApplicationController
         return Ok(result);
     }
     
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult> CreateSpecies(
         [FromBody] CreateSpeciesRequest request,
@@ -47,6 +51,7 @@ public class SpeciesController : ApplicationController
         return Ok(createSpeciesResult.Value);
     }
 
+    [Authorize]
     [HttpPost("{id:guid}/breeds")]
     public async Task<ActionResult> CreateBreed(
         [FromRoute] Guid id,
@@ -63,6 +68,7 @@ public class SpeciesController : ApplicationController
         return Ok(createBreedResult.Value);
     }
 
+    [Authorize]
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult> DeleteSpecies(
         [FromRoute] Guid id,
@@ -76,6 +82,7 @@ public class SpeciesController : ApplicationController
         return Ok(result.Value);
     }
     
+    [Authorize]
     [HttpDelete("{id:guid}/breeds/{breedId:guid}")]
     public async Task<ActionResult> DeleteBreed(
         [FromRoute] Guid id,

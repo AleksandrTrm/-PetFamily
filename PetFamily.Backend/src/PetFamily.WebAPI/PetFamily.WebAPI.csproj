@@ -30,6 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Accounts\PetFamily.AccountsManagement.Application\PetFamily.AccountsManagement.Application.csproj" />
+    <ProjectReference Include="..\Accounts\PetFamily.AccountsManagement.Infrastructure\PetFamily.AccountsManagement.Infrastructure.csproj" />
+    <ProjectReference Include="..\Accounts\PetFamily.AccountsManagement.Presentation\PetFamily.AccountsManagement.Presentation.csproj" />
     <ProjectReference Include="..\BreedsManagement\PetFamily.BreedsManagement.Application\PetFamily.BreedsManagement.Application.csproj" />
     <ProjectReference Include="..\BreedsManagement\PetFamily.BreedsManagement.Infrastructure\PetFamily.BreedsManagement.Infrastructure.csproj" />
     <ProjectReference Include="..\BreedsManagement\PetFamily.BreedsManagement.Presentation\PetFamily.BreedsManagement.Presentation.csproj" />
