@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using PetFamily.Shared.Core.DTOs.Pets;
 using PetFamily.Shared.Core.DTOs.VolunteerDtos;
+using PetFamily.Shared.SharedKernel;
 using PetFamily.VolunteersManagement.Application.Abstractions;
 
 namespace PetFamily.VolunteersManagement.Infrastructure.DbContexts;

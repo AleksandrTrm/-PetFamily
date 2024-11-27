@@ -1,26 +1,49 @@
+using Microsoft.OpenApi.Models;
 using Serilog;
-using Serilog.Events;
 using PetFamily.WebAPI;
 using PetFamily.WebAPI.Middlewares;
+using LoggerConfiguration = PetFamily.WebAPI.Extensions.LoggerConfiguration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "api",
+        Version = "v1"
+    });
+    
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please insert JWT with bearer into the field",
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey
+    });
+    
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            []
+        }
+    });
+});
 
 builder.Services.AddSerilog();
 
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.Seq(
-        builder.Configuration.GetConnectionString("Seq") ??
-        throw new ArgumentNullException("Argument was null")
-    )
-    .WriteTo.Console()
-    .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
-    .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning)
-    .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
-    .CreateLogger();
+Log.Logger = LoggerConfiguration.ConfigureLogger(builder);
 
 builder.Services.AddServices(builder.Configuration);
 
@@ -39,6 +62,9 @@ if (app.Environment.IsDevelopment())
 app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
