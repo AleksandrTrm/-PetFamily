@@ -49,11 +49,11 @@ public class CreateVolunteerHandler : ICommandHandler<Guid, CreateVolunteerComma
         var phoneNumberResult = PhoneNumber.Create(phoneNumber);
         
         var socialMediasDto = command.SocialMedias;
-        List<SocialMedia> socialMediasList = [];
+        List<SocialNetwork> socialMediasList = [];
         foreach (var socialMediaDto in socialMediasDto)
-            socialMediasList.Add(SocialMedia.Create(socialMediaDto.Title, socialMediaDto.Link).Value);
+            socialMediasList.Add(SocialNetwork.Create(socialMediaDto.Title, socialMediaDto.Link).Value);
 
-        var socialMedias = new ValueObjectList<SocialMedia>(socialMediasList);
+        var socialMedias = new ValueObjectList<SocialNetwork>(socialMediasList);
 
         var requisitesDto = command.Requisites;
         List<Requisite> requisitesList = [];

@@ -1,9 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using PetFamily.Infrastructure.Authentication;
+using PetFamily.AccountsManagement.Domain.Entities;
 using PetFamily.Shared.Core.Abstractions;
 using PetFamily.Shared.SharedKernel.Error;
+using PetFamily.Shared.SharedKernel.ValueObjects.Volunteers.Volunteer;
 
 namespace PetFamily.AccountsManagement.Application.Commands.Register;
 
@@ -24,10 +25,15 @@ public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand>
         if (existedUser is not null)
             return Errors.General.AlreadyExists(command.Email).ToErrorList();
 
+        var fullNameDto = command.FullName;
+
+        var fullName = FullName.Create(fullNameDto.Name, fullNameDto.Surname, fullNameDto.Patronymic).Value;
+        
         var user = new User
         {
             UserName = command.UserName,
-            Email = command.Email
+            Email = command.Email,
+            FullName = fullName
         };
 
         var createUserResult = await _userManager.CreateAsync(user, command.Password);

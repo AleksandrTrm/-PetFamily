@@ -1,4 +1,5 @@
 using Microsoft.OpenApi.Models;
+using PetFamily.AccountsManagement.Infrastructure;
 using Serilog;
 using PetFamily.WebAPI;
 using PetFamily.WebAPI.Middlewares;
@@ -48,6 +49,10 @@ Log.Logger = LoggerConfiguration.ConfigureLogger(builder);
 builder.Services.AddServices(builder.Configuration);
 
 var app = builder.Build();
+
+var seeder = app.Services.GetRequiredService<AccountsSeeder>();
+
+await seeder.SeedAsync();
 
 app.UseExceptionMiddleware();
 

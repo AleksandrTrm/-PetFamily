@@ -1,5 +1,6 @@
 ﻿using PetFamily.AccountsManagement.Application;
 using PetFamily.AccountsManagement.Infrastructure;
+using PetFamily.AccountsManagement.Presentation;
 using PetFamily.BreedsManagement.Application;
 using PetFamily.BreedsManagement.Infrastructure;
 using PetFamily.BreedsManagement.Presentation;
@@ -49,7 +50,8 @@ public static class Inject
     {
         services
             .AddAccountsManagementInfrastructure(configuration)
-            .AddAccountsManagementApplication();
+            .AddAccountsManagementApplication()
+            .AddAccountsPresentation();
 
         return services;
     }

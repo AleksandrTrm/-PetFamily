@@ -1,4 +1,4 @@
-﻿using PetFamily.Infrastructure.Authentication;
+﻿using PetFamily.AccountsManagement.Domain.Entities;
 
 namespace PetFamily.AccountsManagement.Application.Abstractions;
 

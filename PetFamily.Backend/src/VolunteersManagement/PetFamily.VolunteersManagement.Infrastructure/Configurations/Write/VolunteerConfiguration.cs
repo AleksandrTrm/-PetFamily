@@ -73,8 +73,8 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.Property(v => v.SocialMedias)
             .HasValueObjectsJsonConversion(
                 sm => new SocialMediaDto(sm.Title, sm.Link),
-                dto => SocialMedia.Create(dto.Title, dto.Link).Value)
-            .HasColumnName("social_medias");
+                dto => SocialNetwork.Create(dto.Title, dto.Link).Value)
+            .HasColumnName("social_networks");
 
         builder.HasMany(v => v.Pets)
             .WithOne()

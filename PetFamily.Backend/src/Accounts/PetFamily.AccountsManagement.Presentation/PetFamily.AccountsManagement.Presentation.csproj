@@ -13,6 +13,7 @@
       <ProjectReference Include="..\PetFamily.AccountsManagement.Application\PetFamily.AccountsManagement.Application.csproj" />
       <ProjectReference Include="..\PetFamily.AccountsManagement.Contracts\PetFamily.AccountsManagement.Contracts.csproj" />
       <ProjectReference Include="..\PetFamily.AccountsManagement.Domain\PetFamily.AccountsManagement.Domain.csproj" />
+      <ProjectReference Include="..\PetFamily.AccountsManagement.Infrastructure\PetFamily.AccountsManagement.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

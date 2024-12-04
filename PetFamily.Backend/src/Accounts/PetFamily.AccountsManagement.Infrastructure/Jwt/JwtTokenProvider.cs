@@ -3,9 +3,10 @@ using System.Security.Claims;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using PetFamily.Infrastructure.Authentication;
 using PetFamily.AccountsManagement.Application.Abstractions;
+using PetFamily.AccountsManagement.Domain.Entities;
 using PetFamily.AccountsManagement.Infrastructure.Jwt.Options;
+using PetFamily.Shared.Framework.Authorization;
 
 namespace PetFamily.AccountsManagement.Infrastructure.Jwt;
 
