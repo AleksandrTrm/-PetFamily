@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.AccountsManagement.Domain.Entities.Roles;
+using PetFamily.Shared.Core.DTOs;
+using PetFamily.Shared.Core.Extensions;
 using PetFamily.Shared.SharedKernel.ValueObjects.Volunteers.Shared;
 
 namespace PetFamily.AccountsManagement.Infrastructure.Configurations;
@@ -17,23 +19,10 @@ public class VolunteerAccountConfiguration : IEntityTypeConfiguration<VolunteerA
 
         builder.Property(v => v.Experience).IsRequired();
 
-        builder.Property(v => v.Requisites).HasConversion(
-            r => JsonSerializer.Serialize(r, JsonSerializerOptions.Default),
-            r => JsonSerializer.Deserialize<IReadOnlyList<Requisite>>(r, JsonSerializerOptions.Default)!,
-            new ValueComparer<IReadOnlyList<Requisite>>(
-                (c1, c2) => c1.SequenceEqual(c2),
-                c => 
-                    c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
-                c => c.ToList()));
-        
-        builder.Property(v => v.Certificates).HasConversion(
-            r => JsonSerializer.Serialize(r, JsonSerializerOptions.Default),
-            r => JsonSerializer.Deserialize<IReadOnlyList<string>>(r, JsonSerializerOptions.Default)!,
-            new ValueComparer<IReadOnlyList<string>>(
-                (c1, c2) => c1.SequenceEqual(c2),
-                c => 
-                    c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
-                c => c.ToList()));
+        builder.Property(v => v.Requisites)
+            .HasValueObjectsJsonConversion(
+                requisite => new RequisiteDto(requisite.Title, requisite.Description),
+                requisiteDto => Requisite.Create(requisiteDto.Title, requisiteDto.Description).Value);
 
         builder.HasOne(v => v.User)
             .WithOne()

@@ -283,7 +283,7 @@ public class VolunteersController : ApplicationController
     [HttpPatch("{id:guid}/social-networks")]
     public async Task<ActionResult<Guid>> UpdateSocialNetworks(
         [FromRoute] Guid id,
-        [FromBody] IEnumerable<SocialMediaDto> dto,
+        [FromBody] IEnumerable<SocialNetworkDto> dto,
         [FromServices] UpdateSocialMediasHandler handler,
         CancellationToken cancellationToken)
     {

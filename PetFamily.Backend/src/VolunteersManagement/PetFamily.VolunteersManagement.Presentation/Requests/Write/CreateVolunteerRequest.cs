@@ -10,7 +10,7 @@ public record CreateVolunteerRequest(
     int Experience,
     string PhoneNumber,
     IEnumerable<RequisiteDto> Requisites,
-    IEnumerable<SocialMediaDto> SocialMedias)
+    IEnumerable<SocialNetworkDto> SocialMedias)
 {
     public CreateVolunteerCommand ToCommand()
     {

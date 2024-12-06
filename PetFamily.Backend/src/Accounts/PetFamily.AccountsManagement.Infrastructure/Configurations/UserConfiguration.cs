@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.AccountsManagement.Domain.Entities;
+using PetFamily.Shared.Core.DTOs.VolunteerDtos;
+using PetFamily.Shared.Core.Extensions;
 using PetFamily.Shared.SharedKernel;
 using PetFamily.Shared.SharedKernel.ValueObjects.Volunteers.Volunteer;
 
@@ -22,14 +24,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.UserName).HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
 
         builder.Property(u => u.SocialNetworks)
-            .HasConversion(
-                v => JsonSerializer.Serialize(v, JsonSerializerOptions.Default),
-                v => JsonSerializer.Deserialize<IReadOnlyList<SocialNetwork>>(v, JsonSerializerOptions.Default)!, 
-                new ValueComparer<IReadOnlyList<SocialNetwork>>(
-                    (c1, c2) => c1.SequenceEqual(c2),
-                    c => 
-                        c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
-                    c => c.ToList()))
+            .HasValueObjectsJsonConversion(
+                socialNetwork => new SocialNetworkDto(socialNetwork.Title, socialNetwork.Link),
+                socialNetworkDto => SocialNetwork.Create(socialNetworkDto.Title, socialNetworkDto.Link).Value)
             .IsRequired(false);
 
         builder.Property(u => u.Email).IsRequired();

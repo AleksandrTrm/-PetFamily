@@ -10,4 +10,4 @@ public record CreateVolunteerCommand(
     int Experience,
     string PhoneNumber,
     IEnumerable<RequisiteDto> Requisites,
-    IEnumerable<SocialMediaDto> SocialMedias) : ICommand;
+    IEnumerable<SocialNetworkDto> SocialMedias) : ICommand;
