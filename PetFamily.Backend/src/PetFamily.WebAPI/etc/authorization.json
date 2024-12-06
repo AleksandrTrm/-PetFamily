@@ -1,0 +1,87 @@
+﻿{
+  "Roles" : {
+    "Admin" : [
+      "volunteer.create",
+      "volunteer.get.with.pagination",
+      "volunteer.get.by.id",
+      "volunteer.update.main.info",
+      "volunteer.update.requisites",
+      "volunteer.update.social.networks",
+      "volunteer.delete",
+      "pet.get.with.pagination",
+      "pet.get.by.id",
+      "pet.add",
+      "pet.upload.files",
+      "pet.delete.files",
+      "pet.update.main.info",
+      "pet.update.status",
+      "pet.delete",
+      "pet.set.main.photo",
+      "species.get.with.pagination",
+      "species.create",
+      "species.delete",
+      "breeds.get.by.species.id",
+      "breed.create",
+      "breed.delete"
+    ],
+    "Volunteer" : [
+      "volunteer.get.with.pagination",
+      "volunteer.get.by.id",
+      "pet.get.with.pagination",
+      "pet.get.by.id",
+      "pet.add",
+      "pet.upload.files",
+      "pet.delete.files",
+      "pet.update.main.info",
+      "pet.update.status",
+      "pet.delete",
+      "pet.set.main.photo",
+      "volunteer.update.main.info",
+      "volunteer.update.requisites",
+      "volunteer.update.social.networks",
+      "volunteer.delete",
+      "species.get.with.pagination",
+      "breeds.get.by.species.id"
+    ],
+    "Participant" : [
+      "pet.get.with.pagination",
+      "pet.get.by.id",
+      "volunteer.get.with.pagination",
+      "volunteer.get.by.id",
+      "species.get.with.pagination",
+      "breeds.get.by.species.id"
+    ]
+  },
+  "Permissions" : {
+    "Pets" : [
+      "pet.get.with.pagination",
+      "pet.get.by.id",
+      "pet.add",
+      "pet.upload.files",
+      "pet.delete.files",
+      "pet.update.main.info",
+      "pet.update.status",
+      "pet.delete",
+      "pet.set.main.photo"
+    ],
+    "Volunteers" : [
+      "volunteer.create",
+      "volunteer.get.with.pagination",
+      "volunteer.get.by.id",
+      "volunteer.update.main.info",
+      "volunteer.update.requisites",
+      "volunteer.update.social.networks",
+      "volunteer.delete"
+    ],
+    "Species" : [
+      "species.get.with.pagination",
+      "species.create",
+      "species.delete"
+    ],
+    "Breeds" : [
+      "breeds.get.by.species.id",
+      "breed.create",
+      "breed.delete"
+    ]
+  }
+}

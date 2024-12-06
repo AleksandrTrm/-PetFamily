@@ -14,6 +14,6 @@ public class UpdateSocialMediasCommandValidator : AbstractValidator<UpdateSocial
             .WithError(Errors.General.InvalidValue());
 
         RuleForEach(r => r.SocialMedias)
-            .MustBeValueObject(r => SocialMedia.Create(r.Title, r.Link));
+            .MustBeValueObject(r => SocialNetwork.Create(r.Title, r.Link));
     }
 }

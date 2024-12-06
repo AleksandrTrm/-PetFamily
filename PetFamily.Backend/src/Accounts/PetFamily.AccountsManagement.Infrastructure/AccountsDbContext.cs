@@ -4,15 +4,19 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using PetFamily.Shared.SharedKernel;
-using PetFamily.Infrastructure.Authentication;
+using PetFamily.AccountsManagement.Domain.Entities;
 
 namespace PetFamily.AccountsManagement.Infrastructure;
 
-public class AccountsDbContext(IConfiguration configuration) 
-    : IdentityDbContext<User, Role, Guid>
+public class AccountsDbContext(IConfiguration configuration) : IdentityDbContext<User, Role, Guid>
 {
+    public DbSet<Permission> Permissions => Set<Permission>();
+    public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
+    
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        base.OnConfiguring(optionsBuilder);
+        
         optionsBuilder.UseNpgsql(configuration.GetConnectionString(Constants.DATABASE));
         optionsBuilder.EnableSensitiveDataLogging();
         optionsBuilder.UseSnakeCaseNamingConvention();
@@ -23,19 +27,23 @@ public class AccountsDbContext(IConfiguration configuration)
     {
         base.OnModelCreating(builder);
         
+        builder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+
         builder.Entity<User>().ToTable("users");
-        
+
         builder.Entity<Role>().ToTable("roles");
-         
-        builder.Entity<IdentityRoleClaim<Guid>>().ToTable("role_claims");
         
         builder.Entity<IdentityUserClaim<Guid>>().ToTable("user_claims");
         
         builder.Entity<IdentityUserLogin<Guid>>().ToTable("user_logins");
         
-        builder.Entity<IdentityUserRole<Guid>>().ToTable("user_roles");
-        
         builder.Entity<IdentityUserToken<Guid>>().ToTable("user_token");
+        
+        builder.Entity<IdentityRoleClaim<Guid>>().ToTable("role_claims");
+        
+        builder.Entity<IdentityUserRole<Guid>>().ToTable("user_role");
+
+        builder.HasDefaultSchema("accounts");
     }
 
     private ILoggerFactory CreateLoggerFactory() =>

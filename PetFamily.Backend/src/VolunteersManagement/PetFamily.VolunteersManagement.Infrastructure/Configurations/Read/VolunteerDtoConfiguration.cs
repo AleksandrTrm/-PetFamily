@@ -43,8 +43,8 @@ public class VolunteerDtoConfiguration : IEntityTypeConfiguration<VolunteerDto>
             .HasConversion(
                 sm => JsonSerializer.Serialize(string.Empty, JsonSerializerOptions.Default),
                 json => JsonSerializer
-                    .Deserialize<IEnumerable<SocialMediaDto>>(json, JsonSerializerOptions.Default)!)
-            .HasColumnName("social_medias");
+                    .Deserialize<IEnumerable<SocialNetworkDto>>(json, JsonSerializerOptions.Default)!)
+            .HasColumnName("social_networks");
 
         builder.Property(v => v.Requisites)
             .HasConversion(

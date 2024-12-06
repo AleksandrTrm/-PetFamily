@@ -1,4 +1,4 @@
-﻿namespace PetFamily.Infrastructure.Authentication;
+﻿namespace PetFamily.AccountsManagement.Domain.Entities;
 
 public class RolePermission
 {

@@ -8,12 +8,13 @@ using PetFamily.BreedsManagement.Application.Commands.DeleteSpecies;
 using PetFamily.BreedsManagement.Application.Queries.GetBreedsBySpeciesId;
 using PetFamily.BreedsManagement.Application.Queries.GetSpeciesWithPagination;
 using PetFamily.BreedsManagement.Presentation.Requests;
+using PetFamily.Shared.Framework.Authorization;
 
 namespace PetFamily.BreedsManagement.Presentation;
 
 public class SpeciesController : ApplicationController
 {
-    [Authorize]
+    [Permission(Permissions.Species.GET_SPECIES_WITH_PAGINATION)]
     [HttpGet]
     public async Task<ActionResult> GetSpeciesWithPagination(
         CancellationToken cancellationToken,
@@ -25,7 +26,7 @@ public class SpeciesController : ApplicationController
         return Ok(result);
     }
 
-    [Authorize]
+    [Permission(Permissions.Breeds.GET_BREEDS_BY_SPECIES_ID)]
     [HttpGet("breeds")]
     public async Task<ActionResult> GetBreedsBySpeciesId(
         [FromQuery] GetBreedsBySpeciesIdRequest request,
@@ -37,7 +38,7 @@ public class SpeciesController : ApplicationController
         return Ok(result);
     }
     
-    [Authorize]
+    [Permission(Permissions.Species.CREATE_SPECIES)]
     [HttpPost]
     public async Task<ActionResult> CreateSpecies(
         [FromBody] CreateSpeciesRequest request,
@@ -51,7 +52,7 @@ public class SpeciesController : ApplicationController
         return Ok(createSpeciesResult.Value);
     }
 
-    [Authorize]
+    [Permission(Permissions.Breeds.CREATE_BREED)]
     [HttpPost("{id:guid}/breeds")]
     public async Task<ActionResult> CreateBreed(
         [FromRoute] Guid id,
@@ -68,7 +69,7 @@ public class SpeciesController : ApplicationController
         return Ok(createBreedResult.Value);
     }
 
-    [Authorize]
+    [Permission(Permissions.Species.DELETE_SPECIES)]
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult> DeleteSpecies(
         [FromRoute] Guid id,
@@ -82,7 +83,7 @@ public class SpeciesController : ApplicationController
         return Ok(result.Value);
     }
     
-    [Authorize]
+    [Permission(Permissions.Breeds.DELETE_BREED)]
     [HttpDelete("{id:guid}/breeds/{breedId:guid}")]
     public async Task<ActionResult> DeleteBreed(
         [FromRoute] Guid id,

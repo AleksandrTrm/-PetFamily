@@ -21,7 +21,7 @@ public class CreateVolunteerCommandValidator : AbstractValidator<CreateVolunteer
             .MustBeValueObject(PhoneNumber.Create);
 
         RuleForEach(c => c.SocialMedias)
-            .MustBeValueObject(s => SocialMedia.Create(s.Title, s.Link));
+            .MustBeValueObject(s => SocialNetwork.Create(s.Title, s.Link));
 
         RuleFor(e => e.Experience)
             .Must(e => e is >= Volunteer.MIN_EXPERIENCE_YEARS and < Volunteer.MAX_EXPERIENCE_YEARS)

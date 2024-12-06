@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using PetFamily.AccountsManagement.Application.Abstractions;
-using PetFamily.Infrastructure.Authentication;
+using PetFamily.AccountsManagement.Domain.Entities;
 using PetFamily.Shared.Core.Abstractions;
 using PetFamily.Shared.SharedKernel.Error;
 

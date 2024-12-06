@@ -39,11 +39,11 @@ public class UpdateSocialMediasHandler : ICommandHandler<Guid, UpdateSocialMedia
         if (volunteerResult.IsFailure)
             return volunteerResult.Error.ToErrorList();
 
-        List<SocialMedia> socialMedias = [];
+        List<SocialNetwork> socialMedias = [];
         foreach (var socialMedia in command.SocialMedias)
-            socialMedias.Add(SocialMedia.Create(socialMedia.Title, socialMedia.Link).Value);
+            socialMedias.Add(SocialNetwork.Create(socialMedia.Title, socialMedia.Link).Value);
 
-        var socialMediasToUpdate = new ValueObjectList<SocialMedia>(socialMedias);
+        var socialMediasToUpdate = new ValueObjectList<SocialNetwork>(socialMedias);
         
         volunteerResult.Value.UpdateSocialMedias(socialMediasToUpdate);
 

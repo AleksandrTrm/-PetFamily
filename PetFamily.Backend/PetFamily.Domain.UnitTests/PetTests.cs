@@ -141,7 +141,7 @@ public class PetTests
             Description.Create("generalDescription").Value,
             5,
             PhoneNumber.Create("89000728412").Value,
-            new ValueObjectList<SocialMedia>(new List<SocialMedia>()),
+            new ValueObjectList<SocialNetwork>(new List<SocialNetwork>()),
             new ValueObjectList<Requisite>(new List<Requisite>()));
 
         for (int i = 0; i < desiredPetCount; i++)

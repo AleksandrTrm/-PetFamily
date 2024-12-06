@@ -46,7 +46,7 @@ public class GetVolunteerByIdQueryHandler
                 volunteer.Experience = experience;
                 
                 volunteer.SocialMedias = JsonSerializer
-                    .Deserialize<IEnumerable<SocialMediaDto>>(socialMediasJson) ?? [];
+                    .Deserialize<IEnumerable<SocialNetworkDto>>(socialMediasJson) ?? [];
 
                 volunteer.Requisites = JsonSerializer
                     .Deserialize<IEnumerable<RequisiteDto>>(requisitesJson) ?? [];

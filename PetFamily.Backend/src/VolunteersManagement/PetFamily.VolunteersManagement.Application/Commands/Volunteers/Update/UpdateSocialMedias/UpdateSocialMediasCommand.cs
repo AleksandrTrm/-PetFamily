@@ -3,4 +3,4 @@ using PetFamily.Shared.Core.DTOs.VolunteerDtos;
 
 namespace PetFamily.VolunteersManagement.Application.Commands.Volunteers.Update.UpdateSocialMedias;
 
-public record UpdateSocialMediasCommand(Guid VolunteerId, IEnumerable<SocialMediaDto> SocialMedias) : ICommand;
+public record UpdateSocialMediasCommand(Guid VolunteerId, IEnumerable<SocialNetworkDto> SocialMedias) : ICommand;

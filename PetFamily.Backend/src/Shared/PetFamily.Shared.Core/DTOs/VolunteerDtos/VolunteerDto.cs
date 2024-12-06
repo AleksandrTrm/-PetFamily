@@ -22,5 +22,5 @@ public class VolunteerDto
 
     public IEnumerable<RequisiteDto> Requisites { get; set; } = [];
 
-    public IEnumerable<SocialMediaDto> SocialMedias { get; set; } = [];
+    public IEnumerable<SocialNetworkDto> SocialMedias { get; set; } = [];
 }
