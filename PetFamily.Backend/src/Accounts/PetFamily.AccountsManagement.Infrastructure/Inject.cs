@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Text;
+﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -7,11 +6,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using PetFamily.AccountsManagement.Application.Abstractions;
+using PetFamily.AccountsManagement.Application.Commands;
 using PetFamily.AccountsManagement.Domain.Entities;
 using PetFamily.AccountsManagement.Infrastructure.Jwt;
 using PetFamily.AccountsManagement.Infrastructure.Jwt.Options;
 using PetFamily.AccountsManagement.Infrastructure.Managers;
-using PetFamily.AccountsManagement.Infrastructure.Requirements;
+using PetFamily.AccountsManagement.Infrastructure.Managers.Options;
+using PetFamily.AccountsManagement.Infrastructure.Seeding;
 using PetFamily.Shared.Framework.Authorization;
 
 namespace PetFamily.AccountsManagement.Infrastructure;
@@ -26,6 +27,7 @@ public static class Inject
         services.RegisterIdentity();
         
         services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.JWT));
+        services.Configure<AdminOptions>(configuration.GetSection(AdminOptions.ADMIN));
 
         services.AddScoped<AccountsDbContext>();
 
@@ -82,9 +84,14 @@ public static class Inject
             .AddEntityFrameworkStores<AccountsDbContext>()
             .AddDefaultTokenProviders();
 
-        services.AddSingleton<AccountsSeeder>();
         services.AddScoped<PermissionManager>();
-        services.AddScoped <RolePermissionsManager>();
+        services.AddScoped<RolePermissionsManager>();
+        services.AddScoped<AdminAccountsManager>();
+        services.AddScoped<IAccountsManager, AccountsManager>();
+        services.AddScoped<UnitOfWork>();
+        
+        services.AddScoped<AccountsSeederService>();
+        services.AddSingleton<AccountsSeeder>();
         
         return services;
     }

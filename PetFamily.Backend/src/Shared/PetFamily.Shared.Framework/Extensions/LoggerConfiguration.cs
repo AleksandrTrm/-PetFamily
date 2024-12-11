@@ -5,7 +5,7 @@ using Serilog.Events;
 using ILogger = Serilog.ILogger;
 using SerilogLoggerConfiguration = Serilog.LoggerConfiguration;
 
-namespace PetFamily.WebAPI.Extensions;
+namespace PetFamily.Shared.Framework.Extensions;
 
 public static class LoggerConfiguration
 {

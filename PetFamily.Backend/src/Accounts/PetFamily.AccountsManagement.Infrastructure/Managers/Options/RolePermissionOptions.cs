@@ -1,6 +1,6 @@
-﻿namespace PetFamily.AccountsManagement.Infrastructure.Managers.Configurations;
+﻿namespace PetFamily.AccountsManagement.Infrastructure.Managers.Options;
 
-public class RolePermissionConfig
+public class RolePermissionOptions
 {
     public Dictionary<string, string[]> Roles { get; set; }
 
