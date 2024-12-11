@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.AccountsManagement.Domain.Entities;
-using PetFamily.AccountsManagement.Domain.Entities.Roles;
+using PetFamily.AccountsManagement.Domain.Entities.Accounts;
 using PetFamily.Shared.SharedKernel;
 
 namespace PetFamily.AccountsManagement.Infrastructure.Configurations;
 
-public class ParticipantConfiguration : IEntityTypeConfiguration<Participant>
+public class ParticipantAccountConfiguration : IEntityTypeConfiguration<ParticipantAccount>
 {
-    public void Configure(EntityTypeBuilder<Participant> builder)
+    public void Configure(EntityTypeBuilder<ParticipantAccount> builder)
     {
         builder.ToTable("participants");
 
@@ -17,5 +17,9 @@ public class ParticipantConfiguration : IEntityTypeConfiguration<Participant>
         builder.HasOne<User>(p => p.User)
             .WithOne()
             .IsRequired();
+        
+        builder.HasOne<User>(a => a.User)
+            .WithMany()
+            .HasForeignKey(a => a.UserId);
     }
 }

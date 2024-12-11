@@ -1,9 +1,12 @@
 using Microsoft.OpenApi.Models;
 using PetFamily.AccountsManagement.Infrastructure;
+using PetFamily.AccountsManagement.Infrastructure.Seeding;
 using Serilog;
 using PetFamily.WebAPI;
 using PetFamily.WebAPI.Middlewares;
-using LoggerConfiguration = PetFamily.WebAPI.Extensions.LoggerConfiguration;
+using LoggerConfiguration = PetFamily.Shared.Framework.Extensions.LoggerConfiguration;
+
+DotNetEnv.Env.Load(".env");
 
 var builder = WebApplication.CreateBuilder(args);
 

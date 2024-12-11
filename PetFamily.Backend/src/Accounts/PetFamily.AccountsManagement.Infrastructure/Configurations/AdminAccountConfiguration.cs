@@ -1,21 +1,24 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.AccountsManagement.Domain.Entities;
-using PetFamily.AccountsManagement.Domain.Entities.Roles;
-using PetFamily.Shared.SharedKernel;
+using PetFamily.AccountsManagement.Domain.Entities.Accounts;
 
 namespace PetFamily.AccountsManagement.Infrastructure.Configurations;
 
-public class AdminConfiguration : IEntityTypeConfiguration<Admin>
+public class AdminAccountConfiguration : IEntityTypeConfiguration<AdminAccount>
 {
-    public void Configure(EntityTypeBuilder<Admin> builder)
+    public void Configure(EntityTypeBuilder<AdminAccount> builder)
     {
-        builder.ToTable("admins");
+        builder.ToTable("admin_accounts");
 
         builder.HasKey(a => a.Id);
 
         builder.HasOne<User>(a => a.User)
             .WithOne()
             .IsRequired();
+
+        builder.HasOne<User>(a => a.User)
+            .WithMany()
+            .HasForeignKey(a => a.UserId);
     }
 }

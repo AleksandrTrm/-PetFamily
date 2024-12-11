@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.AccountsManagement.Domain.Entities.Roles;
+using PetFamily.AccountsManagement.Domain.Entities.Accounts;
 using PetFamily.Shared.Core.DTOs;
 using PetFamily.Shared.Core.Extensions;
 using PetFamily.Shared.SharedKernel.ValueObjects.Volunteers.Shared;

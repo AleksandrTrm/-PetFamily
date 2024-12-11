@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PetFamily.Shared.Core.DTOs;
 using PetFamily.Shared.Core.DTOs.VolunteerDtos;
 using PetFamily.Shared.Core.Models;
