@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using PetFamily.Shared.SharedKernel;
 using PetFamily.AccountsManagement.Domain.Entities;
+using PetFamily.AccountsManagement.Domain.Entities.Accounts;
 
 namespace PetFamily.AccountsManagement.Infrastructure;
 
@@ -12,6 +13,8 @@ public class AccountsDbContext(IConfiguration configuration) : IdentityDbContext
 {
     public DbSet<Permission> Permissions => Set<Permission>();
     public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
+
+    public DbSet<AdminAccount> AdminAccounts => Set<AdminAccount>();
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

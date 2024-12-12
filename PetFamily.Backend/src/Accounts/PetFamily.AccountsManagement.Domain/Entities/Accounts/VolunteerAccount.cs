@@ -1,6 +1,6 @@
 ﻿using PetFamily.Shared.SharedKernel.ValueObjects.Volunteers.Shared;
 
-namespace PetFamily.AccountsManagement.Domain.Entities.Roles;
+namespace PetFamily.AccountsManagement.Domain.Entities.Accounts;
 
 public class VolunteerAccount
 {
