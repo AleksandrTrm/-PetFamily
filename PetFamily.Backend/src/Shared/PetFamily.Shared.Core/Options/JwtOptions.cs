@@ -1,4 +1,4 @@
-﻿namespace PetFamily.AccountsManagement.Infrastructure.Jwt.Options;
+﻿namespace PetFamily.Shared.Core.Options;
 
 public class JwtOptions
 {

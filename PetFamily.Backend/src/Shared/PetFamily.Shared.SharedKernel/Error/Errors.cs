@@ -1,4 +1,6 @@
-﻿namespace PetFamily.Shared.SharedKernel.Error;
+﻿using System.Text.RegularExpressions;
+
+namespace PetFamily.Shared.SharedKernel.Error;
 
 public static class Errors
 {
@@ -7,10 +9,10 @@ public static class Errors
         public static Error AlreadyExists(string? value = null)
         {
             return Error.Conflict(
-                "record.exists", 
+                "record.exists",
                 $"Record with same parameter '{value}' already exists");
         }
-        
+
         public static Error NotFound(Guid? id = null, string? title = null)
         {
             var forId = id is null ? "" : $" for id - {id}";
@@ -37,13 +39,23 @@ public static class Errors
             return Error.Validation("out.of.range", $"Value{label} can not be less than {min}{forMaxLabel}");
         }
     }
-    
+
     public static class Accounts
     {
+        public static Error InvalidJwtToken()
+        {
+            return Error.Validation("token.is.invalid", "Your jwt security token is invalid");
+        }
+
+        public static Error ExpiredToken()
+        {
+            return Error.Validation("token.is.expired", "Your token is expired");
+        }
+
         public static Error InvalidCredentials()
         {
             return Error.Validation(
-                "credentials.is.invalid", 
+                "credentials.is.invalid",
                 $"Your credentials is invalid");
         }
     }

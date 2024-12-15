@@ -32,9 +32,6 @@ public class AdminAccountsManager(
             adminRole);
 
         var transaction = await unitOfWork.BeginTransaction(cancellationToken);
-
-        admin.UserName = "pidorok_123";
-        admin.Email = "pidorok@mail.ru";
         
         var createAdminResult = await userManager.CreateAsync(admin, _adminOptions.Password);
         if (!createAdminResult.Succeeded)
