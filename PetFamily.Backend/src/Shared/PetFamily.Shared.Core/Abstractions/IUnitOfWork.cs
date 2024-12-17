@@ -1,9 +1,9 @@
-﻿using System.Data;
+﻿using System.Data.Common;
 
 namespace PetFamily.Shared.Core.Abstractions;
 
 public interface IUnitOfWork
 {
-    Task<IDbTransaction> BeginTransaction(CancellationToken cancellationToken = default);
+    Task<DbTransaction> BeginTransaction(CancellationToken cancellationToken = default);
     Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }

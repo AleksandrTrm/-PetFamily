@@ -14,6 +14,8 @@ using PetFamily.AccountsManagement.Infrastructure.Jwt;
 using PetFamily.AccountsManagement.Infrastructure.Managers;
 using PetFamily.AccountsManagement.Infrastructure.Managers.Options;
 using PetFamily.AccountsManagement.Infrastructure.Seeding;
+using PetFamily.Shared.Core;
+using PetFamily.Shared.Core.Abstractions;
 using PetFamily.Shared.Core.Options;
 using PetFamily.Shared.Framework.Authorization;
 
@@ -81,7 +83,7 @@ public static class Inject
         services.AddScoped<AdminAccountsManager>();
         services.AddScoped<IRefreshSessionsManager, RefreshSessionsManager>();
         services.AddScoped<IAccountsManager, AccountsManager>();
-        services.AddScoped<UnitOfWork>();
+        services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(Modules.Accounts);
         
         services.AddScoped<AccountsSeederService>();
         services.AddSingleton<AccountsSeeder>();

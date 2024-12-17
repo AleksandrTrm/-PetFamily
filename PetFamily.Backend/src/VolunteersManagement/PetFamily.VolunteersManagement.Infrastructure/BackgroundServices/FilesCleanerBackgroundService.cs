@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using PetFamily.VolunteersManagement.Application.BackgroundServices;
 using PetFamily.VolunteersManagement.Application.FileProvider;
 
 namespace PetFamily.VolunteersManagement.Infrastructure.BackgroundServices;
@@ -20,7 +21,7 @@ public class FilesCleanerBackgroundService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _logger.LogInformation("Service started");
+        _logger.LogInformation("Files cleaner service is started");
 
         await using var scope = _scopeFactory.CreateAsyncScope();
 

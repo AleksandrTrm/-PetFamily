@@ -2,6 +2,7 @@
 using PetFamily.BreedsManagement.Application.Abstractions;
 using PetFamily.BreedsManagement.Infrastructure.DbContexts;
 using PetFamily.BreedsManagement.Infrastructure.Repositories;
+using PetFamily.Shared.Core;
 using PetFamily.Shared.Core.Abstractions;
 
 namespace PetFamily.BreedsManagement.Infrastructure;
@@ -17,19 +18,19 @@ public static class Inject
         return services;
     }
 
-    public static IServiceCollection AddRepositories(this IServiceCollection services)
+    private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<ISpeciesRepository, SpeciesRepository>();
 
         return services;
     }
 
-    public static IServiceCollection AddDatabase(this IServiceCollection services)
+    private static IServiceCollection AddDatabase(this IServiceCollection services)
     {
         services.AddScoped<ISqlConnectionFactory, SqlConnectionFactory>();
         services.AddScoped<WriteDbContext>();
         services.AddScoped<IReadDbContext, ReadDbContext>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(Modules.Breeds);
 
         return services;
     }

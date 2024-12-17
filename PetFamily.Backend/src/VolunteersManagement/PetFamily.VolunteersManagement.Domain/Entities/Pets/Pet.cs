@@ -1,4 +1,5 @@
-﻿using PetFamily.Shared.SharedKernel;
+﻿using PetFamily.Shared.Core.Abstractions;
+using PetFamily.Shared.SharedKernel;
 using PetFamily.Shared.SharedKernel.IDs;
 using PetFamily.Shared.SharedKernel.ValueObjects.Volunteers.Pets;
 using PetFamily.Shared.SharedKernel.ValueObjects.Volunteers.Shared;
@@ -6,7 +7,7 @@ using PetFamily.VolunteersManagement.Domain.Entities.Pets.Enums;
 
 namespace PetFamily.VolunteersManagement.Domain.Entities.Pets
 {
-    public class Pet : Entity<PetId>
+    public class Pet : SoftDeletableEntity<PetId>
     {
         private Pet(PetId id) : base(id)
         {
@@ -82,8 +83,6 @@ namespace PetFamily.VolunteersManagement.Domain.Entities.Pets
 
         public DateTime CreatedAt { get; private set; }
 
-        public bool IsDeleted { get; private set; } = false;
-
         public VolunteerId VolunteerId { get; private set; }
 
         public void SetSerialNumber(SerialNumber serialNumber) =>
@@ -111,12 +110,10 @@ namespace PetFamily.VolunteersManagement.Domain.Entities.Pets
 
             return deletedPhotos;
         }
-        
-        public void Delete() =>
-            IsDeleted = true;
 
-        public void Recover() =>
-            IsDeleted = false;
+        internal void Delete() => base.Delete();
+
+        internal void Restore() => base.Restore();
 
         public void UpdateStatus(Status status) =>
             Status = status;
