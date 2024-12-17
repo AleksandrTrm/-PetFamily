@@ -1,6 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
+using Microsoft.Extensions.DependencyInjection;
 using PetFamily.AccountsManagement.Application.Abstractions;
 using PetFamily.AccountsManagement.Contracts.Responses;
+using PetFamily.Shared.Core;
 using PetFamily.Shared.Core.Abstractions;
 using PetFamily.Shared.Framework.Authorization;
 using PetFamily.Shared.SharedKernel.Error;
@@ -9,7 +11,7 @@ namespace PetFamily.AccountsManagement.Application.Commands.RefreshToken;
 
 public class RefreshSessionHandler(
     IRefreshSessionsManager refreshSessionsManager,
-    IUnitOfWork unitOfWork,
+    [FromKeyedServices(Modules.Accounts)] IUnitOfWork unitOfWork,
     ITokenProvider tokenProvider) 
     : ICommandHandler<LoginResponse, RefreshSessionCommand>
 {

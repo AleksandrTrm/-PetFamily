@@ -39,7 +39,7 @@ public class DeletePetHandler : ICommandHandler<Guid, DeletePetCommand>
         if (pet is null)
             return Errors.General.NotFound(command.PetId, "pet").ToErrorList();
 
-        volunteerResult.Value.DeletePet(pet);
+        volunteerResult.Value.SoftPetDelete(pet);
 
         await _repository.SaveChanges(volunteerResult.Value, cancellationToken);
 

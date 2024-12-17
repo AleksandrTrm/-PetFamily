@@ -1,8 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PetFamily.AccountsManagement.Domain.Entities;
 using PetFamily.AccountsManagement.Domain.Entities.Accounts;
+using PetFamily.Shared.Core;
 using PetFamily.Shared.Core.Abstractions;
 using PetFamily.Shared.SharedKernel.Error;
 using PetFamily.Shared.SharedKernel.ValueObjects.Volunteers.Volunteer;
@@ -13,7 +15,7 @@ public class RegisterUserCommandHandler(
     UserManager<User> userManager,
     RoleManager<Role> roleManager,
     IAccountsManager accountsManager,
-    IUnitOfWork unitOfWork,
+    [FromKeyedServices(Modules.Accounts)] IUnitOfWork unitOfWork,
     ILogger<RegisterUserCommandHandler> logger)
     : ICommandHandler<RegisterUserCommand>
 {

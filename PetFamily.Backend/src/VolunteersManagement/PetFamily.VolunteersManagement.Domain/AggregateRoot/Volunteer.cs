@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices.JavaScript;
 using CSharpFunctionalExtensions;
+using PetFamily.Shared.Core.Abstractions;
 using PetFamily.Shared.SharedKernel;
 using PetFamily.Shared.SharedKernel.Error;
 using PetFamily.Shared.SharedKernel.IDs;
@@ -11,7 +12,7 @@ using PetFamily.VolunteersManagement.Domain.Entities.Pets.Enums;
 
 namespace PetFamily.VolunteersManagement.Domain.AggregateRoot
 {
-    public class Volunteer : Shared.SharedKernel.Entity<VolunteerId>
+    public class Volunteer : SoftDeletableEntity<VolunteerId>
     {
         private readonly List<Pet> _pets = []; 
             
@@ -54,8 +55,6 @@ namespace PetFamily.VolunteersManagement.Domain.AggregateRoot
 
         public IReadOnlyList<Pet> Pets => _pets;
 
-        public bool IsDeleted { get; private set; } = false;
-
         public int GetCountOfPetsThatFoundHome() =>
             _pets.Count(p => p.Status == Status.FoundHome);
         
@@ -65,24 +64,36 @@ namespace PetFamily.VolunteersManagement.Domain.AggregateRoot
         public int GetCountOfPetsThatGetTreatment() =>
             _pets.Count(p => p.Status == Status.NeedsHelp);
 
-        public void Delete()
+        public override void Delete()
         {
-            IsDeleted = true;
+            base.Delete();
 
-            foreach (var pet in _pets)
+            foreach (var pet in _pets) 
                 pet.Delete();
         }
 
-        public void Recover()
+        public override void Restore()
         {
-            IsDeleted = false;
-            
+            base.Restore();
+
             foreach (var pet in _pets)
-                pet.Recover();
+                pet.Restore();
         }
 
-        public void DeletePet(Pet pet) =>
-            pet.Delete();
+        public void SoftPetDelete(Pet pet)
+        {
+            var petToDelete = _pets.FirstOrDefault(p => p.Id.Value == pet.Id.Value);
+            if (petToDelete is null)
+                return;
+            
+            petToDelete.Delete();
+        }
+
+        public int IrreversiblePetsDelete(double deletedEntityLifeTime) =>
+            _pets.RemoveAll(p => p is { IsDeleted: true, DeletionTime: not null }
+                                 && p.DeletionTime.Value.AddDays(deletedEntityLifeTime) < DateTime.UtcNow);
+        
+        public void DeleteAllPets() => _pets.Clear();
         
         public void UpdateMainInfo(
             FullName fullName,
@@ -96,15 +107,9 @@ namespace PetFamily.VolunteersManagement.Domain.AggregateRoot
             PhoneNumber = phoneNumber;
         }
 
-        public void UpdateRequisites(ValueObjectList<Requisite> requisites)
-        {
-            Requisites = requisites;
-        }
+        public void UpdateRequisites(ValueObjectList<Requisite> requisites) => Requisites = requisites;
 
-        public void UpdateSocialMedias(ValueObjectList<SocialNetwork> socialMedias)
-        {
-            SocialMedias = socialMedias;
-        }
+        public void UpdateSocialMedias(ValueObjectList<SocialNetwork> socialMedias) => SocialMedias = socialMedias;
 
         public UnitResult<Error> AddPet(Pet pet)
         {
@@ -142,7 +147,7 @@ namespace PetFamily.VolunteersManagement.Domain.AggregateRoot
             return Result.Success<Error>();
         }
 
-        public void UpdatePositions(SerialNumber newSerialNumber, SerialNumber oldSerialNumber)
+        private void UpdatePositions(SerialNumber newSerialNumber, SerialNumber oldSerialNumber)
         {
             if (newSerialNumber.Value < oldSerialNumber.Value)
             {
