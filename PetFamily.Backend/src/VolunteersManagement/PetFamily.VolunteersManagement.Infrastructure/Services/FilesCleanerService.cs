@@ -1,10 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
+using PetFamily.VolunteersManagement.Application.BackgroundServices;
 using PetFamily.VolunteersManagement.Application.FileProvider;
 using PetFamily.VolunteersManagement.Application.Messaging;
 using FileInfo = PetFamily.VolunteersManagement.Application.FileProvider.FileInfo;
 
 
-namespace PetFamily.VolunteersManagement.Infrastructure.BackgroundServices;
+namespace PetFamily.VolunteersManagement.Infrastructure.Services;
 
 public class FilesCleanerService : IFilesCleanerService
 {

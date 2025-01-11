@@ -1,10 +1,13 @@
 ﻿using Moq;
 using System.Data;
+using System.Data.Common;
 using CSharpFunctionalExtensions;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using PetFamily.Shared.Core;
 using PetFamily.Shared.Core.Abstractions;
 using PetFamily.Shared.SharedKernel;
 using PetFamily.Shared.SharedKernel.Error;
@@ -30,7 +33,7 @@ public class AddPhotosToPet
     private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
     private readonly Mock<ILogger<UploadPetFilesHandler>> _loggerMock = new();
     private readonly Mock<IFileProvider> _fileProviderMock = new();
-    private readonly Mock<IDbTransaction> _dbTransaction = new();
+    private readonly Mock<DbTransaction> _dbTransaction = new();
     private readonly Mock<IValidator<UploadPetFilesCommand>> _validatorMock = new();
     private readonly Mock<IMessageQueue<IEnumerable<FileInfo>>> _messageQueueMock = new();
 

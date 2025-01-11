@@ -1,16 +1,20 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Minio;
+using PetFamily.Shared.Core;
 using PetFamily.Shared.Core.Abstractions;
 using PetFamily.Shared.Core.Options;
 using PetFamily.VolunteersManagement.Application.Abstractions;
+using PetFamily.VolunteersManagement.Application.BackgroundServices;
 using PetFamily.VolunteersManagement.Application.FileProvider;
 using PetFamily.VolunteersManagement.Application.Messaging;
 using PetFamily.VolunteersManagement.Infrastructure.BackgroundServices;
+using PetFamily.VolunteersManagement.Infrastructure.BackgroundServices.Options;
 using PetFamily.VolunteersManagement.Infrastructure.DbContexts;
 using PetFamily.VolunteersManagement.Infrastructure.MessageQueues;
 using PetFamily.VolunteersManagement.Infrastructure.Providers;
 using PetFamily.VolunteersManagement.Infrastructure.Repositories;
+using PetFamily.VolunteersManagement.Infrastructure.Services;
 using FileInfo = PetFamily.VolunteersManagement.Application.FileProvider.FileInfo;
 
 namespace PetFamily.VolunteersManagement.Infrastructure;
@@ -22,7 +26,7 @@ public static class Inject
         IConfiguration configuration)
     {
         services
-            .AddHostedServices()
+            .AddHostedServices(configuration)
             .AddDatabase()
             .AddRepositories()
             .AddMinio(configuration);
@@ -37,12 +41,20 @@ public static class Inject
         return services;
     }
     
-    private static IServiceCollection AddHostedServices(this IServiceCollection services)
+    private static IServiceCollection AddHostedServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<IMessageQueue<IEnumerable<FileInfo>>, InMemoryMessageQueue<IEnumerable<FileInfo>>>();
         
         services.AddHostedService<FilesCleanerBackgroundService>();
         services.AddScoped<IFilesCleanerService, FilesCleanerService>();
+        
+        services.Configure<DeleteEntitiesBackgroundServiceOptions>(
+            configuration.GetSection(DeleteEntitiesBackgroundServiceOptions
+                .DELETE_ENTITIES_BACKGROUND_SERVICE_OPTIONS));
+        
+        services.AddHostedService<DeleteEntitiesBackgroundService>();
+
+        services.AddScoped<DeleteEntitiesService>();
 
         return services;
     }
@@ -52,7 +64,7 @@ public static class Inject
         services.AddScoped<ISqlConnectionFactory, SqlConnectionFactory>();
         services.AddScoped<WriteDbContext>();
         services.AddScoped<IReadDbContext, ReadDbContext>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(Modules.Volunteers);
 
         return services;
     }

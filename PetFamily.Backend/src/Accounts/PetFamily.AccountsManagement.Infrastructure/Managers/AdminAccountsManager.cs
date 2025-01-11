@@ -2,9 +2,12 @@
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using PetFamily.AccountsManagement.Domain.Entities;
 using PetFamily.AccountsManagement.Domain.Entities.Accounts;
 using PetFamily.AccountsManagement.Infrastructure.Managers.Options;
+using PetFamily.Shared.Core;
+using PetFamily.Shared.Core.Abstractions;
 using PetFamily.Shared.SharedKernel.ValueObjects.Volunteers.Volunteer;
 
 namespace PetFamily.AccountsManagement.Infrastructure.Managers;
@@ -12,7 +15,7 @@ namespace PetFamily.AccountsManagement.Infrastructure.Managers;
 public class AdminAccountsManager(
     AccountsDbContext accountsDbContext, 
     IOptions<AdminOptions> options,
-    UnitOfWork unitOfWork,
+    [FromKeyedServices(Modules.Accounts)] IUnitOfWork unitOfWork,
     ILogger<AdminAccountsManager> logger)
 {
     private readonly AdminOptions _adminOptions = options.Value;
@@ -32,7 +35,7 @@ public class AdminAccountsManager(
             adminRole);
 
         var transaction = await unitOfWork.BeginTransaction(cancellationToken);
-        
+
         var createAdminResult = await userManager.CreateAsync(admin, _adminOptions.Password);
         if (!createAdminResult.Succeeded)
         {
