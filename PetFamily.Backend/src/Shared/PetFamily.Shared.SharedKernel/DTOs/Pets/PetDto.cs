@@ -1,4 +1,4 @@
-﻿namespace PetFamily.Shared.Core.DTOs.Pets;
+﻿namespace PetFamily.Shared.SharedKernel.DTOs.Pets;
 
 public class PetDto
 {

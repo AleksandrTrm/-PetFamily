@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using PetFamily.BreedsManagement.Application.Abstractions;
-using PetFamily.Shared.Core.DTOs;
+using PetFamily.Shared.SharedKernel.DTOs;
 
 namespace PetFamily.BreedsManagement.Infrastructure.DbContexts;
 

@@ -9,7 +9,7 @@ using PetFamily.Shared.Core.Abstractions;
 using PetFamily.Shared.SharedKernel.Error;
 using PetFamily.Shared.SharedKernel.ValueObjects.Volunteers.Volunteer;
 
-namespace PetFamily.AccountsManagement.Application.Commands.Register;
+namespace PetFamily.AccountsManagement.Application.AccountManagement.Commands.Register;
 
 public class RegisterUserCommandHandler(
     UserManager<User> userManager,

@@ -1,4 +1,4 @@
-﻿namespace PetFamily.Shared.Core.DTOs.VolunteerDtos;
+﻿namespace PetFamily.Shared.SharedKernel.DTOs.VolunteerDtos;
 
 public record UpdateVolunteerMainInfoDto(
     FullNameDto FullName, 

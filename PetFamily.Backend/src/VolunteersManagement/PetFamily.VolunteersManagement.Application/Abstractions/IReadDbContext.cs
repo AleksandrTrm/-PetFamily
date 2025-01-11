@@ -1,5 +1,5 @@
-﻿using PetFamily.Shared.Core.DTOs.Pets;
-using PetFamily.Shared.Core.DTOs.VolunteerDtos;
+﻿using PetFamily.Shared.SharedKernel.DTOs.Pets;
+using PetFamily.Shared.SharedKernel.DTOs.VolunteerDtos;
 
 namespace PetFamily.VolunteersManagement.Application.Abstractions;
 

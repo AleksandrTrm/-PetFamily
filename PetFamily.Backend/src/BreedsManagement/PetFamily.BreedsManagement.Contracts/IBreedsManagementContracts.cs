@@ -1,5 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFamily.Shared.Core.DTOs;
+using PetFamily.Shared.SharedKernel.DTOs;
 using PetFamily.Shared.SharedKernel.Error;
 
 namespace PetFamily.BreedsManagement.Contracts;

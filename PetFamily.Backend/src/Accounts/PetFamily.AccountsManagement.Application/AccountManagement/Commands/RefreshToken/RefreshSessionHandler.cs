@@ -7,7 +7,7 @@ using PetFamily.Shared.Core.Abstractions;
 using PetFamily.Shared.Framework.Authorization;
 using PetFamily.Shared.SharedKernel.Error;
 
-namespace PetFamily.AccountsManagement.Application.Commands.RefreshToken;
+namespace PetFamily.AccountsManagement.Application.AccountManagement.Commands.RefreshToken;
 
 public class RefreshSessionHandler(
     IRefreshSessionsManager refreshSessionsManager,

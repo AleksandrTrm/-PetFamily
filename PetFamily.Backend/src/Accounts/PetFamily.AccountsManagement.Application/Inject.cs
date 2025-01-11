@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Shared.Core.Abstractions;
 
 namespace PetFamily.AccountsManagement.Application;
@@ -9,7 +10,8 @@ public static class Inject
     {
         services
             .AddCommands()
-            .AddQueries();
+            .AddQueries()
+            .AddValidatorsFromAssembly(typeof(Inject).Assembly);
 
         return services;
     }

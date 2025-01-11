@@ -1,4 +1,4 @@
-﻿using PetFamily.Shared.Core.DTOs;
+﻿using PetFamily.Shared.SharedKernel.DTOs;
 
 namespace PetFamily.BreedsManagement.Application.Abstractions;
 

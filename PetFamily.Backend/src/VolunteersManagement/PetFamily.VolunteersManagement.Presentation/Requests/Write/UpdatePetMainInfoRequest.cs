@@ -1,5 +1,5 @@
-﻿using PetFamily.Shared.Core.DTOs;
-using PetFamily.Shared.Core.DTOs.Pets;
+﻿using PetFamily.Shared.SharedKernel.DTOs;
+using PetFamily.Shared.SharedKernel.DTOs.Pets;
 using PetFamily.VolunteersManagement.Domain.Entities.Pets.Enums;
 
 namespace PetFamily.VolunteersManagement.Presentation.Requests.Write;

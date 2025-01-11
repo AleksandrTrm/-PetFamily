@@ -1,4 +1,4 @@
-﻿using PetFamily.AccountsManagement.Application.Commands;
+﻿using PetFamily.AccountsManagement.Application.AccountManagement.Commands;
 using PetFamily.AccountsManagement.Domain.Entities.Accounts;
 
 namespace PetFamily.AccountsManagement.Infrastructure.Managers;

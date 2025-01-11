@@ -1,15 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PetFamily.AccountsManagement.Application.Commands.Login;
-using PetFamily.AccountsManagement.Application.Commands.RefreshToken;
+using PetFamily.AccountsManagement.Application.AccountManagement.Commands.Login;
+using PetFamily.AccountsManagement.Application.AccountManagement.Commands.RefreshToken;
+using PetFamily.AccountsManagement.Application.AccountManagement.Commands.Register;
+using PetFamily.AccountsManagement.Application.AccountManagement.Queries.GetAccountInfo;
 using PetFamily.Shared.Framework;
 using PetFamily.Shared.Framework.Extensions;
-using PetFamily.AccountsManagement.Application.Commands.Register;
 using PetFamily.AccountsManagement.Contracts.Requests;
 
 namespace PetFamily.AccountsManagement.Presentation;
 
 public class AccountsController : ApplicationController
 {
+    [HttpGet("accounts/{id:guid}")]
+    public async Task<IActionResult> GetAccountInfo(
+        [FromRoute] Guid id,
+        [FromServices] GetAccountInfoQueryHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var result = await handler.Handle(new GetAccountInfoQuery(id), cancellationToken);
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+
+        return Ok(result.Value);
+    }
+    
     [HttpPost("registration")]
     public async Task<IActionResult> Register(
         [FromBody] RegisterRequest request,

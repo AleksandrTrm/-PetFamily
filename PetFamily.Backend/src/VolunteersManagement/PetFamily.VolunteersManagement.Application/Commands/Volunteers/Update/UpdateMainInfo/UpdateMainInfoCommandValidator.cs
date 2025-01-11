@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
-using PetFamily.Shared.Core.DTOs.VolunteerDtos;
 using PetFamily.Shared.Core.Validation;
+using PetFamily.Shared.SharedKernel.DTOs.VolunteerDtos;
 using PetFamily.Shared.SharedKernel.Error;
 using PetFamily.Shared.SharedKernel.ValueObjects.Volunteers.Shared;
 using PetFamily.Shared.SharedKernel.ValueObjects.Volunteers.Volunteer;

@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PetFamily.BreedsManagement.Application.Abstractions;
 using PetFamily.Shared.Core.Abstractions;
-using PetFamily.Shared.Core.DTOs;
 using PetFamily.Shared.Core.Extensions;
 using PetFamily.Shared.Core.Models;
+using PetFamily.Shared.SharedKernel.DTOs;
 using PetFamily.Shared.SharedKernel.Error;
 
 namespace PetFamily.BreedsManagement.Application.Queries.GetBreedsBySpeciesId;

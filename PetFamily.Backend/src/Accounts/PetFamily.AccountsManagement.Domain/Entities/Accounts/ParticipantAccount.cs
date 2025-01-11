@@ -14,18 +14,7 @@ public class ParticipantAccount
     public ParticipantAccount(User user)
     {
         Id = Guid.NewGuid();
-        UserId = user.Id;
-        User = user;
     }
 
     public Guid Id { get; private set; }
-
-    public Guid UserId { get; private set; }
-
-    public User User { get; private set; }
-
-    public void SetSocialNetworks(IEnumerable<SocialNetwork> socialNetworks) => 
-        User.SetSocialNetworks(socialNetworks);
-
-    public void SetPhoto(string photo) => User.SetPhoto(photo);
 }

@@ -2,7 +2,7 @@
 using PetFamily.AccountsManagement.Domain.Entities;
 using PetFamily.Shared.SharedKernel.Error;
 
-namespace PetFamily.AccountsManagement.Application.Commands.RefreshToken;
+namespace PetFamily.AccountsManagement.Application.AccountManagement.Commands.RefreshToken;
 
 public interface IRefreshSessionsManager
 {

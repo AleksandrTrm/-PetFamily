@@ -1,4 +1,4 @@
-﻿namespace PetFamily.Shared.Core.DTOs;
+﻿namespace PetFamily.Shared.SharedKernel.DTOs;
 
 public class BreedDto
 {

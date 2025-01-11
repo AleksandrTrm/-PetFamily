@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PetFamily.Shared.Core.Abstractions;
-using PetFamily.Shared.Core.DTOs.Pets;
+using PetFamily.Shared.SharedKernel.DTOs.Pets;
 using PetFamily.Shared.SharedKernel.Error;
 using PetFamily.VolunteersManagement.Application.Abstractions;
 

@@ -1,6 +1,6 @@
 ﻿namespace PetFamily.Shared.Core.Abstractions;
 
-public interface IQueryHandler<TResponse, in TCommand>
+public interface IQueryHandler<TResponse, in TQuery>
 {
-    Task<TResponse> Handle(TCommand query, CancellationToken cancellationToken);
+    Task<TResponse> Handle(TQuery query, CancellationToken cancellationToken);
 }

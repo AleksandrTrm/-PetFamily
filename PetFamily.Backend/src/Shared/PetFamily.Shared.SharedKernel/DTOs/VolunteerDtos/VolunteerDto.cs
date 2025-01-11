@@ -1,6 +1,6 @@
-﻿using PetFamily.Shared.Core.DTOs.Pets;
+﻿using PetFamily.Shared.SharedKernel.DTOs.Pets;
 
-namespace PetFamily.Shared.Core.DTOs.VolunteerDtos;
+namespace PetFamily.Shared.SharedKernel.DTOs.VolunteerDtos;
 
 public class VolunteerDto
 {
@@ -22,5 +22,5 @@ public class VolunteerDto
 
     public IEnumerable<RequisiteDto> Requisites { get; set; } = [];
 
-    public IEnumerable<SocialNetworkDto> SocialMedias { get; set; } = [];
+    public IEnumerable<SocialNetworkDto> SocialNetworks { get; set; } = [];
 }
