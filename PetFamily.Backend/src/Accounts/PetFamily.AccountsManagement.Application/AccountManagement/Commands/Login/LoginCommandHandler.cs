@@ -7,7 +7,7 @@ using PetFamily.AccountsManagement.Domain.Entities;
 using PetFamily.Shared.Core.Abstractions;
 using PetFamily.Shared.SharedKernel.Error;
 
-namespace PetFamily.AccountsManagement.Application.Commands.Login;
+namespace PetFamily.AccountsManagement.Application.AccountManagement.Commands.Login;
 
 public class LoginCommandHandler : ICommandHandler<LoginResponse, LoginCommand>
 {

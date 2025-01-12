@@ -1,5 +1,4 @@
 using Microsoft.OpenApi.Models;
-using PetFamily.AccountsManagement.Infrastructure;
 using PetFamily.AccountsManagement.Infrastructure.Seeding;
 using Serilog;
 using PetFamily.WebAPI;

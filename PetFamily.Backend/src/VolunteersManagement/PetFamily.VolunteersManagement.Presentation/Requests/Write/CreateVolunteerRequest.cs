@@ -1,5 +1,5 @@
-﻿using PetFamily.Shared.Core.DTOs;
-using PetFamily.Shared.Core.DTOs.VolunteerDtos;
+﻿using PetFamily.Shared.SharedKernel.DTOs;
+using PetFamily.Shared.SharedKernel.DTOs.VolunteerDtos;
 using PetFamily.VolunteersManagement.Application.Commands.Volunteers.Create;
 
 namespace PetFamily.VolunteersManagement.Presentation.Requests.Write;

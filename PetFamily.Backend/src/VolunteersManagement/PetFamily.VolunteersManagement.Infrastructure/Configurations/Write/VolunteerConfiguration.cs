@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.Shared.Core.DTOs;
-using PetFamily.Shared.Core.DTOs.VolunteerDtos;
 using PetFamily.Shared.Core.Extensions;
+using PetFamily.Shared.SharedKernel.DTOs;
+using PetFamily.Shared.SharedKernel.DTOs.VolunteerDtos;
 using PetFamily.Shared.SharedKernel.IDs;
 using PetFamily.Shared.SharedKernel.ValueObjects.Volunteers.Shared;
 using PetFamily.Shared.SharedKernel.ValueObjects.Volunteers.Volunteer;

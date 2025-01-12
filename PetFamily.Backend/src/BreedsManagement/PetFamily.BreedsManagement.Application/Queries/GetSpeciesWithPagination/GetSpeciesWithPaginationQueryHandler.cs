@@ -1,8 +1,8 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Logging;
 using PetFamily.Shared.Core.Abstractions;
-using PetFamily.Shared.Core.DTOs;
 using PetFamily.Shared.Core.Models;
+using PetFamily.Shared.SharedKernel.DTOs;
 
 namespace PetFamily.BreedsManagement.Application.Queries.GetSpeciesWithPagination;
 

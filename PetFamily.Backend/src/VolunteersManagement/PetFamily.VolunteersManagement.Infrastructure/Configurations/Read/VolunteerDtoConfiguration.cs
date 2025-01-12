@@ -1,8 +1,8 @@
 ﻿using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.Shared.Core.DTOs;
-using PetFamily.Shared.Core.DTOs.VolunteerDtos;
+using PetFamily.Shared.SharedKernel.DTOs;
+using PetFamily.Shared.SharedKernel.DTOs.VolunteerDtos;
 
 namespace PetFamily.VolunteersManagement.Infrastructure.Configurations.Read;
 
@@ -39,7 +39,7 @@ public class VolunteerDtoConfiguration : IEntityTypeConfiguration<VolunteerDto>
         builder.Property(v => v.PhoneNumber)
             .HasColumnName("phone_number");
 
-        builder.Property(v => v.SocialMedias)
+        builder.Property(v => v.SocialNetworks)
             .HasConversion(
                 sm => JsonSerializer.Serialize(string.Empty, JsonSerializerOptions.Default),
                 json => JsonSerializer

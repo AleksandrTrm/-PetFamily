@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.AccountsManagement.Domain.Entities;
-using PetFamily.Shared.Core.DTOs.VolunteerDtos;
+using PetFamily.AccountsManagement.Domain.Entities.Accounts;
 using PetFamily.Shared.Core.Extensions;
 using PetFamily.Shared.SharedKernel;
 using PetFamily.Shared.SharedKernel.ValueObjects.Volunteers.Volunteer;
@@ -23,12 +23,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.UserName).HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
 
-        builder.Property(u => u.SocialNetworks)
-            .HasValueObjectsJsonConversion(
-                socialNetwork => new SocialNetworkDto(socialNetwork.Title, socialNetwork.Link),
-                socialNetworkDto => SocialNetwork.Create(socialNetworkDto.Title, socialNetworkDto.Link).Value)
-            .IsRequired(false);
-
         builder.Property(u => u.Email).IsRequired();
 
         builder.Property(u => u.Photo)
@@ -38,19 +32,30 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         {
             fnb.Property(fn => fn.Name)
                 .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH)
+                .HasColumnName("name")
                 .IsRequired();
 
             fnb.Property(fn => fn.Surname)
                 .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH)
+                .HasColumnName("surname")
                 .IsRequired();
 
             fnb.Property(fn => fn.Patronymic)
                 .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH)
+                .HasColumnName("patronymic")
                 .IsRequired(false);
         });
         
         builder.HasMany(u => u.Roles)
             .WithMany(u=> u.Users)
             .UsingEntity<IdentityUserRole<Guid>>();
+
+        builder.HasOne<VolunteerAccount>(u => u.Volunteer)
+            .WithOne()
+            .HasForeignKey<User>(u => u.VolunteerId);
+
+        builder.HasOne<ParticipantAccount>(u => u.Participant)
+            .WithOne()
+            .HasForeignKey<User>(u => u.ParticipantId);
     }
 }

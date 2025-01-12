@@ -1,6 +1,4 @@
-﻿using PetFamily.Shared.Core.DTOs.VolunteerDtos;
-
-namespace PetFamily.AccountsManagement.Infrastructure.Managers.Options;
+﻿namespace PetFamily.AccountsManagement.Infrastructure.Managers.Options;
 
 public class AdminOptions
 {

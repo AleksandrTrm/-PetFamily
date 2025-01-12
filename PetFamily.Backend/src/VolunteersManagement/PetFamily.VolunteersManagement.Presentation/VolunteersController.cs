@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PetFamily.Shared.Core.DTOs;
-using PetFamily.Shared.Core.DTOs.VolunteerDtos;
 using PetFamily.Shared.Core.Models;
 using PetFamily.Shared.Framework;
 using PetFamily.Shared.Framework.Authorization;
 using PetFamily.Shared.Framework.Extensions;
 using PetFamily.Shared.Framework.Processors;
+using PetFamily.Shared.SharedKernel.DTOs;
+using PetFamily.Shared.SharedKernel.DTOs.VolunteerDtos;
 using PetFamily.VolunteersManagement.Application.Commands.Volunteers.Create;
 using PetFamily.VolunteersManagement.Application.Commands.Volunteers.Delete;
 using PetFamily.VolunteersManagement.Application.Commands.Volunteers.Pet.AddPet;

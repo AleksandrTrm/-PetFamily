@@ -1,4 +1,4 @@
-﻿using PetFamily.Shared.Core.DTOs.VolunteerDtos;
+﻿using PetFamily.Shared.SharedKernel.DTOs.VolunteerDtos;
 
 namespace PetFamily.AccountsManagement.Contracts.Requests;
 

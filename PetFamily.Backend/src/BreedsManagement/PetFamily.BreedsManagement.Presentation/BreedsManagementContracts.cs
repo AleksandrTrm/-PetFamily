@@ -1,8 +1,8 @@
-﻿using PetFamily.Shared.Core.DTOs;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 using PetFamily.BreedsManagement.Application.Queries.GetBreedsBySpeciesId;
 using PetFamily.BreedsManagement.Application.Queries.GetSpeciesWithPagination;
 using PetFamily.BreedsManagement.Contracts;
+using PetFamily.Shared.SharedKernel.DTOs;
 using PetFamily.Shared.SharedKernel.Error;
 
 namespace PetFamily.BreedsManagement.Presentation;

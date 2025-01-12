@@ -1,9 +1,9 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.Extensions.Logging;
 using PetFamily.Shared.Core.Abstractions;
-using PetFamily.Shared.Core.DTOs.Pets;
 using PetFamily.Shared.Core.Extensions;
 using PetFamily.Shared.Core.Models;
+using PetFamily.Shared.SharedKernel.DTOs.Pets;
 using PetFamily.VolunteersManagement.Application.Abstractions;
 using PetFamily.VolunteersManagement.Domain.Entities.Pets.Enums;
 

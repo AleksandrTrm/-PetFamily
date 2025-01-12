@@ -14,10 +14,6 @@ public class AdminAccountConfiguration : IEntityTypeConfiguration<AdminAccount>
         builder.HasKey(a => a.Id);
 
         builder.HasOne<User>(a => a.User)
-            .WithOne()
-            .IsRequired();
-
-        builder.HasOne<User>(a => a.User)
             .WithMany()
             .HasForeignKey(a => a.UserId);
     }

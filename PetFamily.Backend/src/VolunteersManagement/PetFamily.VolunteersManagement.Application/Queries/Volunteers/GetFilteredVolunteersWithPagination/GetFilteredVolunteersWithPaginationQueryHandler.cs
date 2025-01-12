@@ -1,9 +1,9 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.Extensions.Logging;
 using PetFamily.Shared.Core.Abstractions;
-using PetFamily.Shared.Core.DTOs.VolunteerDtos;
 using PetFamily.Shared.Core.Extensions;
 using PetFamily.Shared.Core.Models;
+using PetFamily.Shared.SharedKernel.DTOs.VolunteerDtos;
 using PetFamily.VolunteersManagement.Application.Abstractions;
 
 namespace PetFamily.VolunteersManagement.Application.Queries.Volunteers.GetFilteredVolunteersWithPagination;

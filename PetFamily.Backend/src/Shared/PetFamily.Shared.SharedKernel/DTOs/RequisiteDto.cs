@@ -1,3 +1,3 @@
-﻿namespace PetFamily.Shared.Core.DTOs;
+﻿namespace PetFamily.Shared.SharedKernel.DTOs;
 
 public record RequisiteDto(string Title, string Description);
