@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices.JavaScript;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 using PetFamily.Shared.Core.Abstractions;
 using PetFamily.Shared.SharedKernel;
 using PetFamily.Shared.SharedKernel.Error;

@@ -26,10 +26,13 @@ public static class Errors
             return Error.Validation("value.is.invalid", $"Value{label} is invalid");
         }
 
-        public static Error InvalidLength(int maxLength, string? name = null)
+        public static Error InvalidLength(int length, string? name = null, bool? isExceeded = null)
         {
             var label = name == null ? "" : $" {name}";
-            return Error.Validation("invalid.value.length", $"Value{label} has max length - {maxLength}");
+
+            return isExceeded == true
+                ? Error.Validation("invalid.value.length", $"Value{label} has min length - {length}")
+                : Error.Validation("invalid.value.length", $"Value{label} has max length - {length}");
         }
 
         public static Error InvalidCount(int min, string? name = null, int? max = null)
