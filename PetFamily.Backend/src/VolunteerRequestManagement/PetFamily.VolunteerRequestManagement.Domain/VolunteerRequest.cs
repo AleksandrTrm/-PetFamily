@@ -7,12 +7,26 @@ namespace PetFamily.VolunteerRequestManagement.Domain;
 
 public class VolunteerRequest
 {
+    public VolunteerRequest(
+        Guid volunteerRequestId,
+        Guid userId,
+        Guid discussionId,
+        VolunteerInfo volunteerInfo)
+    {
+        VolunteerRequestId = volunteerRequestId;
+        UserId = userId;
+        DiscussionId = discussionId;
+        RequestStatus = RequestStatuses.Submitted;
+        VolunteerInfo = volunteerInfo;
+        CreatedAt = DateTime.UtcNow;
+    }
+    
     public Guid VolunteerRequestId { get; private set; }
 
     public Guid UserId { get; private set; }
-    
+
     public Guid AdminId { get; private set; }
-    
+
     public Guid DiscussionId { get; private set; }
 
     public string RejectionComment { get; private set; }
@@ -22,23 +36,6 @@ public class VolunteerRequest
     public VolunteerInfo VolunteerInfo { get; private set; } = default!;
 
     public DateTime CreatedAt { get; private set; }
-
-    public static VolunteerRequest CreateRequest(
-        Guid volunteerRequestId,
-        Guid userId,
-        Guid discussionId,
-        VolunteerInfo volunteerInfo)
-    {
-        return new VolunteerRequest
-        {
-            VolunteerRequestId = volunteerRequestId, 
-            UserId = userId,
-            DiscussionId = discussionId,
-            RequestStatus = RequestStatuses.Submitted,
-            VolunteerInfo = volunteerInfo,
-            CreatedAt = DateTime.UtcNow 
-        };
-    }
 
     public void AssignRequest(Guid adminId)
     {
@@ -50,10 +47,10 @@ public class VolunteerRequest
     {
         if (AdminId == Guid.Empty)
             return Errors.General.InvalidValue(nameof(AdminId));
-        
+
         RejectionComment = rejectionComment;
         RequestStatus = RequestStatuses.RevisionRequired;
-        
+
         return UnitResult.Success<Error?>();
     }
 
