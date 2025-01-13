@@ -22,6 +22,7 @@ using PetFamily.VolunteersManagement.Application.Messaging;
 using PetFamily.VolunteersManagement.Domain.AggregateRoot;
 using PetFamily.VolunteersManagement.Domain.Entities.Pets;
 using PetFamily.VolunteersManagement.Domain.Entities.Pets.Enums;
+using Xunit;
 using FileInfo = PetFamily.VolunteersManagement.Application.FileProvider.FileInfo;
 using ValidationResult = FluentValidation.Results.ValidationResult;
 

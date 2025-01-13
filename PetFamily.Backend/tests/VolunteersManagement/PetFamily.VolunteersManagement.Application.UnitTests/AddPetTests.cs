@@ -18,6 +18,7 @@ using PetFamily.VolunteersManagement.Application.Commands.Volunteers.Pet.AddPet;
 using PetFamily.VolunteersManagement.Domain.AggregateRoot;
 using PetFamily.VolunteersManagement.Domain.Entities.Pets;
 using PetFamily.VolunteersManagement.Domain.Entities.Pets.Enums;
+using Xunit;
 using ValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace PetFamily.Application.UnitTests;
