@@ -29,7 +29,6 @@ public static class EfCoreFluentApiExtensions
 
     private static IReadOnlyList<TValueObject> DeserializeDtoCollection<TValueObject, TDto>(
         string json, Func<TDto, TValueObject> selector)
-
     {
         var values = JsonSerializer.Deserialize<IEnumerable<TDto>>(json) ?? [];
 

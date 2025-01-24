@@ -22,7 +22,7 @@ public record FilePath
         if (string.IsNullOrWhiteSpace(extension) || extension.Length > Constants.MAX_MIDDLE_HIGH_LENGTH)
             return Errors.General.InvalidValue("file-extension");
 
-        if (!extension.StartsWith('.'))
+        if (!extension.StartsWith('.')) 
             extension = "." + extension;
 
         if (IsContainsInvalidChars(name))

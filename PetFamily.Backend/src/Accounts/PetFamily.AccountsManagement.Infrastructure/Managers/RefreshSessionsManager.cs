@@ -1,8 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
-using PetFamily.AccountsManagement.Application.AccountManagement.Commands.RefreshToken;
-using PetFamily.AccountsManagement.Domain.Entities;
 using PetFamily.Shared.SharedKernel.Error;
+using PetFamily.AccountsManagement.Domain.Entities;
+using PetFamily.AccountsManagement.Application.AccountManagement.Commands.RefreshToken;
 
 namespace PetFamily.AccountsManagement.Infrastructure.Managers;
 

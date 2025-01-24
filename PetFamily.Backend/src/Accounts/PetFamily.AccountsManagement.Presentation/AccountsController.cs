@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CSharpFunctionalExtensions;
+using Microsoft.AspNetCore.Mvc;
 using PetFamily.AccountsManagement.Application.AccountManagement.Commands.Login;
 using PetFamily.AccountsManagement.Application.AccountManagement.Commands.RefreshToken;
 using PetFamily.AccountsManagement.Application.AccountManagement.Commands.Register;
@@ -6,11 +7,21 @@ using PetFamily.AccountsManagement.Application.AccountManagement.Queries.GetAcco
 using PetFamily.Shared.Framework;
 using PetFamily.Shared.Framework.Extensions;
 using PetFamily.AccountsManagement.Contracts.Requests;
+using PetFamily.AccountsManagement.Domain.Entities;
+using PetFamily.Shared.Core.Models;
+using PetFamily.Shared.Framework.Authorization;
 
 namespace PetFamily.AccountsManagement.Presentation;
 
 public class AccountsController : ApplicationController
 {
+    [HttpGet("test")]
+    [Permission(Permissions.Volunteer.CREATE_VOLUNTEER)]
+    public async Task<IActionResult> Test()
+    {
+        return Ok("Test");
+    }
+    
     [HttpGet("accounts/{id:guid}")]
     public async Task<IActionResult> GetAccountInfo(
         [FromRoute] Guid id,
@@ -51,20 +62,28 @@ public class AccountsController : ApplicationController
         if (result.IsFailure)
             return result.Error.ToResponse();
         
-        return Ok(result.Value);
+        HttpContext.Response.Cookies.Append("refreshToken", result.Value.RefreshToken.ToString());
+        
+        return Ok(Envelope.Ok(result.Value));
     }
 
-    [HttpPost("refresh")]
+    [HttpGet("refresh")]
     public async Task<IActionResult> Refresh(
-        [FromBody] RefreshTokenRequest request,
-        [FromServices] RefreshSessionHandler handler,
+        [FromServices] RefreshSessionHandler handler, 
         CancellationToken cancellationToken)
     {
-        var command = new RefreshSessionCommand(request.AccessToken, request.RefreshToken);
+        if (!HttpContext.Request.Cookies.TryGetValue("refreshToken", out var refreshToken))
+            return Unauthorized();
+        
+        var command = new RefreshSessionCommand(Guid.Parse(refreshToken));
         var refreshSessionResult = await handler.Handle(command, cancellationToken);
         if (refreshSessionResult.IsFailure)
             return refreshSessionResult.Error.ToResponse();
 
-        return Ok(refreshSessionResult.Value);
+        HttpContext.Response.Cookies.Append("refreshToken", refreshSessionResult.Value.RefreshToken.ToString());
+
+        var envelope = Envelope.Ok(refreshSessionResult.Value);
+        
+        return Ok(envelope);
     }
 }
