@@ -42,6 +42,6 @@ public class LoginCommandHandler : ICommandHandler<LoginResponse, LoginCommand>
 
         _logger.LogInformation("Successfully logged in.");
         
-        return new LoginResponse(jwtTokenResponse.JwtToken, refreshToken);
+        return new LoginResponse(jwtTokenResponse.JwtToken, refreshToken, user.Id, user.UserName!, user.Email!);
     }
 }

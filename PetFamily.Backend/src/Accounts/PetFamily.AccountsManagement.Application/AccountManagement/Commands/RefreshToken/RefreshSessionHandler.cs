@@ -18,40 +18,27 @@ public class RefreshSessionHandler(
     public async Task<Result<LoginResponse, ErrorList>> Handle(
         RefreshSessionCommand command, CancellationToken cancellationToken)
     {
-        var refreshSession = await refreshSessionsManager
+        var oldRefreshSession = await refreshSessionsManager
             .GetByRefreshToken(command.RefreshToken, cancellationToken);
         
-        if (refreshSession.IsFailure)
-            return refreshSession.Error.ToErrorList();
+        if (oldRefreshSession.IsFailure)
+            return oldRefreshSession.Error.ToErrorList();
 
-        if (refreshSession.Value.ExpiresIn < DateTime.UtcNow)
+        if (oldRefreshSession.Value.ExpiresIn < DateTime.UtcNow)
             return Errors.Accounts.ExpiredToken().ToErrorList();
 
-        var userClaimsResult = await tokenProvider.GetUserClaimsFromJwtToken(command.AccessToken);
-        if (userClaimsResult.IsFailure)
-            return userClaimsResult.Error.ToErrorList();
-
-        var userIdString = userClaimsResult.Value.FirstOrDefault(c => c.Type == CustomClaims.SUB)?.Value;
-        if (!Guid.TryParse(userIdString, out var userId))
-            return Errors.General.NotFound().ToErrorList();
-
-        if (userId != refreshSession.Value.UserId)
-            return Errors.Accounts.InvalidJwtToken().ToErrorList();
-
-        var tokenJtiString = userClaimsResult.Value.FirstOrDefault(c => c.Type == CustomClaims.JTI)?.Value;
-        if (!Guid.TryParse(tokenJtiString, out var tokenJti))
-            return Errors.General.NotFound().ToErrorList();
-
-        if (tokenJti != refreshSession.Value.Jti)
-            return Errors.Accounts.InvalidJwtToken().ToErrorList();
-
-        refreshSessionsManager.Delete(refreshSession.Value);
+        refreshSessionsManager.Delete(oldRefreshSession.Value);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        var accessTokenResponse = tokenProvider.GenerateAccessToken(refreshSession.Value.User);
+        var accessTokenResponse = tokenProvider.GenerateAccessToken(oldRefreshSession.Value.User);
         var refreshToken = await tokenProvider
-            .GenerateRefreshToken(refreshSession.Value.User, accessTokenResponse.Jti, cancellationToken);
+            .GenerateRefreshToken(oldRefreshSession.Value.User, accessTokenResponse.Jti, cancellationToken);
 
-        return new LoginResponse(accessTokenResponse.JwtToken, refreshToken);
+        return new LoginResponse(
+            accessTokenResponse.JwtToken, 
+            refreshToken,
+            oldRefreshSession.Value.User.Id,
+            oldRefreshSession.Value.User.UserName!,
+            oldRefreshSession.Value.User.Email!);
     }
 }

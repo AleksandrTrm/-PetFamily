@@ -29,8 +29,8 @@ namespace PetFamily.VolunteersManagement.Presentation;
 
 public class VolunteersController : ApplicationController
 {
-    [Permission(Permissions.Volunteer.GET_VOLUNTEERS_WITH_PAGINATION)]
     [HttpGet]
+    [Permission(Permissions.Volunteer.GET_VOLUNTEERS_WITH_PAGINATION)]
     public async Task<ActionResult> GetVolunteers(
         [FromQuery] GetVolunteersRequest request,
         [FromServices] GetFilteredVolunteersWithPaginationQueryHandler handler,

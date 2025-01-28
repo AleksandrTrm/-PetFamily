@@ -25,12 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\..\.dockerignore">
-      <Link>.dockerignore</Link>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Accounts\PetFamily.AccountsManagement.Application\PetFamily.AccountsManagement.Application.csproj" />
     <ProjectReference Include="..\Accounts\PetFamily.AccountsManagement.Infrastructure\PetFamily.AccountsManagement.Infrastructure.csproj" />
     <ProjectReference Include="..\Accounts\PetFamily.AccountsManagement.Presentation\PetFamily.AccountsManagement.Presentation.csproj" />
@@ -39,6 +33,12 @@
     <ProjectReference Include="..\BreedsManagement\PetFamily.BreedsManagement.Presentation\PetFamily.BreedsManagement.Presentation.csproj" />
     <ProjectReference Include="..\VolunteersManagement\PetFamily.VolunteersManagement.Infrastructure\PetFamily.VolunteersManagement.Infrastructure.csproj" />
     <ProjectReference Include="..\VolunteersManagement\PetFamily.VolunteersManagement.Presentation\PetFamily.VolunteersManagement.Presentation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\.dockerignore">
+      <Link>.dockerignore</Link>
+    </Content>
   </ItemGroup>
 
 </Project>

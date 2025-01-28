@@ -3,5 +3,5 @@
 namespace PetFamily.Shared.Framework;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public abstract class ApplicationController : ControllerBase { }

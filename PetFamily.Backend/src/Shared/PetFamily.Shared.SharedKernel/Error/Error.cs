@@ -37,6 +37,9 @@ public record Error
     
     public static Error Failure(string code, string message) =>
         new(code, message, ErrorType.Failure);
+    
+    public static Error Forbidden(string code, string message) =>
+        new(code, message, ErrorType.Forbidden);
 
     public string Serialize()
     {

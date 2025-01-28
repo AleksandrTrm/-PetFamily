@@ -5,12 +5,14 @@ using PetFamily.WebAPI;
 using PetFamily.WebAPI.Middlewares;
 using LoggerConfiguration = PetFamily.Shared.Framework.Extensions.LoggerConfiguration;
 
-DotNetEnv.Env.Load(".env");
+DotNetEnv.Env.Load("etc/.env");
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -66,9 +68,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(config =>
+{
+    config.WithOrigins("http://localhost:5173")
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials();
+});
+
 app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
+
+app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -76,5 +88,12 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseHttpsRedirection();
+
+app.MapGet("api/users", () =>
+{
+    List<string> users = ["user", "user1", "user2"];
+    
+    return Results.Ok(users);
+});
 
 app.Run();
